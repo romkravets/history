@@ -12,10 +12,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+.remote-llm-tunnel.log
+.remote-llm-tunnel.pid
 
 # environment variables
 .env
 .env.production
+.orch.env
 
 # macOS-specific files
 .DS_Store
