@@ -8,7 +8,7 @@ load_orch_config
 
 if [[ $# -lt 1 ]]; then
   echo "Usage: npm run orch -- <llm-orch args>" >&2
-  echo "Example: npm run orch -- apply-plan --task \"Add photo story\"" >&2
+  echo "Example: npm run orch -- apply-plan --task \"Add feature\"" >&2
   exit 1
 fi
 
@@ -17,7 +17,7 @@ if [[ "$1" == "--help" || "$1" == "-h" ]]; then
 Usage:
   npm run orch -- <llm-orch args>
 
-Runs llm-orchestrator locally on this Mac.
+Runs llm-orchestrator locally on this machine.
 Config file (optional): .orch.env
 EOF
   exit 0

@@ -190,12 +190,13 @@ REMOTE_HOST=192.168.88.246 REMOTE_USER=adminr REMOTE_PATH=/var/www/history-archi
 npm run orch:ui
 
 2. У меню:
-- 2) вкажи SSH і шляхи на сервері
-- 3) вкажи джерело orchestrator:
-	- або ORCH_GIT_URL (git URL),
-	- або ORCH_LOCAL_DIR (локальна папка, яку синкнемо на сервер)
-- 4) Setup orchestrator on server
-- 1) Set mode = remote
+
+- 2. вкажи SSH і шляхи на сервері
+- 3. вкажи джерело orchestrator:
+  - або ORCH_GIT_URL (git URL),
+  - або ORCH_LOCAL_DIR (локальна папка, яку синкнемо на сервер)
+- 4. Setup orchestrator on server
+- 1. Set mode = remote
 
 3. Запускай через єдину команду:
 
@@ -206,6 +207,7 @@ npm run orch:auto -- apply-plan --task "Add one photo story"
 npm run orch:doctor
 
 Де зберігаються налаштування цього репозиторію:
+
 - файл [history/.orch.env.example](history/.orch.env.example) як шаблон
 - твій реальний файл [history/.orch.env](history/.orch.env) (ігнорується git)
 
@@ -233,14 +235,14 @@ npm run orch:remote -- --output json review-diff --task "Review before publish"
 ### Важливі env-перемінні для remote
 
 - `REMOTE_HOST` (default `192.168.88.246`)
-- `REMOTE_USER` (default `adminr`)
+- `REMOTE_USER` (default `hermes-agent`)
 - `SSH_PORT` (default `22`)
-- `REMOTE_PROJECT_DIR` (default `/var/www/history-archive`)
-- `REMOTE_ORCH_DIR` (default `/opt/llm-orchestrator`)
+- `REMOTE_PROJECT_DIR` (default `/home/hermes-agent/projects/history`)
+- `REMOTE_ORCH_DIR` (default `/home/hermes-agent/projects/llm-orchestrator`)
 
 Приклад з перевизначенням шляху проекту на сервері:
 
-REMOTE_PROJECT_DIR=/home/adminr/projects/history npm run orch:remote -- run-task --task "Release checklist"
+REMOTE_PROJECT_DIR=/home/hermes-agent/projects/history npm run orch:remote -- run-task --task "Release checklist"
 
 ### Вибір інструмента керування
 
@@ -252,6 +254,7 @@ REMOTE_PROJECT_DIR=/home/adminr/projects/history npm run orch:remote -- run-task
 ## Детальна інструкція: команда за командою
 
 Нижче інструкція саме під поточний стан сервера:
+
 - SSH працює
 - на сервері ще немає Node.js
 - repo history ще не клоновано
@@ -270,6 +273,8 @@ ls /Users/romkravets/Documents/GitHub/llm-orchestrator
 
 npm run orch:doctor
 
+Якщо хочеш підключити цей самий orchestrator до іншого репозиторію, просто скопіюй ті самі `scripts/orch*.sh`, `package.json`-скрипти та свій `.orch.env`, а потім зміни `REMOTE_PROJECT_DIR` / `ORCH_CONFIG_FILE` під новий repo.
+
 ### Етап 1. Підготувати сервер (Node.js + папка проекту)
 
 1. Підключись до сервера:
@@ -286,27 +291,28 @@ nvm alias default lts/*
 node -v
 npm -v
 
-3. Клонуй history на сервер:
+3. Якщо `history` вже клонований на сервері, просто перейди в його папку.
+   Якщо ні — клонуй його один раз у будь-який зручний шлях.
 
-mkdir -p /home/adminr/projects
-cd /home/adminr/projects
-git clone <URL-ТВОГО-REPO-HISTORY> history
+   Приклад для вже існуючого clone:
+
+cd /home/hermes-agent/projects/history
 
 4. Постав залежності history на сервері:
 
-cd /home/adminr/projects/history
 npm install
 
-Примітка: якщо git URL приватний, переконайся, що ssh-ключі на сервері мають доступ.
+Примітка: якщо repo вже існує, цей крок лише оновить залежності.
+Якщо git URL приватний, переконайся, що ssh-ключі на сервері мають доступ.
 
 ### Етап 2. Підготувати orchestrator на сервері
 
-Варіант A (рекомендовано зараз): sync з Mac
+Варіант A (рекомендовано, якщо `llm-orchestrator` вже є на Mac і сервері потрібна копія): sync з Mac
 
 cd /Users/romkravets/Documents/GitHub/history
 ORCH_LOCAL_DIR=/Users/romkravets/Documents/GitHub/llm-orchestrator npm run orch:remote:setup
 
-Варіант B: git clone на сервері
+Варіант B: git clone / pull на сервері за `ORCH_GIT_URL`
 
 cd /Users/romkravets/Documents/GitHub/history
 ORCH_GIT_URL=git@github.com:<org>/llm-orchestrator.git npm run orch:remote:setup
@@ -318,16 +324,23 @@ ORCH_GIT_URL=git@github.com:<org>/llm-orchestrator.git npm run orch:remote:setup
 npm run orch:ui
 
 2. Далі:
-- 1) Set mode = remote
-- 2) Перевір REMOTE_HOST і REMOTE_PROJECT_DIR
-- 4) Setup orchestrator on server (за потреби)
-- 6) Run doctor checks
+
+- 1. Set mode = remote
+- 2. Перевір REMOTE_HOST і REMOTE_PROJECT_DIR
+- 4. Setup orchestrator on server (запускай, якщо треба оновити orchestrator на сервері)
+- 6. Run doctor checks
 
 3. Перевір діагностику:
 
 npm run orch:doctor
 
 Очікувано має бути ok для ssh, remote project dir, remote orchestrator dir.
+
+Якщо `history` вже клонований на сервері, то головне правило таке:
+
+1. У `.orch.env` вистав `REMOTE_PROJECT_DIR` на реальний шлях цього клонованого repo, наприклад `/home/hermes-agent/projects/history`.
+2. Не роби окремий clone крок, якщо папка вже існує.
+3. Запускай `npm run orch:auto ...` або `npm run orch:remote ...`.
 
 ### Етап 4. Щоденна робота (одна точка входу)
 
@@ -350,28 +363,34 @@ npm run orch:auto -- apply-plan --task "Add one photo story"
 ## Схема роботи всієї збірки
 
 1. Керування:
+
 - Copilot terminal або Claude Code terminal на Mac
 
 2. Диспетчер режиму:
+
 - scripts/orch-auto.sh читає .orch.env
 - ORCH_MODE=local -> scripts/orch.sh
 - ORCH_MODE=remote -> scripts/orch-remote.sh
 
 3. Виконання:
+
 - local: llm-orchestrator працює на Mac
 - remote: llm-orchestrator запускається на сервері по SSH
 
 4. Модельний шар:
+
 - provider hermes або ollama
 - fallback hermes -> ollama при помилці hermes
 
 5. Результати:
+
 - текстовий режим для людини
 - json режим для CI/автоматизації
 
 ## Як використовувати в CI
 
 Приклад логіки:
+
 1. На CI runner (або self-hosted) викликаєш remote-режим.
 2. Береш --output json.
 3. Парсиш поле ok/fallbackUsed/response.
@@ -384,22 +403,27 @@ npm run orch:auto -- --output json review-diff --task "Pre-merge review"
 ## Що покращити далі
 
 1. Додати команду orch:remote:bootstrap:
+
 - автоінсталяція nvm/node
 - auto clone history
 - auto setup orchestrator
 
 2. Додати output strict-schema для review-diff:
+
 - findings масив з severity/code/file/line
 - простий парсинг у CI
 
 3. Додати профілі .orch.env для кількох repo:
+
 - .orch.history.env
 - .orch.seo-anal.env
 - перемикач через ORCH_CONFIG_FILE
 
 4. Додати remote health command:
+
 - перевірка node/hermes/ollama
 - latency та короткий smoke prompt
 
 5. Додати locking для remote setup:
+
 - щоб одночасні запуски не ламали install/build

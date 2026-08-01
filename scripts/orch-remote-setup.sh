@@ -7,9 +7,9 @@ source "${SCRIPT_DIR}/orch-config.sh"
 load_orch_config
 
 REMOTE_HOST="${REMOTE_HOST:-192.168.88.246}"
-REMOTE_USER="${REMOTE_USER:-adminr}"
+REMOTE_USER="${REMOTE_USER:-hermes-agent}"
 SSH_PORT="${SSH_PORT:-22}"
-REMOTE_ORCH_DIR="${REMOTE_ORCH_DIR:-/opt/llm-orchestrator}"
+REMOTE_ORCH_DIR="${REMOTE_ORCH_DIR:-/home/hermes-agent/projects/llm-orchestrator}"
 ORCH_GIT_URL="${ORCH_GIT_URL:-}"
 ORCH_LOCAL_DIR="${ORCH_LOCAL_DIR:-/Users/romkravets/Documents/GitHub/llm-orchestrator}"
 
@@ -25,30 +25,10 @@ else
 fi
 
 echo "[orch:remote:setup] provisioning orchestrator on server..." >&2
+
 if [[ -n "$ORCH_GIT_URL" ]]; then
-  ssh -p "${SSH_PORT}" "${REMOTE_USER}@${REMOTE_HOST}" bash -s -- \
-    "${REMOTE_ORCH_DIR}" \
-    "${ORCH_GIT_URL}" <<'EOF'
-set -euo pipefail
-
-remote_orch_dir="$1"
-orch_git_url="$2"
-
-mkdir -p "$(dirname "$remote_orch_dir")"
-
-if [[ -d "$remote_orch_dir/.git" ]]; then
-  cd "$remote_orch_dir"
-  git pull --ff-only
-else
-  git clone "$orch_git_url" "$remote_orch_dir"
-  cd "$remote_orch_dir"
-fi
-
-npm install
-npm run build
-
-echo "[orch:remote:setup] ready: $remote_orch_dir"
-EOF
+  remote_command="bash -lc 'source \$HOME/.nvm/nvm.sh >/dev/null 2>&1 || true; mkdir -p $(printf '%q' "$(dirname "$REMOTE_ORCH_DIR")"); if [[ -d $(printf '%q' "$REMOTE_ORCH_DIR")/.git ]]; then cd $(printf '%q' "$REMOTE_ORCH_DIR") && git pull --ff-only; else git clone $(printf '%q' "$ORCH_GIT_URL") $(printf '%q' "$REMOTE_ORCH_DIR") && cd $(printf '%q' "$REMOTE_ORCH_DIR"); fi; npm install && npm run build; echo [orch:remote:setup] ready: $(printf '%q' "$REMOTE_ORCH_DIR")'"
+  ssh -p "${SSH_PORT}" "${REMOTE_USER}@${REMOTE_HOST}" "$remote_command"
   exit 0
 fi
 
@@ -58,7 +38,7 @@ if [[ ! -d "$ORCH_LOCAL_DIR" ]]; then
   exit 1
 fi
 
-ssh -p "${SSH_PORT}" "${REMOTE_USER}@${REMOTE_HOST}" "mkdir -p '${REMOTE_ORCH_DIR}'"
+ssh -p "${SSH_PORT}" "${REMOTE_USER}@${REMOTE_HOST}" "mkdir -p $(printf '%q' "$REMOTE_ORCH_DIR")"
 
 rsync -az --delete \
   --exclude node_modules \
@@ -67,13 +47,5 @@ rsync -az --delete \
   -e "ssh -p ${SSH_PORT}" \
   "${ORCH_LOCAL_DIR}/" "${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_ORCH_DIR}/"
 
-ssh -p "${SSH_PORT}" "${REMOTE_USER}@${REMOTE_HOST}" bash -s -- \
-  "${REMOTE_ORCH_DIR}" <<'EOF'
-set -euo pipefail
-
-remote_orch_dir="$1"
-cd "$remote_orch_dir"
-npm install
-npm run build
-echo "[orch:remote:setup] ready: $remote_orch_dir"
-EOF
+remote_command="bash -lc 'source \$HOME/.nvm/nvm.sh >/dev/null 2>&1 || true; cd $(printf '%q' "$REMOTE_ORCH_DIR") && npm install && npm run build; echo [orch:remote:setup] ready: $(printf '%q' "$REMOTE_ORCH_DIR")'"
+ssh -p "${SSH_PORT}" "${REMOTE_USER}@${REMOTE_HOST}" "$remote_command"

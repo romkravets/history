@@ -43,7 +43,7 @@ EOF
 show_dashboard() {
   clear
   echo "==============================================="
-  echo " History Orchestrator UI"
+  echo " Repository Orchestrator UI"
   echo "==============================================="
   echo " Repo: $PROJECT_ROOT"
   echo " Config: $CONFIG_FILE"
@@ -88,7 +88,7 @@ configure_source() {
 }
 
 test_apply_plan() {
-  "${SCRIPT_DIR}/orch-auto.sh" apply-plan --task "Add one photo story" || true
+  "${SCRIPT_DIR}/orch-auto.sh" apply-plan --task "Add one feature" || true
   echo ""
   read -r -p "Press Enter to continue..." _
 }
@@ -96,8 +96,8 @@ test_apply_plan() {
 show_quick_commands() {
   cat <<'EOF'
 Quick commands:
-  npm run orch:auto -- apply-plan --task "Add one photo story"
-  npm run orch:auto -- --output json review-diff --task "Review before publish"
+  npm run orch:auto -- apply-plan --task "Add one feature"
+  npm run orch:auto -- --output json review-diff --task "Review before merge"
   npm run orch:remote:setup
 
 Switch mode in .orch.env:
