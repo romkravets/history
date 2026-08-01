@@ -1,0 +1,56 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+  const photos = await getCollection("photos");
+  return photos.map((photo) => ({
+    params: { slug: photo.id.replace(/\.md$/, "") },
+    props: { photo },
+  }));
+}
+
+const { photo } = Astro.props;
+const { Content } = await render(photo);
+
+const formatDate = new Intl.DateTimeFormat("uk-UA", {
+  dateStyle: "long",
+});
+---
+
+<Layout title={`${photo.data.title} · Історичний Архів`} description={photo.data.description}>
+  <article class="shell photo-article">
+    <a class="back-link" href="/">Повернутися до галереї</a>
+    <header class="photo-header">
+      <p class="eyebrow">{photo.data.city}{photo.data.area ? ` · ${photo.data.area}` : ""}</p>
+      <h1>{photo.data.title}</h1>
+      <p class="lead">{photo.data.description}</p>
+      <div class="meta-row">
+        <span>{formatDate.format(photo.data.date)}</span>
+        <span>{photo.data.decade}</span>
+        {
+          photo.data.tags.length > 0 &&
+            <span>{photo.data.tags.map((tag: string) => `#${tag}`).join(" ")}</span>
+        }
+      </div>
+    </header>
+
+    <figure class="main-photo">
+      <img src={photo.data.cover} alt={photo.data.title} loading="eager" />
+    </figure>
+
+    {
+      photo.data.images.length > 0 && (
+        <section class="gallery-grid" aria-label="Додаткові фотографії">
+          {photo.data.images.map((src: string, idx: number) => (
+            <img src={src} alt={`${photo.data.title} — кадр ${idx + 1}`} loading="lazy" />
+          ))}
+        </section>
+      )
+    }
+
+    <section class="story">
+      <Content />
+    </section>
+  </article>
+</Layout>

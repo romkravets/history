@@ -1,0 +1,66 @@
+---
+import "../styles/global.css";
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = "Історичний Архів Міста",
+	description = "Візуальна хроніка міста та околиць: фотографії, дати, контекст і пам'ять місця.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="uk">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<title>{title}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Unbounded:wght@500;700;800;900&display=swap"
+			rel="stylesheet"
+		/>
+	</head>
+	<body>
+		<div class="scroll-progress" aria-hidden="true"></div>
+		<div class="bg-atmosphere" aria-hidden="true"></div>
+		<header class="site-header">
+			<a class="brand" href="/">
+				<span class="brand-dot" aria-hidden="true"></span>
+				HISTORY ARCHIVE
+			</a>
+			<nav class="top-nav" aria-label="Головна навігація">
+				<a href="/">[01] ГАЛЕРЕЯ</a>
+			</nav>
+			<a class="header-cta" href="/">OPEN / ARCHIVE</a>
+		</header>
+		<main>
+			<slot />
+		</main>
+		<script is:inline>
+			(() => {
+				const bar = document.querySelector('.scroll-progress');
+				if (!bar) return;
+				const onScroll = () => {
+					const root = document.documentElement;
+					const max = root.scrollHeight - root.clientHeight;
+					const ratio = max > 0 ? (root.scrollTop / max) * 100 : 0;
+					bar.style.width = ratio + '%';
+				};
+				onScroll();
+				window.addEventListener('scroll', onScroll, { passive: true });
+			})();
+		</script>
+	</body>
+</html>
