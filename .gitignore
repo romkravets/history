@@ -20,6 +20,10 @@ pnpm-debug.log*
 .env.production
 .orch.env
 
+# execute-task working directories (git worktrees, not part of history)
+.orch-worktrees/
+.orch-logs/
+
 # macOS-specific files
 .DS_Store
 
