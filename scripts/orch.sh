@@ -6,6 +6,13 @@ source "${SCRIPT_DIR}/orch-config.sh"
 
 load_orch_config
 
+# Non-interactive SSH shells often miss Node toolchain PATH.
+if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
+  # shellcheck disable=SC1090
+  source "$HOME/.nvm/nvm.sh" >/dev/null 2>&1 || true
+fi
+export PATH="$HOME/.local/bin:$PATH"
+
 if [[ $# -lt 1 ]]; then
   echo "Usage: npm run orch -- <llm-orch args>" >&2
   echo "Example: npm run orch -- apply-plan --task \"Add feature\"" >&2
@@ -39,8 +46,13 @@ fi
 
 cd "$ORCH_DIR"
 
+if ! command -v npm >/dev/null 2>&1; then
+  echo "npm not found in PATH. Ensure Node.js is installed for this user." >&2
+  exit 1
+fi
+
 if [[ ! -d node_modules ]]; then
   npm install >/dev/null
 fi
 
-exec npm run dev -- --cwd "$TARGET_CWD" "$@"
+exec npm run --silent dev -- --cwd "$TARGET_CWD" "$@"

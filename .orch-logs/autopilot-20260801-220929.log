@@ -1,0 +1,56 @@
+{
+  "ok": true,
+  "command": "apply-plan",
+  "cwd": "/home/hermes-agent/projects/history",
+  "task": "Опиши",
+  "providerRequested": "hermes",
+  "providerUsed": "ollama",
+  "fallbackUsed": true,
+  "promptMeta": {
+    "extra": null
+  },
+  "response": "```json\n{\n  \"todoList\": [\n    { \"id\": 1, \"title\": \"Understand the task requirements\", \"status\": \"not-started\" },\n    { \"id\": 2, \"title\": \"Identify key information and constraints\", \"status\": \"not-started\" },\n    { \"id\": 3, \"title\": \"Break down the task into smaller steps\", \"status\": \"not-started\" },\n    { \"id\": 4, \"title\": \"Develop a realistic execution order for the steps\", \"status\": \"not-started\" },\n    { \"id\": 5, \"title\": \"Create a JSON schema that fits the requirements\", \"status\": \"not-started\" },\n    { \"id\": 6, \"title\": \"Ensure all tasks have unique IDs and default statuses\", \"status\": \"not-started\" },\n    { \"id\": 7, \"title\": \"Verify the number of steps is within the specified range (4-9)\", \"status\": \"not-started\" },\n    { \"id\": 8, \"title\": \"Review and finalize the JSON output\", \"status\": \"not-started\" }\n  ]\n}\n```",
+  "timestamp": "2026-08-01T19:09:33.239Z",
+  "todoList": [
+    {
+      "id": 1,
+      "title": "Understand the task requirements",
+      "status": "not-started"
+    },
+    {
+      "id": 2,
+      "title": "Identify key information and constraints",
+      "status": "not-started"
+    },
+    {
+      "id": 3,
+      "title": "Break down the task into smaller steps",
+      "status": "not-started"
+    },
+    {
+      "id": 4,
+      "title": "Develop a realistic execution order for the steps",
+      "status": "not-started"
+    },
+    {
+      "id": 5,
+      "title": "Create a JSON schema that fits the requirements",
+      "status": "not-started"
+    },
+    {
+      "id": 6,
+      "title": "Ensure all tasks have unique IDs and default statuses",
+      "status": "not-started"
+    },
+    {
+      "id": 7,
+      "title": "Verify the number of steps is within the specified range (4-9)",
+      "status": "not-started"
+    },
+    {
+      "id": 8,
+      "title": "Review and finalize the JSON output",
+      "status": "not-started"
+    }
+  ]
+}

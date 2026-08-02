@@ -22,6 +22,7 @@
     "orch:doctor": "bash scripts/orch-doctor.sh",
     "orch:remote": "bash scripts/orch-remote.sh",
     "orch:remote:setup": "bash scripts/orch-remote-setup.sh",
+    "orch:autopilot": "bash scripts/orch-autopilot.sh",
     "sync:local": "bash scripts/sync-to-local.sh",
     "astro": "astro"
   },

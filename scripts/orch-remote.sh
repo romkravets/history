@@ -37,13 +37,23 @@ echo "[orch:remote] host=${REMOTE_USER}@${REMOTE_HOST}:${SSH_PORT}" >&2
 echo "[orch:remote] project=${REMOTE_PROJECT_DIR}" >&2
 echo "[orch:remote] orchestrator=${REMOTE_ORCH_DIR}" >&2
 
-quoted_orch_dir=$(printf '%q' "$REMOTE_ORCH_DIR")
-quoted_project_dir=$(printf '%q' "$REMOTE_PROJECT_DIR")
-quoted_args=()
+escaped_remote_args=("$(printf '%q' "$REMOTE_ORCH_DIR")" "$(printf '%q' "$REMOTE_PROJECT_DIR")")
 for arg in "$@"; do
-  quoted_args+=("$(printf '%q' "$arg")")
+  escaped_remote_args+=("$(printf '%q' "$arg")")
 done
 
-remote_command="bash -lc 'source \$HOME/.nvm/nvm.sh >/dev/null 2>&1 || true; cd ${quoted_orch_dir} && exec node dist/cli.js --cwd ${quoted_project_dir} ${quoted_args[*]}'"
+ssh_remote_cmd="bash -s -- ${escaped_remote_args[*]}"
 
-ssh -p "${SSH_PORT}" "${REMOTE_USER}@${REMOTE_HOST}" "$remote_command"
+ssh -p "${SSH_PORT}" "${REMOTE_USER}@${REMOTE_HOST}" "$ssh_remote_cmd" <<'REMOTE_SCRIPT'
+set -euo pipefail
+
+source "$HOME/.nvm/nvm.sh" >/dev/null 2>&1 || true
+export PATH="$HOME/.local/bin:$PATH"
+
+orch_dir="$1"
+project_dir="$2"
+shift 2
+
+cd "$orch_dir"
+exec node dist/cli.js --cwd "$project_dir" "$@"
+REMOTE_SCRIPT
