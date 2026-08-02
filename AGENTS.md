@@ -78,6 +78,73 @@ Logs are written to `.orch-logs/autopilot-<timestamp>.log`. Add
 `--skip-validate` to skip the check/build step, or `--extra "..."` for extra
 constraints.
 
+### Real file changes (execute-task)
+
+Unlike every command above (which only return text — plans/analysis/review),
+`execute-task` actually writes files. It generates full file contents, writes
+them into an isolated git worktree on the server (never touches `main`
+directly), and runs `npm run check`/`build` there for real.
+
+```bash
+npm run orch:auto -- --output json execute-task \
+  --task "Add a new photo story for <city>" \
+  --pattern "src/content/photos/*.md"
+```
+
+`--pattern` is optional — include it when the model needs to see existing
+files (e.g. to follow the same frontmatter shape) rather than just create
+something new from scratch.
+
+The JSON output includes `promptMeta.worktree` (absolute path on the server)
+and `promptMeta.branch`. **Nothing is committed automatically.** Review and
+merge it yourself, over SSH on the server (see cheat sheet below).
+
+### Server-side review/merge cheat sheet
+
+The server's default shell is restricted (`rbash`) — `cd` only works inside
+`bash -lc "..."`. One-liner from the Mac (no need to open an interactive SSH
+session):
+
+```bash
+ssh hermes-agent@192.168.88.246 'bash -lc "cd /home/hermes-agent/projects/history/.orch-worktrees/<id> && git status && git diff"'
+```
+
+If you're already inside an SSH session on the server (prompt shows
+`hermes-agent@llmserver`), drop the outer `ssh` — just run the `bash -lc "..."`
+part directly.
+
+Review, then commit and merge into `main`:
+
+```bash
+bash -lc "
+cd /home/hermes-agent/projects/history/.orch-worktrees/<id>
+git add -A
+git commit -m 'Describe the change'
+cd /home/hermes-agent/projects/history
+git merge orch/<id> --no-edit
+git worktree remove .orch-worktrees/<id>
+"
+```
+
+`git commit` alone does **not** make the change visible anywhere — only the
+`git merge` into `main` writes the file into the directory the dev server
+actually watches.
+
+**Known gotcha:** Astro's content-collection watcher does not always notice
+files that appear via `git merge` (as opposed to a direct edit). If the new
+content doesn't show up on `localhost:4321` after merging, restart the dev
+server to force a fresh sync:
+
+```bash
+ssh hermes-agent@192.168.88.246 'bash -lc "
+source \$HOME/.nvm/nvm.sh >/dev/null 2>&1 || true
+export PATH=\$HOME/.local/bin:\$PATH
+cd /home/hermes-agent/projects/history
+astro dev stop
+npm run dev -- --background
+"'
+```
+
 ### Higher-quality answers: Mixture-of-Agents (MoA) consensus
 
 For analysis/review tasks where accuracy matters more than speed, query a
