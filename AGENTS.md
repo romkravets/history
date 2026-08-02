@@ -113,7 +113,24 @@ If you're already inside an SSH session on the server (prompt shows
 `hermes-agent@llmserver`), drop the outer `ssh` — just run the `bash -lc "..."`
 part directly.
 
-Review, then commit and merge into `main`:
+Once you've reviewed the diff and are happy with it, land it — commit, merge
+into `main`, push to GitHub, and remove the worktree, all in one command **run
+from the Mac** (no manual SSH needed for this part):
+
+```bash
+npm run orch:auto -- --output json land-task --id <id> --message "Describe the change"
+```
+
+- `--id` is the worktree id from `execute-task`'s output (the number in
+  `.orch-worktrees/<id>`).
+- `--message` is only needed if the worktree has uncommitted changes (it
+  always will, right after `execute-task`).
+- Push is on by default; add `--no-push` to merge locally on the server
+  without publishing to GitHub yet.
+- Add `--keep-worktree` to leave the worktree in place instead of removing it.
+
+If you'd rather do each step by hand (e.g. to amend the commit first), the
+manual equivalent is:
 
 ```bash
 bash -lc "
@@ -122,13 +139,16 @@ git add -A
 git commit -m 'Describe the change'
 cd /home/hermes-agent/projects/history
 git merge orch/<id> --no-edit
+git push origin main
 git worktree remove .orch-worktrees/<id>
 "
 ```
 
-`git commit` alone does **not** make the change visible anywhere — only the
-`git merge` into `main` writes the file into the directory the dev server
-actually watches.
+`git commit` alone does **not** make the change visible anywhere, and merging
+into the server's local `main` does **not** publish it to GitHub — each step
+only does what it says. Skipping `git push` (either via `--no-push` or by
+hand) means the change stays on the server only, invisible on GitHub and on
+any other clone until someone pushes it.
 
 **Known gotcha:** Astro's content-collection watcher does not always notice
 files that appear via `git merge` (as opposed to a direct edit). If the new
