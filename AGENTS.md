@@ -28,32 +28,89 @@ npm run remote:llm:prompt -- --file prompts/task.txt
 npm run remote:llm:prompt -- "analyze file" --context-file CLAUDE.md
 ```
 
-Or use reusable orchestrator commands from this repo root:
+Or use reusable orchestrator commands from this repo root. All commands below
+read connection settings (`REMOTE_HOST`, `REMOTE_USER`, model, etc.) from
+`.orch.env` in the repo root — nothing needs to be passed on the command line
+for normal use.
+
+### Health check (run this first if something seems broken)
 
 ```bash
-npm run orch -- apply-plan --task "Add one photo story"
-npm run orch -- --output json review-diff --task "Review before publish"
-npm run orch -- --output json run-task --task "Release sanity checklist"
+npm run orch:doctor
+```
+
+Checks SSH reachability and that both the project and orchestrator exist on
+the remote server.
+
+### One-shot agent tasks
+
+`orch:auto` reads `ORCH_MODE` from `.orch.env` (`local` runs on this Mac,
+`remote` runs on the server over SSH — currently `remote`).
+
+```bash
+# Generate a step-by-step implementation plan (JSON todoList)
 npm run orch:auto -- apply-plan --task "Add one photo story"
-npm run orch:ui
+
+# Review the current git diff before committing/publishing
+npm run orch:auto -- --output json review-diff --task "Review before publish"
+
+# Free-form instruction, no code changes required
+npm run orch:auto -- run-task --task "Release sanity checklist"
+
+# Analyze a set of files by glob pattern
+npm run orch:auto -- analyze-project --pattern "src/**/*.astro" --task "Find accessibility issues"
+
+# Analyze a single file
+npm run orch:auto -- analyze-file --file src/content.config.ts --task "Check Zod schema for edge cases"
 ```
 
-Remote execution from Mac (actual execution on server resources):
+### Autonomous multi-step agent run (autopilot)
+
+This is the closest thing to "let an agent do the work": it plans, executes
+each step in order, runs `npm run check && npm run build`, then does a final
+review — all in one command, on the server.
 
 ```bash
-ORCH_GIT_URL=git@github.com:<org>/llm-orchestrator.git npm run orch:remote:setup
-npm run orch:remote -- apply-plan --task "Add one photo story"
-npm run orch:remote -- --output json review-diff --task "Review before publish"
+npm run orch:autopilot -- --task "Add a new photo story for <city>" --max-steps 8
 ```
 
-Useful remote env overrides:
+Logs are written to `.orch-logs/autopilot-<timestamp>.log`. Add
+`--skip-validate` to skip the check/build step, or `--extra "..."` for extra
+constraints.
+
+### Higher-quality answers: Mixture-of-Agents (MoA) consensus
+
+For analysis/review tasks where accuracy matters more than speed, query a
+panel of models and let one of them synthesize the best answer (discards
+weak/hallucinated claims automatically):
 
 ```bash
-REMOTE_HOST=192.168.88.246
-REMOTE_USER=adminr
-REMOTE_PROJECT_DIR=/var/www/history-archive
-REMOTE_ORCH_DIR=/opt/llm-orchestrator
+npm run orch:auto -- --moa review-diff --task "Review before publish"
+npm run orch:auto -- --moa analyze-project --pattern "src/**/*.ts" --task "..."
 ```
+
+Default panel: `tencent/hy3:free`, `poolside/laguna-s-2.1:free`,
+`inclusionai/ling-3.0-flash:free` (all free, cloud, zero GPU load on the
+server). Override the panel per call, mixing cloud and the server's local
+Ollama models (prefix `ollama:`):
+
+```bash
+npm run orch:auto -- --moa \
+  --moa-panel "tencent/hy3:free,poolside/laguna-s-2.1:free,ollama:deepseek-r1:14b" \
+  run-task --task "..."
+```
+
+### After changing llm-orchestrator itself
+
+If you edit `llm-orchestrator` source, rebuild locally and sync it to the
+server before the changes take effect remotely:
+
+```bash
+cd /path/to/llm-orchestrator && npm run build
+cd - && npm run orch:remote:setup
+```
+
+### Provider/model overrides
 
 Hermes -> Ollama fallback is enabled by default. To disable it for a run:
 
@@ -61,10 +118,18 @@ Hermes -> Ollama fallback is enabled by default. To disable it for a run:
 npm run orch -- --no-fallback-to-ollama run-task --task "test"
 ```
 
-5. Optional publish to local web server (only when needed):
+Force a specific provider/model for one call:
 
 ```bash
-REMOTE_HOST=192.168.88.246 REMOTE_USER=adminr REMOTE_PATH=/var/www/history-archive npm run sync:local
+npm run orch:auto -- --provider ollama --model deepseek-r1:14b run-task --task "..."
+```
+
+5. Optional publish to local web server (only when needed). Real connection
+   defaults live in `scripts/sync-to-local.sh`; override via env vars if
+   needed:
+
+```bash
+REMOTE_HOST=<server-ip> REMOTE_USER=<user> REMOTE_PATH=<path> npm run sync:local
 ```
 
 Never store secrets in repository files. Use environment variables for any credentials.
