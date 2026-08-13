@@ -78,12 +78,46 @@ Logs are written to `.orch-logs/autopilot-<timestamp>.log`. Add
 `--skip-validate` to skip the check/build step, or `--extra "..."` for extra
 constraints.
 
-### Real file changes (execute-task)
+### Recommended for real changes: history-agent (LangGraph)
 
-Unlike every command above (which only return text — plans/analysis/review),
-`execute-task` actually writes files. It generates full file contents, writes
-them into an isolated git worktree on the server (never touches `main`
-directly), and runs `npm run check`/`build` there for real.
+For actually writing content (not just plans/analysis), prefer
+[`llm-server-orchestrator`](https://github.com/romkravets/llm-server-orchestrator)
+over `execute-task` below. It's a real tool-calling agent (explores the repo,
+writes files, runs `check`/`build`, self-corrects if validation fails —
+not a single-shot generation), running for free against the server's local
+`gpt-oss:20b` via Ollama, deployed at
+`/home/hermes-agent/projects/history-agent` on the server.
+
+```bash
+ssh hermes-agent@192.168.88.246
+cd /home/hermes-agent/projects/history-agent
+uv run python cli.py "Add a new photo story for <city>"
+```
+
+The agent prints a REVIEW block (its own summary plus the real `git diff`
+of the worktree — shown even if the model's self-report is empty) and
+asks `Схвалити? [y/N]:` right there in the terminal. `y` commits, merges
+into `main`, pushes to GitHub, and removes the worktree — nothing else
+to run afterward. Anything else discards the worktree.
+
+After approving, the same **dev-server-doesn't-auto-refresh** gotcha
+applies (see below) — restart it to see the change on `localhost:4321`.
+
+To update the agent itself: edit it in
+`/Users/romkravets/Documents/GitHub/history-agent` on the Mac, commit/push,
+then `rsync` the changed files to
+`hermes-agent@192.168.88.246:/home/hermes-agent/projects/history-agent/`
+(no build step — it's plain Python, `uv sync` only needed if dependencies
+in `pyproject.toml` changed).
+
+### Real file changes via the JS orchestrator (execute-task)
+
+Older path, still works, single-shot generation instead of an iterative
+agent loop. Unlike every command above (which only return text —
+plans/analysis/review), `execute-task` actually writes files. It generates
+full file contents, writes them into an isolated git worktree on the server
+(never touches `main` directly), and runs `npm run check`/`build` there for
+real.
 
 ```bash
 npm run orch:auto -- --output json execute-task \
