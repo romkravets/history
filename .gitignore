@@ -23,6 +23,7 @@ pnpm-debug.log*
 # execute-task working directories (git worktrees, not part of history)
 .orch-worktrees/
 .orch-logs/
+.agent-worktrees/
 
 # macOS-specific files
 .DS_Store
