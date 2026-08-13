@@ -94,11 +94,25 @@ cd /home/hermes-agent/projects/history-agent
 uv run python cli.py "Add a new photo story for <city>"
 ```
 
-The agent prints a REVIEW block (its own summary plus the real `git diff`
-of the worktree — shown even if the model's self-report is empty) and
-asks `Схвалити? [y/N]:` right there in the terminal. `y` commits, merges
-into `main`, pushes to GitHub, and removes the worktree — nothing else
-to run afterward. Anything else discards the worktree.
+**Dev cycle, not just codegen:** before you ever see it, the change goes
+through three distinct roles, each a different model so none of them
+reviews its own work:
+
+```
+Implementer (gpt-oss:20b)   — explores, writes files, runs check/build
+     ↓
+Reviewer    (deepseek-r1:14b) — critiques the diff: bugs, regressions, schema issues
+     ↓
+Security    (qwen2.5-coder:7b) — scans the diff for security-relevant issues only
+     ↓
+You                          — final approval, in the terminal
+```
+
+The terminal prints all three reports plus the real `git diff` (ground
+truth — shown even if a model's self-report comes back empty), then asks
+`Схвалити? [y/N]:`. `y` commits, merges into `main`, pushes to GitHub, and
+removes the worktree — nothing else to run afterward. Anything else
+discards the worktree and branch, no leftovers.
 
 After approving, the same **dev-server-doesn't-auto-refresh** gotcha
 applies (see below) — restart it to see the change on `localhost:4321`.
