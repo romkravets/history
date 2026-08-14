@@ -13,6 +13,7 @@ const formatDate = new Intl.DateTimeFormat("uk-UA", {
 const toSlug = (id: string) => id.replace(/\.md$/, "");
 const cityCount = new Set(photos.map((p) => p.data.city)).size;
 const decadeCount = new Set(photos.map((p) => p.data.decade)).size;
+const decades = [...new Set(photos.map((p) => p.data.decade))].sort();
 ---
 
 <Layout
@@ -64,9 +65,16 @@ const decadeCount = new Set(photos.map((p) => p.data.decade)).size;
 		</div>
 	</section>
 
+	<div class="shell decade-filter" role="group" aria-label="Фільтр за десятиліттям">
+		<button type="button" class="active" data-decade="all">ВСІ</button>
+		{decades.map((decade) => (
+			<button type="button" data-decade={decade}>{decade}</button>
+		))}
+	</div>
+
 	<section id="gallery" class="shell grid" aria-label="Галерея світлин">
 		{photos.map((photo) => (
-			<a class="card" href={`/photos/${toSlug(photo.id)}/`}> 
+			<a class="card" data-decade={photo.data.decade} href={`/photos/${toSlug(photo.id)}/`}>
 				<img src={photo.data.cover} alt={photo.data.title} loading="lazy" />
 				<div class="card-body">
 					<p class="meta">[{photo.data.decade}] · {photo.data.city}</p>
@@ -78,4 +86,22 @@ const decadeCount = new Set(photos.map((p) => p.data.decade)).size;
 			</a>
 		))}
 	</section>
+
+	<script is:inline>
+		(() => {
+			const chips = document.querySelectorAll(".decade-filter button");
+			const cards = document.querySelectorAll("#gallery .card");
+			chips.forEach((chip) => {
+				chip.addEventListener("click", () => {
+					chips.forEach((c) => c.classList.remove("active"));
+					chip.classList.add("active");
+					const decade = chip.dataset.decade;
+					cards.forEach((card) => {
+						const show = decade === "all" || card.dataset.decade === decade;
+						card.classList.toggle("is-hidden", !show);
+					});
+				});
+			});
+		})();
+	</script>
 </Layout>

@@ -17,6 +17,26 @@ const photos = defineCollection({
   }),
 });
 
+const history = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/history" }),
+  schema: z.object({
+    order: z.number(),
+    era: z.string(),
+    title: z.string(),
+    period: z.string(),
+    summary: z.string(),
+    sources: z
+      .array(
+        z.object({
+          title: z.string(),
+          url: z.string(),
+        }),
+      )
+      .default([]),
+  }),
+});
+
 export const collections = {
   photos,
+  history,
 };

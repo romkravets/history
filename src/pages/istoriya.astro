@@ -1,0 +1,67 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+
+const eras = (await getCollection("history")).sort(
+	(a, b) => a.data.order - b.data.order,
+);
+
+const rendered = await Promise.all(
+	eras.map(async (entry) => ({
+		entry,
+		Content: (await render(entry)).Content,
+	})),
+);
+---
+
+<Layout
+	title="Історія Міста · Історичний Архів"
+	description="Хронологія Кременця за перевіреними джерелами — від перших згадок до сьогодення."
+>
+	<section class="shell">
+		<div class="hero-page">
+			<p class="eyebrow">▸ TIMELINE / UA</p>
+			<h1>ІСТОРІЯ<br /><span>МІСТА</span></h1>
+			<p class="lead">
+				Хронологія Кременця, зібрана з архівних і краєзнавчих джерел — від
+				перших згадок до сьогодення. Де джерела мовчать, мовчить і текст.
+			</p>
+		</div>
+	</section>
+
+	<nav class="era-nav shell" aria-label="Навігація епохами">
+		{rendered.map(({ entry }) => (
+			<a href={`#${entry.data.era}`}>{entry.data.period}</a>
+		))}
+	</nav>
+
+	<section class="shell timeline">
+		{rendered.map(({ entry, Content }) => (
+			<article class="timeline-era" id={entry.data.era}>
+				<div class="timeline-node" aria-hidden="true"></div>
+				<div class="timeline-body">
+					<p class="era-period">{entry.data.period}</p>
+					<h2>{entry.data.title}</h2>
+					<p class="lead">{entry.data.summary}</p>
+					<div class="story">
+						<Content />
+					</div>
+					{entry.data.sources.length > 0 && (
+						<div class="era-sources">
+							<p class="meta">ДЖЕРЕЛА</p>
+							<ul>
+								{entry.data.sources.map((s) => (
+									<li>
+										<a href={s.url} target="_blank" rel="noopener noreferrer">
+											{s.title}
+										</a>
+									</li>
+								))}
+							</ul>
+						</div>
+					)}
+				</div>
+			</article>
+		))}
+	</section>
+</Layout>
