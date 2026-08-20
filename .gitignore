@@ -31,3 +31,8 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 .worktrees/
+
+# raw photos waiting to be processed by scripts/add-photo-story.mjs
+photos-incoming/*
+!photos-incoming/README.md
+!photos-incoming/meta.example.json

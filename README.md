@@ -24,7 +24,7 @@ src/content/photos/*.md     # метадані фото
 public/photos/*             # оригінали/оптимізовані фото
 ```
 
-Приклад frontmatter для одного фото:
+Приклад frontmatter для одного фото (те, що генерується автоматично скриптом нижче — вручну писати не треба):
 
 ```md
 ---
@@ -43,6 +43,83 @@ tags: ["вокзал", "місто", "побут"]
 
 Коротка історія кадру, джерело або коментар свідка.
 ```
+
+## Як додати фото в галерею на головній сторінці
+
+Галерея на `/` (файл `src/pages/index.astro`) автоматично показує **всі** записи
+з `src/content/photos/`, у зворотньому хронологічному порядку. Щоб додати нове
+фото — не редагуй `index.astro` напряму, а додай новий запис у контент, і воно
+з'явиться в галереї само.
+
+Рекомендований спосіб — скрипт `scripts/add-photo-story.mjs`, який сам розкладає
+фото по потрібних папках і генерує Markdown-запис.
+
+### Крок за кроком
+
+1. Створи підпапку в `photos-incoming/`, наприклад:
+
+   ```bash
+   mkdir -p photos-incoming/lviv-market-1995
+   ```
+
+2. Поклади туди фото (`.jpg`, `.jpeg`, `.png`, `.webp` — скільки завгодно штук).
+
+3. Скопіюй туди шаблон опису і заповни його:
+
+   ```bash
+   cp photos-incoming/meta.example.json photos-incoming/lviv-market-1995/meta.json
+   ```
+
+   Обов'язкові поля: `slug` (латиницею, унікальний), `title`, `date`
+   (`YYYY-MM-DD`), `city`, `decade`, `description`. Необов'язкові: `area`,
+   `story`, `tags`, `cover` (яке саме фото зробити обкладинкою — інакше
+   візьме перше за іменем файлу).
+
+4. Перевір план, нічого поки не змінюючи:
+
+   ```bash
+   npm run photos:add -- --source photos-incoming/lviv-market-1995 --dry-run
+   ```
+
+5. Якщо все виглядає правильно — застосуй по-справжньому:
+
+   ```bash
+   npm run photos:add -- --source photos-incoming/lviv-market-1995
+   ```
+
+6. Перевір результат локально:
+
+   ```bash
+   npm run dev
+   ```
+
+   Нове фото має з'явитись першим у галереї на `/` (сортування за датою).
+
+7. Закомить і запуш:
+
+   ```bash
+   git add src/content/photos public/photos
+   git commit -m "Додати фото-історію: lviv-market-1995"
+   git push
+   ```
+
+   Після push у `main` GitHub Actions сам збере й задеплоїть сайт
+   (`.github/workflows/deploy-pages.yml`).
+
+### Додати декілька фото-історій за раз
+
+Створи декілька підпапок (кожна зі своїм `meta.json`) просто в
+`photos-incoming/` і вкажи в `--source` саму цю папку — скрипт знайде й
+обробить кожну підпапку окремо, продовжуючи навіть якщо одна з них містить
+помилку (звітує окремо по кожній):
+
+```bash
+npm run photos:add -- --source photos-incoming --dry-run
+npm run photos:add -- --source photos-incoming
+```
+
+Повний опис формату `meta.json` і всіх прапорців скрипта — в коментарі на
+початку `scripts/add-photo-story.mjs`, і в `photos-incoming/README.md`.
 
 ## Git LFS для фото
 
@@ -173,8 +250,12 @@ REMOTE_HOST=192.168.88.246 REMOTE_USER=adminr REMOTE_PATH=/var/www/history-archi
 
 Рекомендований цикл:
 
-1. Додаєш фото у `public/photos/...`
-2. Просиш агента згенерувати Markdown у `src/content/photos/...`
+1. Кладеш фото в `photos-incoming/<назва>/` разом із заповненим `meta.json`
+   (шаблон: `photos-incoming/meta.example.json`)
+2. Просиш агента виконати `npm run photos:add -- --source photos-incoming/<назва>`
+   (скрипт `scripts/add-photo-story.mjs` сам розкладає фото і генерує
+   Markdown у `src/content/photos/...` — детально в розділі
+   ["Як додати фото в галерею"](#як-додати-фото-в-галерею-на-головній-сторінці) вище)
 3. Агент запускає `npm run check` і `npm run build`
 4. Коміт у git
 5. Автодеплой на Pages або `npm run sync:local` для локального стенду
