@@ -36,3 +36,4 @@ pnpm-debug.log*
 photos-incoming/*
 !photos-incoming/README.md
 !photos-incoming/meta.example.json
+.vercel
