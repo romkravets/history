@@ -169,14 +169,38 @@ main {
 }
 
 .hero {
+  position: relative;
   margin-top: 12px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 360px;
   border: 1px solid var(--border-c);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero-video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(2px) saturate(1.1);
+  transform: scale(1.03);
+}
+
+.hero-video-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(120deg, rgba(26, 20, 17, 0.88) 0%, rgba(26, 20, 17, 0.72) 45%, rgba(217, 119, 87, 0.35) 100%);
 }
 
 .hero-left,
 .hero-spec {
+  position: relative;
+  z-index: 2;
   padding: clamp(16px, 2.4vw, 30px);
   min-width: 0;
 }

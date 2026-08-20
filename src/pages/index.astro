@@ -29,6 +29,20 @@ const decades = [...new Set(photos.map((p) => p.data.decade))].sort();
   </section>
 
   <section class="hero shell">
+    <video
+      class="hero-video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      poster="/video/banner-poster.jpg"
+      aria-hidden="true"
+    >
+      <source src="/video/banner.webm" type="video/webm" />
+      <source src="/video/banner.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-video-overlay" aria-hidden="true"></div>
     <div class="hero-left">
       <p class="eyebrow">▸ ЦИФРОВА ПАМ'ЯТЬ</p>
       <h1>

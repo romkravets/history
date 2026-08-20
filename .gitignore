@@ -36,4 +36,7 @@ pnpm-debug.log*
 photos-incoming/*
 !photos-incoming/README.md
 !photos-incoming/meta.example.json
+
+# raw/unoptimized source video (use public/video/banner.* instead)
+src/assets/videobanner.mov
 .vercel
