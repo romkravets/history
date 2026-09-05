@@ -2,8 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 
 const meta = {
-  title: "Про мене · Історичний Архів",
-  description: "Інформація про створення та підтримку цифрового архіву фотографій міста.",
+  title: "Про архів · Історичний Архів",
+  description: "Інформація про фотоархів, його автора, контент і технології.",
 };
 ---
 
@@ -11,88 +11,82 @@ const meta = {
   <section class="shell">
     <div class="hero-page">
       <p class="eyebrow">▸ ABOUT / UA</p>
-      <h1>ПРО<br /><span>МЕНЕ</span></h1>
+      <h1>ПРО<br /><span>АРХІВ</span></h1>
       <p class="lead">
-        Це не просто вебсайт — це цифровий архів, створений для збереження історичних
-        свідчень у вигляді фотографій та їх контексту.
+        Історичний Архів — це цифрова колекція фотографій, що зберігає пам'ять
+        про міста, села, місцевості та важливі місця Західної України.
       </p>
     </div>
   </section>
 
   <nav class="era-nav shell" aria-label="Розділи">
-    <a href="#who">КТИ Є Я</a>
-    <a href="#what">ЩО Я РОБЛУ</a>
-    <a href="#how">ЯК Я ПРАЦЮЄ</a>
-    <a href="#tech">ТЕХНІКА</a>
+    <a href="#project">ПРО ПРОЄКТ</a>
+    <a href="#content">КОНТЕНТ</a>
+    <a href="#author">АВТОР</a>
+    <a href="#tech">ТЕХНОЛОГІЇ</a>
   </nav>
 
-  <section class="shell" id="who">
+  <section class="shell" id="project">
     <article class="timeline-era">
       <div class="timeline-node" aria-hidden="true"></div>
       <div class="timeline-body">
-        <h2>КТИ Є Я</h2>
+        <h2>ПРО ПРОЄКТ</h2>
         <p class="lead">
-          Я — автоматизований агент, створений для роботи з історичними даними та
-          їх візуальним представленням. Моє існування спирається на відкриті технології
-          та прозорі інструменти розробки.
+          Архів поєднує фотографії з назвами місць, датами, описами та історичним
+          контекстом, щоб локальна пам'ять залишалася доступною онлайн.
         </p>
         <div class="story">
           <p>
-            Цей архів базується на фотографіях, які збираються вручну, іноді з родинних
-            архівів, іноді зі спогадів свідків. Кожна фотографія — це не просто образ,
-            а частина історії, що потребує контексту: дати, місця, людей, які її створили.
+            Мета проєкту — зібрати матеріали в доступній цифровій формі, щоб їх можна
+            було переглядати, доповнювати та зберігати незалежно від паперового архіву.
           </p>
           <p>
-            Я допомагаю збирати ці історії у єдину структуровану форму, щоб її можна було
-            легко пошукати, навігувати та аналізувати.
+            Кожна фотоісторія має окрему сторінку, обкладинку, галерею знімків і текстовий опис.
           </p>
         </div>
       </div>
     </article>
   </section>
 
-  <section class="shell" id="what">
+  <section class="shell" id="content">
     <article class="timeline-era">
       <div class="timeline-node" aria-hidden="true"></div>
       <div class="timeline-body">
-        <h2>ЩО Я РОБЛУ</h2>
+        <h2>КОНТЕНТ</h2>
         <p class="lead">
-          Мої основні можливості включають аналіз контенту, генерацію документації,
-          відповіді на запитання та допомогу в роботі з кодом.
+          Архів містить фотоісторії міст, сіл, архітектурних пам'яток і місць,
+          пов'язаних із локальною історією.
         </p>
         <div class="story">
           <ul>
-            <li><strong>Аналіз коду:</strong> я можу читати, розуміти та виявляти проблеми</li>
-            <li><strong>Генерація контенту:</strong> створюю документацію, сторінки та пояснення</li>
-            <li><strong>Відповіді на запитання:</strong> допомагаю знаходити інформацію в репозиторії</li>
-            <li><strong>Валідація:</strong> перевіряю код на помилки та відповідність стандартам</li>
+            <li><strong>Фотографії:</strong> зображення зберігаються у папках відповідних історій.</li>
+            <li><strong>Контекст:</strong> Markdown-файли містять назву, дату, місце, період і опис.</li>
+            <li><strong>Галереї:</strong> кожна історія має обкладинку та додаткові зображення.</li>
+            <li><strong>Оновлення:</strong> нові матеріали додаються через папку <code>photos-incoming</code>.</li>
           </ul>
         </div>
       </div>
     </article>
   </section>
 
-  <section class="shell" id="how">
+  <section class="shell" id="author">
     <article class="timeline-era">
       <div class="timeline-node" aria-hidden="true"></div>
       <div class="timeline-body">
-        <h2>ЯК Я ПРАЦЮЄ</h2>
+        <h2>АВТОР</h2>
         <p class="lead">
-          Цей архів створений за допомогою фреймворка Astro з використанням Markdown
-          для зберігання контенту.
+          Проєкт створює та підтримує Роман Кравець — розробник і автор цього цифрового архіву.
         </p>
         <div class="story">
           <p>
-            <strong>Astro</strong> — це статичний сайт-генератор, який дозволяє створювати
-            швидкі та ефективні вебсайти з мінімальним JavaScript-кодом.
+            Роман відповідає за структуру сайту, підготовку матеріалів, технічний розвиток
+            і публікацію нових фотоісторій.
           </p>
           <p>
-            <strong>Markdown</strong> — це проста мова розмітки, яка дозволяє зберігати
-            контент у вигляді читабельних текстових файлів з frontmatter-даними.
+            <a href="https://github.com/romkravets" rel="me">GitHub автора: github.com/romkravets</a>
           </p>
           <p>
-            <strong>Git</strong> використовується для версіонування та синхронізації
-            контенту, а Git LFS — для зберігання великих файлів изображень.
+            Усі зміни проходять через Git, тому історію розвитку архіву можна переглядати та перевіряти.
           </p>
         </div>
       </div>
@@ -103,18 +97,22 @@ const meta = {
     <article class="timeline-era">
       <div class="timeline-node" aria-hidden="true"></div>
       <div class="timeline-body">
-        <h2>ТЕХНІКА</h2>
+        <h2>ТЕХНОЛОГІЇ</h2>
         <p class="lead">
-          Специфікація технологій, що лежать в основі архіву.
+          Сайт зібраний як статичний вебпроєкт із контентом у репозиторії.
         </p>
         <div class="story">
-          <p><span>STACK</span><b>Astro / Markdown / TypeScript</b></p>
-          <p><span>DEPLOY</span><b>Static Pages / Local Sync</b></p>
+          <p><span>FRAMEWORK</span><b>Astro</b></p>
+          <p><span>CONTENT</span><b>Markdown + frontmatter</b></p>
+          <p><span>LANGUAGE</span><b>JavaScript / TypeScript</b></p>
+          <p><span>VERSIONING</span><b>Git + GitHub</b></p>
           <p><span>MEDIA</span><b>Git LFS</b></p>
-          <p><span>FORMAT</span><b>Photo + Story</b></p>
-          <p class="spec-accent"><span>MODE</span><b>Archive Ready</b></p>
+          <p><span>DEPLOY</span><b>GitHub Pages</b></p>
+          <p class="spec-accent"><span>ASSISTANCE</span><b>Optional remote LLM tools</b></p>
         </div>
       </div>
     </article>
+  </section>
+</Layout>
   </section>
 </Layout>
