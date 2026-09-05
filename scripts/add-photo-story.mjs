@@ -205,8 +205,9 @@ function processStoryFolder(dir, { dryRun, force }) {
     `decade: "${yamlEscape(meta.decade)}"`,
     `description: "${yamlEscape(meta.description)}"`,
     `cover: "${publicCoverPath}"`,
-    "images:",
-    ...publicImagePaths.map((p) => `  - "${p}"`),
+    ...(publicImagePaths.length > 0
+      ? ["images:", ...publicImagePaths.map((p) => `  - "${p}"`)]
+      : ["images: []"]),
     "tags:",
     ...tags.map((t) => `  - "${yamlEscape(t)}"`),
     "---",
