@@ -3,11 +3,11 @@ import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 
 const photos = (await getCollection("photos")).sort(
-	(a, b) => b.data.date.getTime() - a.data.date.getTime(),
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 );
 
 const formatDate = new Intl.DateTimeFormat("uk-UA", {
-	dateStyle: "long",
+  dateStyle: "long",
 });
 
 const toSlug = (id: string) => id.replace(/\.md$/, "");
@@ -17,91 +17,120 @@ const decades = [...new Set(photos.map((p) => p.data.decade))].sort();
 ---
 
 <Layout
-	title="Історичний Архів Міста"
-	description="Цифровий архів фотографій міста та околиць з датами, описами і географією пам'яті."
+  title="Історичний Архів Міста"
+  description="Цифровий архів фотографій міста та околиць з датами, описами і географією пам'яті."
 >
-	<section class="shell meta-strip" aria-label="Технічна панель архіву">
-		<div><span>ID</span><b>HST-01</b></div>
-		<div><span>COUNT</span><b>{photos.length}</b></div>
-		<div><span>CITIES</span><b>{cityCount}</b></div>
-		<div><span>DECADES</span><b>{decadeCount}</b></div>
-		<div><span>STATUS</span><b class="accent">LIVE</b></div>
-	</section>
+  <section class="shell meta-strip" aria-label="Технічна панель архіву">
+    <div><span>ID</span><b>HST-01</b></div>
+    <div><span>ФОТО</span><b>{photos.length}</b></div>
+    <div><span>МІСТА</span><b>{cityCount}</b></div>
+    <div><span>ДЕКАДИ</span><b>{decadeCount}</b></div>
+    <div><span>СТАТУС</span><b class="accent">АКТИВНО</b></div>
+  </section>
 
-	<section class="hero shell">
-		<div class="hero-left">
-			<p class="eyebrow">▸ DIGITAL MEMORY / UA</p>
-			<h1>
-				ІСТОРІЯ МІСТА<br />
-				<span>ЧЕРЕЗ</span> ФОТОАРХІВ
-			</h1>
-			<p class="lead">
-				Структурований архів твого міста та околиць: дати, місця, свідчення.
-				Швидкий статичний сайт без перевантаження інфраструктури.
-			</p>
-			<div class="hero-actions">
-				<a href="#gallery" class="btn btn-accent">ВІДКРИТИ ГАЛЕРЕЮ →</a>
-				<a href="#gallery" class="btn">ПЕРЕГЛЯНУТИ ОСТАННІ КАДРИ</a>
-			</div>
-		</div>
-		<aside class="hero-spec" aria-label="Специфікація архіву">
-			<p><span>STACK</span><b>ASTRO / MD / GIT</b></p>
-			<p><span>DEPLOY</span><b>PAGES / LOCAL SYNC</b></p>
-			<p><span>MEDIA</span><b>GIT LFS</b></p>
-			<p><span>FORMAT</span><b>PHOTO + STORY</b></p>
-			<p class="spec-accent"><span>MODE</span><b>ARCHIVE READY</b></p>
-		</aside>
-	</section>
+  <section class="hero shell">
+    <video
+      class="hero-video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      poster="/video/banner-poster.jpg"
+      aria-hidden="true"
+    >
+      <source src="/video/banner.webm" type="video/webm" />
+      <source src="/video/banner.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-video-overlay" aria-hidden="true"></div>
+    <div class="hero-left">
+      <p class="eyebrow">▸ ЦИФРОВА ПАМ'ЯТЬ</p>
+      <h1>
+        ІСТОРІЯ МІСТА<br />
+        <span>ЧЕРЕЗ</span> ФОТОАРХІВ
+      </h1>
+      <p class="lead">
+        Структурований архів твого міста та околиць: дати, місця, свідчення.
+      </p>
+      <div class="hero-actions">
+        <a href="#gallery" class="btn btn-accent">ВІДКРИТИ ГАЛЕРЕЮ →</a>
+        <a href="#gallery" class="btn">ПЕРЕГЛЯНУТИ ОСТАННІ КАДРИ</a>
+      </div>
+    </div>
+    <aside class="hero-spec" aria-label="Специфікація архіву">
+      <p><span>СТЕК</span><b>ASTRO / MD / GIT</b></p>
+      <p><span>ПУБЛІКАЦІЯ</span><b>GITHUB PAGES</b></p>
+      <p><span>МЕДІА</span><b>GIT LFS</b></p>
+      <p><span>ФОРМАТ</span><b>ФОТО + ІСТОРІЯ</b></p>
+      <p class="spec-accent"><span>РЕЖИМ</span><b>ГОТОВО</b></p>
+    </aside>
+  </section>
 
-	<section class="ticker" aria-hidden="true">
-		<div>
-			<span>АРХІВ · МІСТО · ПАМ'ЯТЬ</span>
-			<span>///</span>
-			<span>HISTORY FEED ACTIVE</span>
-			<span>///</span>
-			<span>АРХІВ · МІСТО · ПАМ'ЯТЬ</span>
-			<span>///</span>
-			<span>HISTORY FEED ACTIVE</span>
-		</div>
-	</section>
+  <section class="ticker" aria-hidden="true">
+    <div>
+      <span>АРХІВ · МІСТО · ПАМ'ЯТЬ</span>
+      <span>///</span>
+      <span>СТРІЧКА АКТИВНА</span>
+      <span>///</span>
+      <span>АРХІВ · МІСТО · ПАМ'ЯТЬ</span>
+      <span>///</span>
+      <span>СТРІЧКА АКТИВНА</span>
+    </div>
+  </section>
 
-	<div class="shell decade-filter" role="group" aria-label="Фільтр за десятиліттям">
-		<button type="button" class="active" data-decade="all">ВСІ</button>
-		{decades.map((decade) => (
-			<button type="button" data-decade={decade}>{decade}</button>
-		))}
-	</div>
+  <div
+    class="shell decade-filter"
+    role="group"
+    aria-label="Фільтр за десятиліттям"
+  >
+    <button type="button" class="active" data-decade="all">ВСІ</button>
+    {
+      decades.map((decade) => (
+        <button type="button" data-decade={decade}>
+          {decade}
+        </button>
+      ))
+    }
+  </div>
 
-	<section id="gallery" class="shell grid" aria-label="Галерея світлин">
-		{photos.map((photo) => (
-			<a class="card" data-decade={photo.data.decade} href={`/photos/${toSlug(photo.id)}/`}>
-				<img src={photo.data.cover} alt={photo.data.title} loading="lazy" />
-				<div class="card-body">
-					<p class="meta">[{photo.data.decade}] · {photo.data.city}</p>
-					<h2>{photo.data.title}</h2>
-					<p class="date">{formatDate.format(photo.data.date)}</p>
-					<p>{photo.data.description}</p>
-					<p class="card-more">OPEN ENTRY →</p>
-				</div>
-			</a>
-		))}
-	</section>
+  <section id="gallery" class="shell grid" aria-label="Галерея світлин">
+    {
+      photos.map((photo) => (
+        <a
+          class="card"
+          data-decade={photo.data.decade}
+          href={`/photos/${toSlug(photo.id)}/`}
+        >
+          <img src={photo.data.cover} alt={photo.data.title} loading="lazy" />
+          <div class="card-body">
+            <p class="meta">
+              [{photo.data.decade}] · {photo.data.city}
+            </p>
+            <h2>{photo.data.title}</h2>
+            <p class="date">{formatDate.format(photo.data.date)}</p>
+            <p>{photo.data.description}</p>
+            <p class="card-more">ВІДКРИТИ →</p>
+          </div>
+        </a>
+      ))
+    }
+  </section>
 
-	<script is:inline>
-		(() => {
-			const chips = document.querySelectorAll(".decade-filter button");
-			const cards = document.querySelectorAll("#gallery .card");
-			chips.forEach((chip) => {
-				chip.addEventListener("click", () => {
-					chips.forEach((c) => c.classList.remove("active"));
-					chip.classList.add("active");
-					const decade = chip.dataset.decade;
-					cards.forEach((card) => {
-						const show = decade === "all" || card.dataset.decade === decade;
-						card.classList.toggle("is-hidden", !show);
-					});
-				});
-			});
-		})();
-	</script>
+  <script is:inline>
+    (() => {
+      const chips = document.querySelectorAll(".decade-filter button");
+      const cards = document.querySelectorAll("#gallery .card");
+      chips.forEach((chip) => {
+        chip.addEventListener("click", () => {
+          chips.forEach((c) => c.classList.remove("active"));
+          chip.classList.add("active");
+          const decade = chip.dataset.decade;
+          cards.forEach((card) => {
+            const show = decade === "all" || card.dataset.decade === decade;
+            card.classList.toggle("is-hidden", !show);
+          });
+        });
+      });
+    })();
+  </script>
 </Layout>

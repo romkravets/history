@@ -36,14 +36,26 @@ const formatDate = new Intl.DateTimeFormat("uk-UA", {
     </header>
 
     <figure class="main-photo">
-      <img src={photo.data.cover} alt={photo.data.title} loading="eager" />
+      <img
+        src={photo.data.cover}
+        alt={photo.data.title}
+        loading="eager"
+        class="lightbox-trigger"
+        data-lightbox-index="0"
+      />
     </figure>
 
     {
       photo.data.images.length > 0 && (
         <section class="gallery-grid" aria-label="Додаткові фотографії">
           {photo.data.images.map((src: string, idx: number) => (
-            <img src={src} alt={`${photo.data.title} — кадр ${idx + 1}`} loading="lazy" />
+            <img
+              src={src}
+              alt={`${photo.data.title} — кадр ${idx + 1}`}
+              loading="lazy"
+              class="lightbox-trigger"
+              data-lightbox-index={idx + 1}
+            />
           ))}
         </section>
       )
@@ -53,4 +65,79 @@ const formatDate = new Intl.DateTimeFormat("uk-UA", {
       <Content />
     </section>
   </article>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Перегляд фото">
+    <button type="button" class="lightbox-close" data-lightbox-close aria-label="Закрити">✕</button>
+    <button type="button" class="lightbox-nav lightbox-prev" data-lightbox-prev aria-label="Попереднє фото">‹</button>
+    <img class="lightbox-image" alt="" />
+    <button type="button" class="lightbox-nav lightbox-next" data-lightbox-next aria-label="Наступне фото">›</button>
+    <p class="lightbox-counter"></p>
+  </div>
+
+  <script
+    is:inline
+    type="application/json"
+    id="lightbox-data"
+    set:html={JSON.stringify([
+      { src: photo.data.cover, alt: photo.data.title },
+      ...photo.data.images.map((src: string, idx: number) => ({
+        src,
+        alt: `${photo.data.title} — кадр ${idx + 1}`,
+      })),
+    ])}
+  />
+
+  <script is:inline>
+    (() => {
+      const dataEl = document.getElementById("lightbox-data");
+      const items = dataEl ? JSON.parse(dataEl.textContent || "[]") : [];
+      const box = document.getElementById("lightbox");
+      if (!box || items.length === 0) return;
+
+      const img = box.querySelector(".lightbox-image");
+      const counter = box.querySelector(".lightbox-counter");
+      let current = 0;
+
+      const show = (i) => {
+        current = (i + items.length) % items.length;
+        img.src = items[current].src;
+        img.alt = items[current].alt;
+        counter.textContent = `${current + 1} / ${items.length}`;
+      };
+
+      const open = (i) => {
+        show(i);
+        box.classList.add("is-open");
+        box.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      };
+
+      const close = () => {
+        box.classList.remove("is-open");
+        box.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+      };
+
+      document.querySelectorAll(".lightbox-trigger").forEach((el) => {
+        el.style.cursor = "zoom-in";
+        el.addEventListener("click", () => {
+          open(Number(el.dataset.lightboxIndex || 0));
+        });
+      });
+
+      box.querySelector("[data-lightbox-close]").addEventListener("click", close);
+      box.querySelector("[data-lightbox-prev]").addEventListener("click", () => show(current - 1));
+      box.querySelector("[data-lightbox-next]").addEventListener("click", () => show(current + 1));
+      box.addEventListener("click", (e) => {
+        if (e.target === box) close();
+      });
+
+      window.addEventListener("keydown", (e) => {
+        if (!box.classList.contains("is-open")) return;
+        if (e.key === "Escape") close();
+        if (e.key === "ArrowLeft") show(current - 1);
+        if (e.key === "ArrowRight") show(current + 1);
+      });
+    })();
+  </script>
 </Layout>

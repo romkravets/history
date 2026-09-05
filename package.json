@@ -24,6 +24,7 @@
     "orch:remote:setup": "bash scripts/orch-remote-setup.sh",
     "orch:autopilot": "bash scripts/orch-autopilot.sh",
     "sync:local": "bash scripts/sync-to-local.sh",
+    "photos:add": "node scripts/add-photo-story.mjs",
     "astro": "astro"
   },
   "dependencies": {
