@@ -96,19 +96,25 @@ function fallbackSlug(input) {
   return `photo-story-${hash.toString(36)}`;
 }
 
+function isBlank(value) {
+  return value == null || String(value).trim() === "";
+}
+
 function withDefaults(meta, folderName) {
   const today = new Date().toISOString().slice(0, 10);
-  const date = meta.date || today;
+  const date = isBlank(meta.date) ? today : String(meta.date).trim();
   const year = String(date).slice(0, 4);
   return {
     ...meta,
-    slug: meta.slug || fallbackSlug(folderName),
-    title: meta.title || folderName,
+    slug: isBlank(meta.slug) ? fallbackSlug(folderName) : String(meta.slug).trim(),
+    title: isBlank(meta.title) ? folderName : String(meta.title).trim(),
     date,
-    city: meta.city ?? "",
+    city: isBlank(meta.city) ? "" : String(meta.city).trim(),
     decade:
-      meta.decade || (/^\d{4}$/.test(year) ? `${year.slice(0, 3)}0-ті` : ""),
-    description: meta.description ?? "",
+      isBlank(meta.decade)
+        ? (/^\d{4}$/.test(year) ? `${year.slice(0, 3)}0-ті` : "")
+        : String(meta.decade).trim(),
+    description: isBlank(meta.description) ? "" : String(meta.description).trim(),
   };
 }
 
