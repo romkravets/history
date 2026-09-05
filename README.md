@@ -1,5 +1,7 @@
 # History Archive
 
+![History Archive banner](public/photos/banner.png)
+
 An Astro-based static photo archive for documenting towns, landmarks, and
 local history. Photos and their metadata live in the repository as Markdown
 and static assets, so every story is versioned, reviewable, and deployable to
