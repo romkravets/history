@@ -117,6 +117,30 @@ main {
   padding: 20px 0 60px;
 }
 
+.site-footer {
+  border-top: 1px solid var(--border-c);
+  padding: 20px 0 26px;
+}
+
+.site-footer-inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.site-footer a {
+  color: var(--accent);
+}
+
+.site-footer a:hover {
+  color: var(--fg);
+}
+
 .shell {
   max-width: 1180px;
   margin: 0 auto;

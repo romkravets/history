@@ -2,67 +2,79 @@
 import "../styles/global.css";
 
 interface Props {
-	title?: string;
-	description?: string;
+  title?: string;
+  description?: string;
 }
 
 const {
-	title = "Історичний Архів Міста",
-	description = "Візуальна хроніка міста та околиць: фотографії, дати, контекст і пам'ять місця.",
+  title = "Історичний Архів Міста",
+  description = "Візуальна хроніка міста та околиць: фотографії, дати, контекст і пам'ять місця.",
 } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="uk">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<meta name="description" content={description} />
-		<meta property="og:type" content="website" />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<title>{title}</title>
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Unbounded:wght@500;700;800;900&display=swap"
-			rel="stylesheet"
-		/>
-	</head>
-	<body>
-		<div class="scroll-progress" aria-hidden="true"></div>
-		<div class="bg-atmosphere" aria-hidden="true"></div>
-		<header class="site-header">
-			<a class="brand" href="/">
-				<span class="brand-dot" aria-hidden="true"></span>
-				АРХІВ ІСТОРІЇ
-			</a>
-			<nav class="top-nav" aria-label="Головна навігація">
-				<a href="/">[01] ГАЛЕРЕЯ</a>
-				<a href="/istoriya/">[02] ІСТОРІЯ</a>
-				<a href="/about/">[03] ПРО МЕНЕ</a>
-			</nav>
-			<a class="header-cta" href="/">ВІДКРИТИ АРХІВ</a>
-		</header>
-		<main>
-			<slot />
-		</main>
-		<script is:inline>
-			(() => {
-				const bar = document.querySelector('.scroll-progress');
-				if (!bar) return;
-				const onScroll = () => {
-					const root = document.documentElement;
-					const max = root.scrollHeight - root.clientHeight;
-					const ratio = max > 0 ? (root.scrollTop / max) * 100 : 0;
-					bar.style.width = ratio + '%';
-				};
-				onScroll();
-				window.addEventListener('scroll', onScroll, { passive: true });
-			})();
-		</script>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Unbounded:wght@500;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <div class="bg-atmosphere" aria-hidden="true"></div>
+    <header class="site-header">
+      <a class="brand" href="/">
+        <span class="brand-dot" aria-hidden="true"></span>
+        АРХІВ ІСТОРІЇ
+      </a>
+      <nav class="top-nav" aria-label="Головна навігація">
+        <a href="/">[01] ГАЛЕРЕЯ</a>
+        <a href="/istoriya/">[02] ІСТОРІЯ</a>
+        <a href="/about/">[03] ПРО МЕНЕ</a>
+      </nav>
+      <a class="header-cta" href="/">ВІДКРИТИ АРХІВ</a>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="shell site-footer-inner">
+        <span>ІСТОРИЧНИЙ АРХІВ</span>
+        <a
+          href="https://github.com/romkravets"
+          target="_blank"
+          rel="me noopener noreferrer"
+        >
+          Розробник: Роман Кравець · GitHub
+        </a>
+      </div>
+    </footer>
+    <script is:inline>
+      (() => {
+        const bar = document.querySelector(".scroll-progress");
+        if (!bar) return;
+        const onScroll = () => {
+          const root = document.documentElement;
+          const max = root.scrollHeight - root.clientHeight;
+          const ratio = max > 0 ? (root.scrollTop / max) * 100 : 0;
+          bar.style.width = ratio + "%";
+        };
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+      })();
+    </script>
+  </body>
 </html>
