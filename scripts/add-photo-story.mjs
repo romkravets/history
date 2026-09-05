@@ -106,15 +106,20 @@ function withDefaults(meta, folderName) {
   const year = String(date).slice(0, 4);
   return {
     ...meta,
-    slug: isBlank(meta.slug) ? fallbackSlug(folderName) : String(meta.slug).trim(),
+    slug: isBlank(meta.slug)
+      ? fallbackSlug(folderName)
+      : String(meta.slug).trim(),
     title: isBlank(meta.title) ? folderName : String(meta.title).trim(),
     date,
     city: isBlank(meta.city) ? "" : String(meta.city).trim(),
-    decade:
-      isBlank(meta.decade)
-        ? (/^\d{4}$/.test(year) ? `${year.slice(0, 3)}0-ті` : "")
-        : String(meta.decade).trim(),
-    description: isBlank(meta.description) ? "" : String(meta.description).trim(),
+    decade: isBlank(meta.decade)
+      ? /^\d{4}$/.test(year)
+        ? `${year.slice(0, 3)}0-ті`
+        : ""
+      : String(meta.decade).trim(),
+    description: isBlank(meta.description)
+      ? ""
+      : String(meta.description).trim(),
   };
 }
 
