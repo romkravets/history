@@ -1,5 +1,128 @@
 # History Archive
 
+An Astro-based static photo archive for documenting towns, landmarks, and
+local history. Photos and their metadata live in the repository as Markdown
+and static assets, so every story is versioned, reviewable, and deployable to
+GitHub Pages.
+
+## Features
+
+- Gallery of all photo stories on the home page.
+- Dedicated page with a lightbox viewer for every story.
+- Markdown content with structured frontmatter.
+- Automatic photo-story generation from an incoming folder.
+- Git LFS support for large image files.
+- Automatic deployment to GitHub Pages after pushing to `main`.
+- Optional remote LLM access through the server at `192.168.88.246`.
+
+## Quick Start
+
+Requirements: Node.js `>=22.12.0` and npm.
+
+```bash
+npm install
+npm run dev
+```
+
+Open the local URL printed by Astro. Run the project checks with:
+
+```bash
+npm run check
+npm run build
+```
+
+## Project Structure
+
+```text
+src/content/photos/*.md     # Photo-story metadata and text
+public/photos/*             # Photo assets served by the site
+photos-incoming/*           # Folders waiting to be imported
+scripts/add-photo-story.mjs # Photo-story import tool
+```
+
+## Add a Photo Story
+
+Create a folder with one or more images and a `meta.json` file:
+
+```bash
+mkdir -p photos-incoming/my-story
+cp photos-incoming/meta.example.json photos-incoming/my-story/meta.json
+```
+
+The metadata fields are optional. Missing values receive defaults; `slug`,
+`title`, and the date can be generated automatically. Set `decade` explicitly
+when the historical period is not the current decade.
+
+Preview the import first:
+
+```bash
+npm run photos:add -- --source photos-incoming/my-story --dry-run
+```
+
+Import the photos and generate the Markdown entry:
+
+```bash
+npm run photos:add -- --source photos-incoming/my-story
+```
+
+Use `--force` to regenerate an existing story. The importer places the cover
+at `public/photos/<slug>/cover.jpg`, additional images in the same folder,
+and creates `src/content/photos/<slug>.md`.
+
+After importing, run:
+
+```bash
+npm run check
+npm run build
+```
+
+Then commit the generated content and assets:
+
+```bash
+git add src/content/photos public/photos
+git commit -m "Add photo story: my-story"
+git push
+```
+
+GitHub Actions builds and deploys the site after a push to `main`.
+
+## Git LFS
+
+Use Git LFS for image files:
+
+```bash
+git lfs install
+git lfs track "*.jpg" "*.jpeg" "*.png" "*.webp" "*.tif" "*.tiff"
+git add .gitattributes
+```
+
+## Remote LLM Server
+
+The project can use the local models or OpenAI-compatible API on the remote
+server. The helper scripts use `.orch.env` for the SSH and runtime settings.
+
+```bash
+npm run remote:ssh
+npm run remote:llm:start
+npm run remote:llm:check
+npm run remote:llm:prompt -- "Describe this archival photo"
+npm run remote:llm:stop
+```
+
+The separate `llm-server-orchestrator` repository can run implementation tasks
+against this project in an isolated Git worktree. Each run should be checked
+with `npm run check` and `npm run build` before approval.
+
+## Documentation
+
+For the complete Ukrainian instructions, continue with the Ukrainian section
+below. The importer also documents the full `meta.json` format in its source
+comment and in `photos-incoming/README.md`.
+
+---
+
+## Українська версія
+
 Статичний фотоархів міста й околиць на `Astro + Markdown + GitHub Pages + Git LFS`.
 
 ## Що вже є
