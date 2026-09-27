@@ -44,6 +44,23 @@ scripts/add-photo-story.mjs # Photo-story import tool
 
 ## Add a Photo Story
 
+### Import from a local Google Drive folder
+
+With Google Drive for Desktop installed, prepare photos directly from its
+local path. Each folder may contain images and `description.txt`,
+`description.md`, or a `.docx` file:
+
+```bash
+npm run photos:prepare -- --source "/path/to/Google Drive/photos" --dry-run
+npm run photos:prepare -- --source "/path/to/Google Drive/photos"
+npm run photos:add -- --source photos-incoming
+```
+
+The preparation step copies only supported images to `photos-incoming`,
+creates `meta.json` from the folder name and description, and leaves the
+Google Drive folder unchanged. A year in the folder name, such as
+`Кременець 1995`, is used for the date and decade.
+
 Create a folder with one or more images and a `meta.json` file:
 
 ```bash
