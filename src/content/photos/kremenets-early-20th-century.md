@@ -144,6 +144,24 @@ images:
   - "/photos/kremenets-early-20th-century/135.jpg"
   - "/photos/kremenets-early-20th-century/136.jpg"
   - "/photos/kremenets-early-20th-century/137.jpg"
+  - "/photos/kremenets-early-20th-century/138.jpg"
+  - "/photos/kremenets-early-20th-century/139.jpg"
+  - "/photos/kremenets-early-20th-century/140.jpg"
+  - "/photos/kremenets-early-20th-century/141.jpg"
+  - "/photos/kremenets-early-20th-century/142.jpg"
+  - "/photos/kremenets-early-20th-century/143.jpg"
+  - "/photos/kremenets-early-20th-century/144.jpg"
+  - "/photos/kremenets-early-20th-century/145.jpg"
+  - "/photos/kremenets-early-20th-century/146.jpg"
+  - "/photos/kremenets-early-20th-century/147.jpg"
+  - "/photos/kremenets-early-20th-century/148.jpg"
+  - "/photos/kremenets-early-20th-century/149.jpg"
+  - "/photos/kremenets-early-20th-century/150.jpg"
+  - "/photos/kremenets-early-20th-century/151.jpg"
+  - "/photos/kremenets-early-20th-century/152.jpg"
+  - "/photos/kremenets-early-20th-century/153.jpg"
+  - "/photos/kremenets-early-20th-century/154.jpg"
+  - "/photos/kremenets-early-20th-century/155.jpg"
 tags:
   - "Кременець"
   - "листівки"
@@ -155,4 +173,4 @@ tags:
   - "історія"
 ---
 
-Добірка історичних листівок Кременця початку ХХ століття. На них зображені руїни замку на Замковій горі, панорама міста, Дівочі скелі, парк ліцею, магістрат, Старий Ринок і Волинський ліцей із костелом. Польські підписи «Krzemieniec», «Ruiny Zamku Bony», «Stary rynek» і «Kościół licealny» збережені на самих листівках та свідчать про тогочасну назву міста й пам'яток. На частині цифрових копій є водяний знак Transimperia.
+Добірка історичних листівок Кременця початку ХХ століття. На них зображені руїни замку на Замковій горі, панорама міста, Дівочі скелі, парк ліцею, магістрат, Старий Ринок, бібліотека, Волинський ліцей із костелом, старий цвинтар і церква базиліан. Польські підписи «Krzemieniec», «Ruiny Zamku Bony», «Stary rynek», «Biblioteka Liceum» і «Kościół licealny» збережені на самих листівках та свідчать про тогочасну назву міста й пам'яток. На частині цифрових копій є водяний знак Transimperia.
