@@ -4,7 +4,7 @@ date: 1900-01-01
 city: "Кременець"
 area: "Місто та Замкова гора"
 decade: "Початок ХХ століття"
-description: "Історичні листівки Кременця з видами замку, міста, Дівочих скель і парку ліцею. Підписи на листівках зберегли історичну назву міста — Krzemieniec."
+description: "Історичні листівки Кременця з видами замку, міста, Дівочих скель, парку, магістрату та Волинського ліцею. Підписи зберегли історичну назву міста — Krzemieniec."
 cover: "/photos/kremenets-early-20th-century/cover.jpg"
 images:
   - "/photos/kremenets-early-20th-century/1.jpg"
@@ -130,6 +130,20 @@ images:
   - "/photos/kremenets-early-20th-century/121.jpg"
   - "/photos/kremenets-early-20th-century/122.jpg"
   - "/photos/kremenets-early-20th-century/123.jpg"
+  - "/photos/kremenets-early-20th-century/124.jpg"
+  - "/photos/kremenets-early-20th-century/125.jpg"
+  - "/photos/kremenets-early-20th-century/126.jpg"
+  - "/photos/kremenets-early-20th-century/127.jpg"
+  - "/photos/kremenets-early-20th-century/128.jpg"
+  - "/photos/kremenets-early-20th-century/129.jpg"
+  - "/photos/kremenets-early-20th-century/130.jpg"
+  - "/photos/kremenets-early-20th-century/131.jpg"
+  - "/photos/kremenets-early-20th-century/132.jpg"
+  - "/photos/kremenets-early-20th-century/133.jpg"
+  - "/photos/kremenets-early-20th-century/134.jpg"
+  - "/photos/kremenets-early-20th-century/135.jpg"
+  - "/photos/kremenets-early-20th-century/136.jpg"
+  - "/photos/kremenets-early-20th-century/137.jpg"
 tags:
   - "Кременець"
   - "листівки"
@@ -141,4 +155,4 @@ tags:
   - "історія"
 ---
 
-Добірка історичних листівок Кременця початку ХХ століття. На них зображені руїни замку на Замковій горі, панорама міста, Дівочі скелі та парк ліцею. Польські підписи «Krzemieniec» і «Ruiny Zamku Bony» збережені на самих листівках і свідчать про тогочасну назву міста та пам'яток.
+Добірка історичних листівок Кременця початку ХХ століття. На них зображені руїни замку на Замковій горі, панорама міста, Дівочі скелі, парк ліцею, магістрат, Старий Ринок і Волинський ліцей із костелом. Польські підписи «Krzemieniec», «Ruiny Zamku Bony», «Stary rynek» і «Kościół licealny» збережені на самих листівках та свідчать про тогочасну назву міста й пам'яток. На частині цифрових копій є водяний знак Transimperia.
