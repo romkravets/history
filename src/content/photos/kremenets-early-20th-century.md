@@ -208,6 +208,14 @@ images:
   - "/photos/kremenets-early-20th-century/199.jpg"
   - "/photos/kremenets-early-20th-century/200.jpg"
   - "/photos/kremenets-early-20th-century/201.jpg"
+  - "/photos/kremenets-early-20th-century/203.jpg"
+  - "/photos/kremenets-early-20th-century/204.jpg"
+  - "/photos/kremenets-early-20th-century/205.jpg"
+  - "/photos/kremenets-early-20th-century/206.jpg"
+  - "/photos/kremenets-early-20th-century/207.jpg"
+  - "/photos/kremenets-early-20th-century/208.jpg"
+  - "/photos/kremenets-early-20th-century/209.jpg"
+  - "/photos/kremenets-early-20th-century/210.jpg"
 tags:
   - "Кременець"
   - "листівки"
@@ -219,4 +227,4 @@ tags:
   - "історія"
 ---
 
-Добірка історичних листівок і світлин Кременця початку ХХ століття та міжвоєнного періоду. На них зображені руїни замку на Замковій горі, панорами міста, скульптура Бони, Дівочі скелі, парк ліцею, магістрат, Старий Ринок, бібліотека, Волинський ліцей із костелом, старий цвинтар і церква базиліан. Польські підписи «Krzemieniec», «Ruiny Zamku Bony», «Stary rynek», «Biblioteka Liceum» і «Kościół licealny» збережені на самих листівках та свідчать про тогочасну назву міста й пам'яток. На частині цифрових копій є водяний знак Transimperia.
+Добірка історичних листівок і світлин Кременця початку ХХ століття та міжвоєнного періоду. На них зображені руїни замку на Замковій горі, панорами міста, скульптура Бони, Дівочі скелі, парк ліцею, магістрат, Старий Ринок, бібліотека, Волинський ліцей із костелом, старий цвинтар і церква базиліан. Нові кадри доповнюють серію зимовою панорамою, видами ліцею з підписом «Krzemieniec Liceum» та листівкою «Kremenetz». Польські підписи «Krzemieniec», «Ruiny Zamku Bony», «Stary rynek», «Biblioteka Liceum» і «Kościół licealny» збережені на самих листівках та свідчать про тогочасну назву міста й пам'яток. На частині цифрових копій є водяний знак Transimperia.
