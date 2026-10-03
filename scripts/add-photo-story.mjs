@@ -20,7 +20,8 @@
  *     "description": "Короткий опис для картки в галереї",
  *     "story": "Довший текст під фото (необов'язково, інакше візьме description)",
  *     "tags": ["ринок", "львів"],            (необов'язково)
- *     "cover": "photo2.jpg"                  (необов'язково, інакше перший файл за іменем)
+ *     "cover": "photo2.jpg",                 (необов'язково, інакше перший файл за іменем)
+ *     "captions": { "photo2.jpg": "Ратуша" } (необов'язково: підписи окремих фото — для alt, лайтбокса і SEO)
  *   }
  *
  * Використання:
@@ -193,6 +194,14 @@ function processStoryFolder(dir, { dryRun, force }) {
   const publicImagePaths = restDest.map((d) => `/photos/${slug}/${d}`);
 
   const tags = Array.isArray(meta.tags) ? meta.tags : [];
+  // meta.captions: { "<файл у папці>": "підпис" } → captions за публічними шляхами
+  const sourceToPublic = new Map([
+    [coverFile, publicCoverPath],
+    ...restFiles.map((f, i) => [f, publicImagePaths[i]]),
+  ]);
+  const captions = Object.entries(meta.captions ?? {})
+    .filter(([file, text]) => sourceToPublic.has(file) && !isBlank(text))
+    .map(([file, text]) => [sourceToPublic.get(file), String(text).trim()]);
   const story = (meta.story ?? meta.description ?? "").trim();
 
   const yamlEscape = (s) => String(s).replace(/"/g, '\\"');
@@ -208,6 +217,12 @@ function processStoryFolder(dir, { dryRun, force }) {
     ...(publicImagePaths.length > 0
       ? ["images:", ...publicImagePaths.map((p) => `  - "${p}"`)]
       : ["images: []"]),
+    ...(captions.length > 0
+      ? [
+          "captions:",
+          ...captions.map(([p, t]) => `  "${p}": "${yamlEscape(t)}"`),
+        ]
+      : []),
     "tags:",
     ...tags.map((t) => `  - "${yamlEscape(t)}"`),
     "---",

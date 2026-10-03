@@ -24,12 +24,15 @@ const formatDate = new Intl.DateTimeFormat("uk-UA", {
   dateStyle: "long",
 });
 
-const { title, city, area, decade, description, cover, images, tags } = photo.data;
+const { title, city, area, decade, description, cover, images, captions, tags } =
+  photo.data;
 const region = regionOf(city);
 const allImages = [cover, ...images];
 const sizes = await Promise.all(allImages.map((src) => imageSize(src)));
 const altFor = (idx: number) =>
-  idx === 0
+  captions[allImages[idx]]
+    ? `${captions[allImages[idx]]} — ${city}`
+    : idx === 0
     ? `${title} — ${city}${area ? `, ${area}` : ""}`
     : `${title} — ${city}, фото ${idx + 1} з ${allImages.length}`;
 
@@ -116,6 +119,7 @@ const jsonLd = [
       <img
         src={cover}
         alt={altFor(0)}
+        title={captions[cover]}
         width={sizes[0]?.width}
         height={sizes[0]?.height}
         loading="eager"
@@ -132,6 +136,7 @@ const jsonLd = [
             <img
               src={src}
               alt={altFor(idx + 1)}
+              title={captions[src]}
               width={sizes[idx + 1]?.width}
               height={sizes[idx + 1]?.height}
               loading="lazy"
@@ -162,7 +167,11 @@ const jsonLd = [
     type="application/json"
     id="lightbox-data"
     set:html={JSON.stringify([
-      ...allImages.map((src, idx) => ({ src, alt: altFor(idx) })),
+      ...allImages.map((src, idx) => ({
+        src,
+        alt: altFor(idx),
+        caption: captions[src] ?? "",
+      })),
     ])}
   />
 
@@ -181,7 +190,9 @@ const jsonLd = [
         current = (i + items.length) % items.length;
         img.src = items[current].src;
         img.alt = items[current].alt;
-        counter.textContent = `${current + 1} / ${items.length}`;
+        counter.textContent = items[current].caption
+          ? `${current + 1} / ${items.length} · ${items[current].caption}`
+          : `${current + 1} / ${items.length}`;
       };
 
       const open = (i) => {

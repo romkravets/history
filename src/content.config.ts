@@ -13,6 +13,8 @@ const photos = defineCollection({
     description: z.string(),
     cover: z.string(),
     images: z.array(z.string()).default([]),
+    // Підписи окремих фото: { "/photos/<slug>/3.jpg": "Церква Анни Праведної" }
+    captions: z.record(z.string(), z.string()).default({}),
     tags: z.array(z.string()).default([]),
   }),
 });
