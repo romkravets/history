@@ -1,0 +1,93 @@
+---
+title: "Кременець 1930-х на фото Генрика Германовича"
+date: 1937-01-01
+city: "Кременець"
+area: "Місто, гора Бона, Ліцей"
+decade: "1930-ті"
+description: "Художні фото Кременця 1930-х років від Генрика Германовича — майстра польської пейзажної фотографії, який викладав фотографію в Кременецькому ліцеї: гора Бона в тумані й інеї, Ліцей, старі будинки й вулиці."
+cover: "/photos/kremenets-hermanowicz/cover.jpg"
+images:
+  - "/photos/kremenets-hermanowicz/1.jpg"
+  - "/photos/kremenets-hermanowicz/2.jpg"
+  - "/photos/kremenets-hermanowicz/3.jpg"
+  - "/photos/kremenets-hermanowicz/4.jpg"
+  - "/photos/kremenets-hermanowicz/5.jpg"
+  - "/photos/kremenets-hermanowicz/6.jpg"
+  - "/photos/kremenets-hermanowicz/7.jpg"
+  - "/photos/kremenets-hermanowicz/8.jpg"
+  - "/photos/kremenets-hermanowicz/9.jpg"
+  - "/photos/kremenets-hermanowicz/10.jpg"
+  - "/photos/kremenets-hermanowicz/11.jpg"
+  - "/photos/kremenets-hermanowicz/12.jpg"
+  - "/photos/kremenets-hermanowicz/13.jpg"
+  - "/photos/kremenets-hermanowicz/14.jpg"
+  - "/photos/kremenets-hermanowicz/15.jpg"
+  - "/photos/kremenets-hermanowicz/16.jpg"
+  - "/photos/kremenets-hermanowicz/17.jpg"
+  - "/photos/kremenets-hermanowicz/18.jpg"
+  - "/photos/kremenets-hermanowicz/19.jpg"
+  - "/photos/kremenets-hermanowicz/20.jpg"
+  - "/photos/kremenets-hermanowicz/21.jpg"
+  - "/photos/kremenets-hermanowicz/22.jpg"
+  - "/photos/kremenets-hermanowicz/23.jpg"
+  - "/photos/kremenets-hermanowicz/24.jpg"
+  - "/photos/kremenets-hermanowicz/25.jpg"
+  - "/photos/kremenets-hermanowicz/26.jpg"
+  - "/photos/kremenets-hermanowicz/27.jpg"
+  - "/photos/kremenets-hermanowicz/28.jpg"
+  - "/photos/kremenets-hermanowicz/29.jpg"
+  - "/photos/kremenets-hermanowicz/30.jpg"
+  - "/photos/kremenets-hermanowicz/31.jpg"
+captions:
+  "/photos/kremenets-hermanowicz/cover.jpg": "Гора королеви Бони (фото Г. Германовича)"
+  "/photos/kremenets-hermanowicz/1.jpg": "Кременецький яр (фото Г. Германовича)"
+  "/photos/kremenets-hermanowicz/2.jpg": "Старий кременецький будиночок (фото Г. Германовича)"
+  "/photos/kremenets-hermanowicz/3.jpg": "Кременець у інеї (фото Г. Германовича)"
+  "/photos/kremenets-hermanowicz/4.jpg": "Гора Бона за квітучими гілками (фото Г. Германовича)"
+  "/photos/kremenets-hermanowicz/5.jpg": "Діти з мольбертом під горою Бона (фото Г. Германовича)"
+  "/photos/kremenets-hermanowicz/6.jpg": "Вузька вулиця під горою (фото Г. Германовича)"
+  "/photos/kremenets-hermanowicz/7.jpg": "Будинок і огорожа взимку (фото Г. Германовича)"
+  "/photos/kremenets-hermanowicz/8.jpg": "Собор колегіуму (фото Г. Германовича)"
+  "/photos/kremenets-hermanowicz/9.jpg": "Силует гори Бона (фото Г. Германовича)"
+  "/photos/kremenets-hermanowicz/10.jpg": "Схил гори й місто в тумані (фото Г. Германовича)"
+  "/photos/kremenets-hermanowicz/11.jpg": "Колегіум у ранковому тумані (фото Г. Германовича)"
+  "/photos/kremenets-hermanowicz/12.jpg": "Кам'яниця з балконами (фото Г. Германовича)"
+  "/photos/kremenets-hermanowicz/13.jpg": "Колонада Ліцею (фото Г. Германовича)"
+  "/photos/kremenets-hermanowicz/14.jpg": "Будинок під горою (фото Г. Германовича)"
+  "/photos/kremenets-hermanowicz/15.jpg": "Будинок із ґанком і колонами (фото Г. Германовича)"
+  "/photos/kremenets-hermanowicz/16.jpg": "Кована брама (фото Г. Германовича)"
+  "/photos/kremenets-hermanowicz/17.jpg": "Кременець під хмарами"
+  "/photos/kremenets-hermanowicz/18.jpg": "Старе дерево й відпочивальники під горою"
+  "/photos/kremenets-hermanowicz/19.jpg": "Гора Бона в інеї"
+  "/photos/kremenets-hermanowicz/20.jpg": "Місто й колегіум узимку"
+  "/photos/kremenets-hermanowicz/21.jpg": "Засніжена вулиця з храмом"
+  "/photos/kremenets-hermanowicz/22.jpg": "Зимовий парк під горою"
+  "/photos/kremenets-hermanowicz/23.jpg": "Барокові стовпи брами взимку"
+  "/photos/kremenets-hermanowicz/24.jpg": "Будинки під засніженою горою"
+  "/photos/kremenets-hermanowicz/25.jpg": "Гора Бона в тумані"
+  "/photos/kremenets-hermanowicz/26.jpg": "Засніжена Бона"
+  "/photos/kremenets-hermanowicz/27.jpg": "Храм крізь гілля в тумані"
+  "/photos/kremenets-hermanowicz/28.jpg": "Брама і стовпи з вазами"
+  "/photos/kremenets-hermanowicz/29.jpg": "Старий будинок"
+  "/photos/kremenets-hermanowicz/30.jpg": "Генрик Германович за роботою над містом"
+  "/photos/kremenets-hermanowicz/31.jpg": "Генрик Германович, портрет"
+tags:
+  - "Кременець"
+  - "Германович"
+  - "Hermanowicz"
+  - "1930-ті"
+  - "Ліцей"
+  - "Бона"
+  - "художня фотографія"
+---
+
+Генрик Германович (1912–1992) — польський майстер пейзажної фотографії, учень Яна Булгака. Народився у Вільні, дебютував 1931 року на Міжнародному салоні художньої фотографії. З 1937 року викладав у Кременецькому ліцеї, де вів фотографічну майстерню й співпрацював зі Станіславом Шейбалом, а з 1940 року очолював Кременецький краєзнавчий музей. Під час війни разом із Шейбалом відкрив у Кременці фотосалон «Мистецтво».
+
+Германович ілюстрував альбоми «Krzemieniec», «Cudne miasto rodzinne Juliusza Słowackiego» та «Miasto wielkiej tęsknoty», видані в Кременці 1939 року до 130-ліття Юліуша Словацького. Після війни оселився в Кракові й став одним із найвідоміших польських пейзажистів.
+
+У цій добірці — його світлини Кременця: гора Бона в тумані, інеї й цвіті, Ліцей і колонада, старі будинки, вулички й брами. Частину знімків підписано його іменем; решта — з тієї ж серії й того ж періоду, але авторство окремих кадрів не підтверджене.
+
+## Джерела
+
+- [Wikipedia: Henryk Hermanowicz](https://en.wikipedia.org/wiki/Henryk_Hermanowicz)
+- [dzieje.pl](https://dzieje.pl/node/41790)

@@ -38,6 +38,7 @@ images:
   - "/photos/bilokrynytsia-palace/29.jpg"
   - "/photos/bilokrynytsia-palace/30.jpg"
   - "/photos/bilokrynytsia-palace/31.jpg"
+  - "/photos/bilokrynytsia-palace/32.jpg"
 captions:
   "/photos/bilokrynytsia-palace/5.jpg": "Білокриницький палац"
   "/photos/bilokrynytsia-palace/6.jpg": "Палац у Білокриниці, видно залишки валів"
@@ -66,6 +67,7 @@ captions:
   "/photos/bilokrynytsia-palace/29.jpg": "Парадні сходи палацу"
   "/photos/bilokrynytsia-palace/30.jpg": "Сходова клітка з кованими перилами"
   "/photos/bilokrynytsia-palace/31.jpg": "Хол палацу"
+  "/photos/bilokrynytsia-palace/32.jpg": "Палац у похмурий день"
 tags:
   - "Білокриницький палац"
   - "Кременецький район"

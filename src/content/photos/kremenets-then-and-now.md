@@ -25,6 +25,7 @@ images:
   - "/photos/kremenets-then-and-now/16.jpg"
   - "/photos/kremenets-then-and-now/17.jpg"
   - "/photos/kremenets-then-and-now/18.jpg"
+  - "/photos/kremenets-then-and-now/19.jpg"
 captions:
   "/photos/kremenets-then-and-now/cover.jpg": "Будинки під Боною: тоді й тепер"
   "/photos/kremenets-then-and-now/1.jpg": "Будинки під горою Бона на старій листівці"
@@ -45,6 +46,7 @@ captions:
   "/photos/kremenets-then-and-now/16.jpg": "Собор колегіуму на старому фото"
   "/photos/kremenets-then-and-now/17.jpg": "Собор і корпуси колегіуму сьогодні"
   "/photos/kremenets-then-and-now/18.jpg": "Колегіум сьогодні"
+  "/photos/kremenets-then-and-now/19.jpg": "Гора Бона: стара листівка і сучасне фото"
 tags:
   - "Кременець"
   - "тоді й тепер"

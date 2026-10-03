@@ -39,6 +39,9 @@ images:
   - "/photos/kremenets-st-nicholas-cathedral/30.jpg"
   - "/photos/kremenets-st-nicholas-cathedral/31.jpg"
   - "/photos/kremenets-st-nicholas-cathedral/32.jpg"
+  - "/photos/kremenets-st-nicholas-cathedral/33.jpg"
+  - "/photos/kremenets-st-nicholas-cathedral/34.jpg"
+  - "/photos/kremenets-st-nicholas-cathedral/35.jpg"
 captions:
   "/photos/kremenets-st-nicholas-cathedral/cover.jpg": "Миколаївський собор у Кременці"
   "/photos/kremenets-st-nicholas-cathedral/1.jpg": "Собор на тлі осіннього лісу"
@@ -73,6 +76,9 @@ captions:
   "/photos/kremenets-st-nicholas-cathedral/30.jpg": "Ікона в ніші"
   "/photos/kremenets-st-nicholas-cathedral/31.jpg": "Ікона святого в рамі"
   "/photos/kremenets-st-nicholas-cathedral/32.jpg": "Ікона біля вівтаря"
+  "/photos/kremenets-st-nicholas-cathedral/33.jpg": "Миколаївський собор і гора Бона з висоти"
+  "/photos/kremenets-st-nicholas-cathedral/34.jpg": "Собор і центр міста з висоти"
+  "/photos/kremenets-st-nicholas-cathedral/35.jpg": "Собор і монастир з гори"
 tags:
   - "Кременець"
   - "Миколаївський собор"

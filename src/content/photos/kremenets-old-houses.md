@@ -20,6 +20,9 @@ images:
   - "/photos/kremenets-old-houses/11.jpg"
   - "/photos/kremenets-old-houses/12.jpg"
   - "/photos/kremenets-old-houses/13.jpg"
+  - "/photos/kremenets-old-houses/14.jpg"
+  - "/photos/kremenets-old-houses/15.jpg"
+  - "/photos/kremenets-old-houses/16.jpg"
 captions:
   "/photos/kremenets-old-houses/cover.jpg": "Будинки під горою Бона"
   "/photos/kremenets-old-houses/1.jpg": "Будинок з дерев'яним ганком"
@@ -35,6 +38,9 @@ captions:
   "/photos/kremenets-old-houses/11.jpg": "Покинутий будинок з облупленим тиньком"
   "/photos/kremenets-old-houses/12.jpg": "Стара будівля, тонована світлина"
   "/photos/kremenets-old-houses/13.jpg": "Мурал на стіні будинку"
+  "/photos/kremenets-old-houses/14.jpg": "Білий будинок із колонами"
+  "/photos/kremenets-old-houses/15.jpg": "Кам'яниці з фронтонами"
+  "/photos/kremenets-old-houses/16.jpg": "Будинок у риштуванні"
 tags:
   - "Кременець"
   - "архітектура"

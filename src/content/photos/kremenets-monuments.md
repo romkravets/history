@@ -16,6 +16,8 @@ images:
   - "/photos/kremenets-monuments/7.jpg"
   - "/photos/kremenets-monuments/8.jpg"
   - "/photos/kremenets-monuments/9.jpg"
+  - "/photos/kremenets-monuments/10.jpg"
+  - "/photos/kremenets-monuments/11.jpg"
 captions:
   "/photos/kremenets-monuments/cover.jpg": "Пам'ятний знак у вигляді вежі з хрестом"
   "/photos/kremenets-monuments/1.jpg": "Статуя на кам'яному постаменті"
@@ -27,6 +29,8 @@ captions:
   "/photos/kremenets-monuments/7.jpg": "Сад скульптур"
   "/photos/kremenets-monuments/8.jpg": "Старий надгробок у лісі"
   "/photos/kremenets-monuments/9.jpg": "Вхід до парку культури і відпочинку"
+  "/photos/kremenets-monuments/10.jpg": "Літературно-меморіальний музей Ю. Словацького"
+  "/photos/kremenets-monuments/11.jpg": "Пам'ятний хрест і старі надгробки"
 tags:
   - "Кременець"
   - "пам'ятники"

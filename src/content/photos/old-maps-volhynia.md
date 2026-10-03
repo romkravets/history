@@ -44,6 +44,7 @@ images:
   - "/photos/old-maps-volhynia/35.png"
   - "/photos/old-maps-volhynia/36.png"
   - "/photos/old-maps-volhynia/37.jpg"
+  - "/photos/old-maps-volhynia/38.jpg"
 captions:
   "/photos/old-maps-volhynia/cover.jpg": "Генеральна карта Волинської губернії (Mappa Generalna Gubernii Wołyńskiej)"
   "/photos/old-maps-volhynia/1.jpg": "Генеральна карта Волинської губернії, титул російською"
@@ -83,6 +84,7 @@ captions:
   "/photos/old-maps-volhynia/35.png": "Дунаїв, Куликів і Богданівка на польській карті"
   "/photos/old-maps-volhynia/36.png": "Бережці, Савчиці, Куликів і Дунаїв на старій карті"
   "/photos/old-maps-volhynia/37.jpg": "План околиць Кременця"
+  "/photos/old-maps-volhynia/38.jpg": "«Plan orientacyjny Krzemieńca» — орієнтаційний план Кременця"
 tags:
   - "Кременець"
   - "карти"

@@ -20,6 +20,9 @@ images:
   - "/photos/kremenets-old-engravings/11.jpg"
   - "/photos/kremenets-old-engravings/12.jpg"
   - "/photos/kremenets-old-engravings/13.jpg"
+  - "/photos/kremenets-old-engravings/14.jpg"
+  - "/photos/kremenets-old-engravings/15.jpg"
+  - "/photos/kremenets-old-engravings/16.jpg"
 captions:
   "/photos/kremenets-old-engravings/cover.jpg": "Кременець на кольоровій літографії «Види Волині» (Vidoki Wołynia)"
   "/photos/kremenets-old-engravings/1.jpg": "Кременець і хресна хода на старовинній гравюрі"
@@ -35,6 +38,9 @@ captions:
   "/photos/kremenets-old-engravings/11.jpg": "Брама замку, замальовка пером"
   "/photos/kremenets-old-engravings/12.jpg": "Будинки під горою Бона, замальовка пером"
   "/photos/kremenets-old-engravings/13.jpg": "Колегіум, замальовка пером"
+  "/photos/kremenets-old-engravings/14.jpg": "«Krzemieniec» — старовинна гравюра"
+  "/photos/kremenets-old-engravings/15.jpg": "Гора Бона й місто на старовинній акварелі"
+  "/photos/kremenets-old-engravings/16.jpg": "Гора Бона, рисунок Ю. Словацького"
 tags:
   - "Кременець"
   - "гравюри"
