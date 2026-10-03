@@ -4,8 +4,8 @@
 
 An Astro-based static photo archive for documenting towns, landmarks, and
 local history. Photos and their metadata live in the repository as Markdown
-and static assets, so every story is versioned, reviewable, and deployable to
-GitHub Pages.
+and static assets, so every story is versioned, reviewable, and deployed to
+Vercel (https://history-kremenets.vercel.app).
 
 ## Features
 
@@ -14,7 +14,8 @@ GitHub Pages.
 - Markdown content with structured frontmatter.
 - Automatic photo-story generation from an incoming folder.
 - Git LFS support for large image files.
-- Automatic deployment to GitHub Pages after pushing to `main`.
+- Automatic deployment to Vercel after pushing to `main`.
+- SEO/GEO: sitemap, robots.txt, llms.txt, canonical, Open Graph and JSON-LD.
 - Optional remote LLM access through the server at `192.168.88.246`.
 
 ## Quick Start
@@ -142,14 +143,15 @@ comment and in `photos-incoming/README.md`.
 
 ## Українська версія
 
-Статичний фотоархів міста й околиць на `Astro + Markdown + GitHub Pages + Git LFS`.
+Статичний фотоархів міста й околиць на `Astro + Markdown + Vercel + Git LFS`.
 
 ## Що вже є
 
 - галерея на головній сторінці;
 - окрема сторінка для кожного фото;
 - контент зберігається у git як Markdown;
-- автоматичний деплой на GitHub Pages;
+- автоматичний деплой на Vercel;
+- SEO/GEO: sitemap, robots.txt, llms.txt, canonical, Open Graph, JSON-LD;
 - інтеграція з віддаленим локальним LLM-сервером через SSH tunnel.
 
 ## Локальний запуск
@@ -245,8 +247,7 @@ tags: ["вокзал", "місто", "побут"]
    git push
    ```
 
-   Після push у `main` GitHub Actions сам збере й задеплоїть сайт
-   (`.github/workflows/deploy-pages.yml`).
+   Після push у `main` Vercel сам збере й задеплоїть сайт.
 
 ### Додати декілька фото-історій за раз
 
@@ -278,15 +279,27 @@ git lfs track "*.jpg" "*.jpeg" "*.png" "*.webp" "*.tif" "*.tiff"
 git add .gitattributes
 ```
 
-## Публікація на GitHub Pages
+## Публікація на Vercel
 
-Workflow знаходиться у `.github/workflows/deploy-pages.yml`.
+Сайт: https://history-kremenets.vercel.app
 
-Після push у `main`:
+Після push у `main` Vercel сам збирає сайт (`npm run build`) і публікує `dist/`.
+Адреса для canonical/sitemap/og береться з `SITE_URL` (типово — адреса Vercel);
+якщо підключиш власний домен, задай `SITE_URL` у змінних середовища Vercel.
 
-- сайт збирається командою `npm run build`;
-- артефакт публікується на Pages;
-- base path автоматично підлаштовується під ім'я репозиторію.
+## SEO та GEO
+
+Усе генерується автоматично з контенту — нічого вручну оновлювати не треба:
+
+- `/sitemap-index.xml` — карта сайту (`@astrojs/sitemap`);
+- `/robots.txt` — дозволяє індексацію і вказує sitemap;
+- `/llms.txt` — опис сайту та список галерей для ШІ-асистентів;
+- у `<head>` кожної сторінки — canonical, Open Graph/Twitter (прев'ю з обкладинкою
+  галереї), гео-мітки та JSON-LD (`WebSite`, `CollectionPage`, `ImageGallery` з
+  місцем і областю, `BreadcrumbList`, `Article` з джерелами для історії).
+
+Назва, регіон і координати — у `src/lib/site.ts`. Якщо додаєш місто не з
+Тернопільщини, впиши його область у `REGION_OVERRIDES`.
 
 ## Віддалений LLM-сервер для розробки (192.168.88.246)
 
@@ -400,7 +413,7 @@ REMOTE_HOST=192.168.88.246 REMOTE_USER=adminr REMOTE_PATH=/var/www/history-archi
    ["Як додати фото в галерею"](#як-додати-фото-в-галерею-на-головній-сторінці) вище)
 3. Агент запускає `npm run check` і `npm run build`
 4. Коміт у git
-5. Автодеплой на Pages або `npm run sync:local` для локального стенду
+5. Автодеплой на Vercel або `npm run sync:local` для локального стенду
 
 ## Orchestrator: керування з Mac, виконання на сервері
 

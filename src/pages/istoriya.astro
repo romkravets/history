@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import Layout from "../layouts/Layout.astro";
+import { HOME_PLACE, absoluteUrl } from "../lib/site";
 
 const eras = (await getCollection("history")).sort(
 	(a, b) => a.data.order - b.data.order,
@@ -12,16 +13,54 @@ const rendered = await Promise.all(
 		Content: (await render(entry)).Content,
 	})),
 );
+
+const pageUrl = absoluteUrl("/istoriya/", Astro.site);
+const siteUrl = absoluteUrl("/", Astro.site);
+const jsonLd = [
+	{
+		"@type": "Article",
+		"@id": `${pageUrl}#article`,
+		url: pageUrl,
+		headline: "Історія Кременця: хронологія від заснування до сьогодення",
+		inLanguage: "uk",
+		isPartOf: { "@id": `${siteUrl}#website` },
+		author: { "@id": `${siteUrl}#author` },
+		about: {
+			"@type": "Place",
+			name: HOME_PLACE.name,
+			address: {
+				"@type": "PostalAddress",
+				addressLocality: HOME_PLACE.name,
+				addressRegion: HOME_PLACE.region,
+				addressCountry: "UA",
+			},
+		},
+		hasPart: eras.map((e) => ({
+			"@type": "WebPageElement",
+			name: `${e.data.period} — ${e.data.title}`,
+			url: `${pageUrl}#${e.data.era}`,
+			description: e.data.summary,
+		})),
+		citation: eras.flatMap((e) =>
+			e.data.sources.map((src) => ({
+				"@type": "CreativeWork",
+				name: src.title,
+				url: src.url,
+			})),
+		),
+	},
+];
 ---
 
 <Layout
-	title="Історія Міста · Історичний Архів"
-	description="Хронологія Кременця за перевіреними джерелами — від перших згадок до сьогодення."
+	title="Історія Кременця: хронологія від заснування до сьогодення · Історичний архів Кременеччини"
+	description="Хронологія Кременця за перевіреними джерелами: Замкова гора і перші згадки, литовська доба, Річ Посполита, австрійська й російська влада, XX століття і сьогодення."
+	jsonLd={jsonLd}
 >
 	<section class="shell">
 		<div class="hero-page">
 			<p class="eyebrow">▸ ХРОНОЛОГІЯ</p>
-			<h1>ІСТОРІЯ<br /><span>МІСТА</span></h1>
+			<h1>ІСТОРІЯ<br /><span>КРЕМЕНЦЯ</span></h1>
 			<p class="lead">
 				Хронологія Кременця, зібрана з архівних і краєзнавчих джерел — від
 				перших згадок до сьогодення. Де джерела мовчать, мовчить і текст.

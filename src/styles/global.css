@@ -837,3 +837,9 @@ main {
 .card.is-hidden {
   display: none;
 }
+
+/* width/height в <img> задають пропорції до завантаження, а CSS — реальний розмір */
+img {
+  max-width: 100%;
+  height: auto;
+}

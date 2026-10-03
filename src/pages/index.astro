@@ -1,6 +1,14 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
+import {
+  SITE_NAME,
+  SITE_TAGLINE,
+  absoluteUrl,
+  citiesByWeight,
+  imageSize,
+  pluralUk,
+} from "../lib/site";
 
 const photos = (await getCollection("photos")).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
@@ -14,11 +22,43 @@ const toSlug = (id: string) => id.replace(/\.md$/, "");
 const cityCount = new Set(photos.map((p) => p.data.city)).size;
 const decadeCount = new Set(photos.map((p) => p.data.decade)).size;
 const decades = [...new Set(photos.map((p) => p.data.decade))].sort();
+
+const cities = citiesByWeight(photos.map((p) => p.data.city));
+const cityList =
+  cities.length > 6 ? `${cities.slice(0, 6).join(", ")} та інші` : cities.join(", ");
+const pageDescription = `Старі фотографії й листівки Кременця, Кременеччини та Тернопільщини: ${cityList}. ${photos.length} ${pluralUk(photos.length, ["галерея", "галереї", "галерей"])} з датами, описами та історією місць.`;
+
+const coverSizes = await Promise.all(photos.map((p) => imageSize(p.data.cover)));
+
+const siteUrl = absoluteUrl("/", Astro.site);
+const jsonLd = [
+  {
+    "@type": "CollectionPage",
+    "@id": `${siteUrl}#collection`,
+    url: siteUrl,
+    name: SITE_TAGLINE,
+    description: pageDescription,
+    inLanguage: "uk",
+    isPartOf: { "@id": `${siteUrl}#website` },
+    about: cities.map((name) => ({ "@type": "Place", name })),
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: photos.length,
+      itemListElement: photos.map((photo, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: absoluteUrl(`/photos/${toSlug(photo.id)}/`, Astro.site),
+        name: photo.data.title,
+      })),
+    },
+  },
+];
 ---
 
 <Layout
-  title="Історичний Архів Міста"
-  description="Цифровий архів фотографій міста та околиць з датами, описами і географією пам'яті."
+  title={`${SITE_TAGLINE} · ${SITE_NAME}`}
+  description={pageDescription}
+  jsonLd={jsonLd}
 >
   <section class="shell meta-strip" aria-label="Технічна панель архіву">
     <div><span>ID</span><b>HST-01</b></div>
@@ -35,7 +75,7 @@ const decades = [...new Set(photos.map((p) => p.data.decade))].sort();
       muted
       loop
       playsinline
-      preload="auto"
+      preload="metadata"
       poster="/video/banner-poster.jpg"
       aria-hidden="true"
     >
@@ -46,11 +86,12 @@ const decades = [...new Set(photos.map((p) => p.data.decade))].sort();
     <div class="hero-left">
       <p class="eyebrow">▸ ЦИФРОВА ПАМ'ЯТЬ</p>
       <h1>
-        ІСТОРІЯ МІСТА<br />
+        КРЕМЕНЕЦЬ І КРАЙ<br />
         <span>ЧЕРЕЗ</span> ФОТОАРХІВ
       </h1>
       <p class="lead">
-        Структурований архів твого міста та околиць: дати, місця, свідчення.
+        Старі фото й листівки Кременця, Кременеччини та Тернопільщини: {cityList}.
+        Дати, місця, свідчення.
       </p>
       <div class="hero-actions">
         <a href="#gallery" class="btn btn-accent">ВІДКРИТИ ГАЛЕРЕЮ →</a>
@@ -59,7 +100,7 @@ const decades = [...new Set(photos.map((p) => p.data.decade))].sort();
     </div>
     <aside class="hero-spec" aria-label="Специфікація архіву">
       <p><span>СТЕК</span><b>ASTRO / MD / GIT</b></p>
-      <p><span>ПУБЛІКАЦІЯ</span><b>GITHUB PAGES</b></p>
+      <p><span>ПУБЛІКАЦІЯ</span><b>VERCEL</b></p>
       <p><span>МЕДІА</span><b>GIT LFS</b></p>
       <p><span>ФОРМАТ</span><b>ФОТО + ІСТОРІЯ</b></p>
       <p class="spec-accent"><span>РЕЖИМ</span><b>ГОТОВО</b></p>
@@ -68,11 +109,11 @@ const decades = [...new Set(photos.map((p) => p.data.decade))].sort();
 
   <section class="ticker" aria-hidden="true">
     <div>
-      <span>АРХІВ · МІСТО · ПАМ'ЯТЬ</span>
+      <span>АРХІВ · КРАЙ · ПАМ'ЯТЬ</span>
       <span>///</span>
       <span>СТРІЧКА АКТИВНА</span>
       <span>///</span>
-      <span>АРХІВ · МІСТО · ПАМ'ЯТЬ</span>
+      <span>АРХІВ · КРАЙ · ПАМ'ЯТЬ</span>
       <span>///</span>
       <span>СТРІЧКА АКТИВНА</span>
     </div>
@@ -95,13 +136,20 @@ const decades = [...new Set(photos.map((p) => p.data.decade))].sort();
 
   <section id="gallery" class="shell grid" aria-label="Галерея світлин">
     {
-      photos.map((photo) => (
+      photos.map((photo, i) => (
         <a
           class="card"
           data-decade={photo.data.decade}
           href={`/photos/${toSlug(photo.id)}/`}
         >
-          <img src={photo.data.cover} alt={photo.data.title} loading="lazy" />
+          <img
+            src={photo.data.cover}
+            alt={`${photo.data.title} — ${photo.data.city}, ${photo.data.decade}`}
+            width={coverSizes[i]?.width}
+            height={coverSizes[i]?.height}
+            loading="lazy"
+            decoding="async"
+          />
           <div class="card-body">
             <p class="meta">
               [{photo.data.decade}] · {photo.data.city}

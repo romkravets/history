@@ -1,0 +1,25 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { SITE_NAME } from "../lib/site";
+---
+
+<Layout
+  title={`Сторінку не знайдено · ${SITE_NAME}`}
+  description="Такої сторінки в архіві немає. Поверніться до галереї старих фото Кременця та Тернопільщини."
+  noindex
+>
+  <section class="shell">
+    <div class="hero-page">
+      <p class="eyebrow">▸ ПОМИЛКА 404</p>
+      <h1>СТОРІНКУ<br /><span>НЕ ЗНАЙДЕНО</span></h1>
+      <p class="lead">
+        Можливо, адреса змінилась або галерею перенесли. Усі фото — в галереї
+        архіву.
+      </p>
+      <div class="hero-actions">
+        <a href="/" class="btn btn-accent">ДО ГАЛЕРЕЇ →</a>
+        <a href="/istoriya/" class="btn">ІСТОРІЯ КРЕМЕНЦЯ</a>
+      </div>
+    </div>
+  </section>
+</Layout>
