@@ -1,665 +1,566 @@
-# History Archive
+# Історичний архів Кременеччини
 
-![History Archive banner](public/photos/banner.png)
+![Банер архіву](public/photos/banner.png)
 
-An Astro-based static photo archive for documenting towns, landmarks, and
-local history. Photos and their metadata live in the repository as Markdown
-and static assets, so every story is versioned, reviewable, and deployed to
-Vercel (https://history-kremenets.vercel.app).
+Статичний сайт-фотоархів про історію міста та краю: галереї старих і сучасних
+фото, листівок, гравюр і карт з описами, підписами, джерелами, картою місць і
+хронологією історії міста.
 
-## Features
+**Живий сайт:** https://history-kremenets.vercel.app
 
-- Gallery of all photo stories on the home page.
-- Dedicated page with a lightbox viewer for every story.
-- Markdown content with structured frontmatter.
-- Automatic photo-story generation from an incoming folder.
-- Git LFS support for large image files.
-- Automatic deployment to Vercel after pushing to `main`.
-- SEO/GEO: sitemap, robots.txt, llms.txt, canonical, Open Graph and JSON-LD.
-- Optional remote LLM access through the server at `192.168.88.246`.
+Проєкт задуманий як **шаблон**: його можна розгорнути для будь-якого міста,
+села, району, родинного чи шкільного архіву. Усе — фото, тексти, історія змін —
+лежить у git-репозиторії, а рутинну роботу (сортування сотень фото, пошук
+дублікатів, підписи, чернетки описів) допомагає виконувати ШІ-асистент.
 
-## Quick Start
+---
 
-Requirements: Node.js `>=22.12.0` and npm.
+## Зміст
+
+1. [Що вміє сайт](#що-вміє-сайт)
+2. [Швидкий старт](#швидкий-старт)
+3. [Як влаштований проєкт](#як-влаштований-проєкт)
+4. [Формат галереї](#формат-галереї)
+5. [Додати фото вручну](#додати-фото-вручну)
+6. [Робота з ШІ покроково](#робота-з-ші-покроково)
+7. [Як запустити шаблон для свого архіву](#як-запустити-шаблон-для-свого-архіву)
+8. [Публікація, ліміти й розмір фото](#публікація-ліміти-й-розмір-фото)
+9. [SEO і GEO](#seo-і-geo)
+10. [Довідник команд](#довідник-команд)
+11. [Часті проблеми](#часті-проблеми)
+
+---
+
+## Що вміє сайт
+
+- **Галерея галерей** на головній — картки з обкладинкою, місцем, періодом і
+  описом; фільтр за епохами (До XIX ст., XIX ст., Початок XX ст., Міжвоєнний
+  час, 1940–1990-ті, Сучасні фото), що гортається в один ряд.
+- **Сторінка галереї** — опис, теги, сітка фото, лайтбокс (стрілки, Esc),
+  підписи окремих фото, перехід до попередньої/наступної галереї (кнопки й
+  стрілки клавіатури), посилання «На карті».
+- **Карта** (`/karta/`) — точки всіх галерей на OpenStreetMap, групування
+  близьких точок, картка з обкладинкою й переходом у галерею; точні й
+  приблизні місця розрізняються.
+- **Історія міста** (`/istoriya/`) — хронологія епох з джерелами.
+- **Про архів** (`/about/`) — опис проєкту й того, як він робиться.
+- **SEO/GEO** — sitemap, robots.txt, `llms.txt`, Open Graph з обкладинкою,
+  розмітка schema.org з місцем і координатами.
+- **Без сервера й бази даних** — статичні сторінки (Astro), хостинг на Vercel.
+
+**Стек:** Astro 7, TypeScript, Markdown-контент, Leaflet (карта), sharp
+(розміри й стиснення фото), Git LFS для зображень, Vercel для публікації,
+Python-скрипт для пошуку дублікатів.
+
+---
+
+## Швидкий старт
+
+Потрібно: **Node.js ≥ 22.12**, **npm**, **git** і **git-lfs**. Для перевірки
+дублікатів — ще **Python 3**.
 
 ```bash
+git clone https://github.com/romkravets/history.git
+cd history
+git lfs install && git lfs pull     # завантажити самі фото (вони в LFS)
 npm install
-npm run dev
+npm run dev                         # http://localhost:4321
 ```
 
-Open the local URL printed by Astro. Run the project checks with:
+Перевірка перед публікацією:
 
 ```bash
-npm run check
-npm run build
+npm run check    # типи й схема контенту — має бути 0 errors
+npm run build    # повна збірка в dist/
 ```
 
-## Project Structure
+Для скрипта пошуку дублікатів (один раз):
+
+```bash
+python3 -m venv .venv
+.venv/bin/pip install -r scripts/requirements.txt
+```
+
+---
+
+## Як влаштований проєкт
 
 ```text
-src/content/photos/*.md     # Photo-story metadata and text
-public/photos/*             # Photo assets served by the site
-photos-incoming/*           # Folders waiting to be imported
-scripts/add-photo-story.mjs # Photo-story import tool
+src/
+  content/
+    photos/*.md          ← одна галерея = один Markdown-файл (метадані + текст)
+    history/*.md         ← епохи для сторінки «Історія»
+  content.config.ts      ← схема полів (що обов'язкове, які типи)
+  lib/site.ts            ← назва сайту, місто, координати, області, епохи фільтра
+  layouts/Layout.astro   ← шапка, меню, <head>: SEO, Open Graph, schema.org
+  pages/
+    index.astro          ← головна: статистика, банер, фільтр, картки
+    photos/[slug].astro  ← сторінка галереї, лайтбокс, перехід між галереями
+    karta.astro          ← карта
+    istoriya.astro       ← хронологія
+    about.astro          ← про архів
+    404.astro, robots.txt.ts, llms.txt.ts
+  styles/global.css      ← палітра (CSS-змінні на початку файлу) і всі стилі
+public/
+  photos/<slug>/         ← фото галереї: cover.jpg, 1.jpg, 2.jpg, …
+  video/                 ← відео-банер головної
+scripts/
+  audit-photos.py        ← пошук дублікатів і аркуші мініатюр
+  add-photo-story.mjs    ← створити НОВУ галерею з папки
+  append-photos.mjs      ← дописати фото в НАЯВНУ галерею
+  prepare-photo-stories.mjs ← підготувати папки з Google Диска (опис з .docx/.txt)
+photos-incoming/         ← «вхідна зона» для імпорту (у .gitignore)
+CLAUDE.md, AGENTS.md     ← інструкції для ШІ-агентів, що працюють у репо
+docs/remote-llm.md       ← опційно: власний LLM-сервер і orchestrator
 ```
 
-## Add a Photo Story
+**Головне правило:** сайт будується з `src/content/photos/*.md` і
+`public/photos/<slug>/`. Усі скрипти лише створюють або доповнюють ці файли —
+їх завжди можна відкрити й виправити руками.
 
-### Import from a local Google Drive folder
+---
 
-With Google Drive for Desktop installed, prepare photos directly from its
-local path. Each folder may contain images and `description.txt`,
-`description.md`, or a `.docx` file:
+## Формат галереї
+
+`src/content/photos/kremenets-churches.md`:
+
+```markdown
+---
+title: "Храми Кременця"
+date: 2026-10-03                 # дата для сортування (для старих фото — орієнтовна)
+city: "Кременець"
+area: "Церкви, костели, монастирі"      # необов'язково
+decade: "сучасні фото"           # вільний текст періоду: "1930-ті", "XIX ст. і сучасні фото"…
+description: "1–2 речення для картки і пошуковиків."
+location:                        # точка на карті; або `location: false` — не показувати
+  lat: 50.0961
+  lng: 25.7261
+  approximate: true              # пунктирна точка «місце приблизне»
+cover: "/photos/kremenets-churches/cover.jpg"
+images:
+  - "/photos/kremenets-churches/1.jpg"
+  - "/photos/kremenets-churches/2.jpg"
+captions:                        # необов'язково: підписи окремих фото
+  "/photos/kremenets-churches/cover.jpg": "Базиліка святих Ігнатія Лойоли і Станіслава Костки"
+  "/photos/kremenets-churches/1.jpg": "Костел Святого Станіслава"
+tags:
+  - "Кременець"
+  - "храми"
+---
+
+Довший текст історії. Підтримується Markdown: підзаголовки `## Історія`,
+списки, посилання. Наприкінці бажано розділ `## Джерела` з посиланнями.
+```
+
+Що з цього виходить на сайті:
+
+| Поле | Де використовується |
+|---|---|
+| `title`, `description` | картка, заголовок сторінки, `<title>`, Open Graph |
+| `decade` | бейдж на картці; автоматично розкладається в **епохи фільтра** (`erasOf` у `src/lib/site.ts`) |
+| `city` | картка; область для schema.org береться з `REGION_OVERRIDES` |
+| `location` | точка на `/karta/`, посилання «На карті», координати в schema.org |
+| `captions` | `alt` фото, підказка, лічильник у лайтбоксі, schema.org `ImageObject` |
+| `cover` | обкладинка картки, прев'ю в Facebook/Telegram |
+
+---
+
+## Додати фото вручну
+
+### Нова галерея
+
+1. Створіть папку й покладіть фото:
+   ```bash
+   mkdir -p photos-incoming/my-story
+   cp photos-incoming/meta.example.json photos-incoming/my-story/meta.json
+   ```
+2. Заповніть `meta.json`:
+   ```json
+   {
+     "slug": "kremenets-market-square",
+     "title": "Ринкова площа Кременця",
+     "date": "1930-01-01",
+     "city": "Кременець",
+     "area": "Ринкова площа",
+     "decade": "Міжвоєнний період",
+     "description": "Коротко для картки.",
+     "story": "Довший текст під фото.",
+     "tags": ["Кременець", "Ринкова площа"],
+     "cover": "postcard-1.jpg",
+     "captions": { "postcard-1.jpg": "Krzemieniec. Stary rynek" },
+     "location": { "lat": 50.0964, "lng": 25.7243, "approximate": true }
+   }
+   ```
+   `slug` — латиницею з дефісами, стане адресою `/photos/<slug>/`.
+3. Перевірте план і імпортуйте:
+   ```bash
+   npm run photos:add -- --source photos-incoming/my-story --dry-run
+   npm run photos:add -- --source photos-incoming/my-story
+   ```
+4. `npm run check && npm run build`, перегляньте на `npm run dev`.
+
+### Дописати фото в наявну галерею
 
 ```bash
-npm run photos:prepare -- --source "/path/to/Google Drive/photos" --dry-run
-npm run photos:prepare -- --source "/path/to/Google Drive/photos"
+# усі фото з папки, без підписів
+npm run photos:append -- --slug kremenets-churches --source ./нові-фото --dry-run
+npm run photos:append -- --slug kremenets-churches --source ./нові-фото
+
+# вибрані фото з підписами — через JSON-список
+npm run photos:append -- --slug kremenets-churches --list list.json
+```
+
+`list.json`:
+
+```json
+[
+  { "file": "/шлях/до/IMG_0001.jpg", "caption": "Покровська церква" },
+  { "file": "/шлях/до/IMG_0007.jpg", "caption": "" }
+]
+```
+
+Фото більші за 1600 px зменшуються автоматично (для карт: `--max 2400`).
+
+### Папки з Google Диска з описом у .docx
+
+Якщо в кожній папці на Диску лежать фото й `опис.docx` / `description.txt`:
+
+```bash
+npm run photos:prepare -- --source "/шлях/до/Google Drive/папка" --dry-run
+npm run photos:prepare -- --source "/шлях/до/Google Drive/папка"
 npm run photos:add -- --source photos-incoming
 ```
 
-The preparation step copies only supported images to `photos-incoming`,
-creates `meta.json` from the folder name and description, and leaves the
-Google Drive folder unchanged. A year in the folder name, such as
-`Кременець 1995`, is used for the date and decade.
+> ⚠️ Якщо в папці є підпапки, `photos:prepare` обробляє **лише підпапки** —
+> фото з кореня пропускаються. Для змішаних папок краще ШІ-процес нижче.
 
-Create a folder with one or more images and a `meta.json` file:
+---
 
-```bash
-mkdir -p photos-incoming/my-story
-cp photos-incoming/meta.example.json photos-incoming/my-story/meta.json
+## Робота з ШІ покроково
+
+Так архів наповнювався насправді: людина кидає шлях до «сирої» папки (часто
+сотні фото, перемішаних, з дублями й сміттям), а ШІ-агент
+([Claude Code](https://claude.com/claude-code) або інший агент з доступом до
+терміналу) розбирає її й пропонує результат. **Рішення й публікація — за
+людиною.**
+
+### Що потрібно
+
+- Claude Code (CLI або розширення VS Code), відкритий у папці репозиторію.
+- Google Drive for Desktop (або будь-яка локальна папка з фото).
+- Python-оточення для `audit-photos.py` (див. [Швидкий старт](#швидкий-старт)).
+- Файли `CLAUDE.md` / `AGENTS.md` у репо — агент читає їх автоматично і знає
+  правила проєкту.
+
+### Цикл роботи
+
+```text
+ папка з фото ──► 1. аудит ──► 2. перегляд ──► 3. сортування ──► 4. тексти
+                  дублікати     мініатюр        нова галерея     описи, підписи,
+                  проти архіву  очима ШІ        чи дописати      джерела, точка
+                                                                  на карті
+        ──► 5. check + build ──► 6. звіт людині ──► 7. людина: перевірка, commit, push
 ```
 
-The metadata fields are optional. Missing values receive defaults; `slug`,
-`title`, and the date can be generated automatically. Set `decade` explicitly
-when the historical period is not the current decade.
-
-Preview the import first:
+**Крок 1. Аудит.** Агент запускає:
 
 ```bash
-npm run photos:add -- --source photos-incoming/my-story --dry-run
+.venv/bin/python scripts/audit-photos.py "/шлях/до/папки" --out audit-out
 ```
 
-Import the photos and generate the Markdown entry:
+Скрипт порівнює кожне фото з усім архівом за перцептивним хешем (знаходить
+копії іншого розміру, обрізки, стиснення), шукає дублі всередині папки й
+будує аркуші мініатюр `audit-out/sheet_N.jpg` лише з **нових** фото.
+
+**Крок 2. Перегляд.** Агент відкриває аркуші мініатюр як зображення й
+розпізнає, що на фото: які це місця, які — сміття (меми, скриншоти, іконки,
+чужі міста), де пограничні випадки дубля. Сумнівні пари порівнює окремо
+«поруч».
+
+**Крок 3. Сортування.** Групує фото за темами: що дописати в наявні галереї
+(`photos:append`), з чого зробити нові (`photos:add`). Великі фото
+зменшуються, явні копії й сміття відкидаються.
+
+**Крок 4. Тексти.** Для кожної нової галереї — назва, опис, `decade`, теги,
+підписи окремих фото, точка на карті (координати з OpenStreetMap). Історичні
+факти агент шукає в мережі або в документах із папки (`.docx`, `.pdf`) і
+**наводить джерела** в розділі `## Джерела`. Що не вдалося підтвердити —
+позначає як орієнтовне або не пише.
+
+**Крок 5. Перевірка.** `npm run check` і `npm run build` — без помилок.
+
+**Крок 6. Звіт.** Агент коротко пише: що додано й куди, що відкинуто й
+чому, у чому він не впевнений (місця, дати, автори) — і просить підтвердити.
+
+**Крок 7. Людина** переглядає `npm run dev`, виправляє, що треба, і
+публікує:
 
 ```bash
-npm run photos:add -- --source photos-incoming/my-story
-```
-
-Use `--force` to regenerate an existing story. The importer places the cover
-at `public/photos/<slug>/cover.jpg`, additional images in the same folder,
-and creates `src/content/photos/<slug>.md`.
-
-After importing, run:
-
-```bash
-npm run check
-npm run build
-```
-
-Then commit the generated content and assets:
-
-```bash
-git add src/content/photos public/photos
-git commit -m "Add photo story: my-story"
+git add -A
+git commit -m "Нові галереї: …"
 git push
 ```
 
-GitHub Actions builds and deploys the site after a push to `main`.
+### Приклади запитів до агента
 
-## Git LFS
-
-Use Git LFS for image files:
-
-```bash
-git lfs install
-git lfs track "*.jpg" "*.jpeg" "*.png" "*.webp" "*.tif" "*.tiff"
-git add .gitattributes
-```
-
-## Remote LLM Server
-
-The project can use the local models or OpenAI-compatible API on the remote
-server. The helper scripts use `.orch.env` for the SSH and runtime settings.
-
-```bash
-npm run remote:ssh
-npm run remote:llm:start
-npm run remote:llm:check
-npm run remote:llm:prompt -- "Describe this archival photo"
-npm run remote:llm:stop
-```
-
-The separate `llm-server-orchestrator` repository can run implementation tasks
-against this project in an isolated Git worktree. Each run should be checked
-with `npm run check` and `npm run build` before approval.
-
-## Documentation
-
-For the complete Ukrainian instructions, continue with the Ukrainian section
-below. The importer also documents the full `meta.json` format in its source
-comment and in `photos-incoming/README.md`.
-
----
-
-## Українська версія
-
-Статичний фотоархів міста й околиць на `Astro + Markdown + Vercel + Git LFS`.
-
-## Що вже є
-
-- галерея на головній сторінці;
-- окрема сторінка для кожного фото;
-- контент зберігається у git як Markdown;
-- автоматичний деплой на Vercel;
-- SEO/GEO: sitemap, robots.txt, llms.txt, canonical, Open Graph, JSON-LD;
-- інтеграція з віддаленим локальним LLM-сервером через SSH tunnel.
-
-## Локальний запуск
-
-```bash
-npm install
-npm run dev
-```
-
-## Структура контенту
+Достатньо звичайної мови й шляху:
 
 ```text
-src/content/photos/*.md     # метадані фото
-public/photos/*             # оригінали/оптимізовані фото
+/Users/…/Google Drive/Архів/Ринкова площа — зроби окрему галерею «Ринкова площа»
 ```
 
-Приклад frontmatter для одного фото (те, що генерується автоматично скриптом нижче — вручну писати не треба):
+```text
+/Users/…/Google Drive/Архів/Різне — перевір, що вже є в базі,
+проаналізуй і розсортуй по галереях
+```
 
-```md
+```text
+/Users/…/Google Drive/Архів/Санна траса — знайди історію траси з джерелами
+і зроби нову галерею
+```
+
+```text
+перевір папку /Users/…/Архів/Кременець з усіма підпапками — чи все звідти вже на сайті
+```
+
+### Правила, які варто дати агенту (вже є в CLAUDE.md)
+
+- Порівнювати **з усім архівом** і всередині папки, включно з підпапками.
+- Не вигадувати фактів; факти — з джерелами; невпевнене — позначати.
+- Авторські фото (з водяним знаком) — лише з дозволом автора й з підписом.
+- Сміття не додавати; крихітні (≤ 300 px) — пропускати; > 1600 px — зменшувати.
+- Наприкінці — `check` + `build` і звіт; **не комітити й не пушити самому**.
+
+### Обмеження ШІ, про які треба пам'ятати
+
+- Агент може **помилитися з місцем** (схожі храми, палаци) — перевіряйте
+  підписи до незнайомих об'єктів.
+- **Дати** старих фото здебільшого орієнтовні.
+- Пошук дублікатів інколи пропускає копію (інша обрізка + тонування) або
+  навпаки — вважає різні фото схожими. Агент перевіряє пограничні випадки
+  на око, але фінальний погляд — за людиною.
+- Права на фото — відповідальність людини, не агента.
+
+### Опційно: свій сервер з локальними моделями
+
+Для запуску агентів на власному сервері з Ollama див.
+[docs/remote-llm.md](docs/remote-llm.md). Для звичайної роботи не потрібно.
+
 ---
-title: "Вокзал після дощу"
-date: 1988-04-12
-city: "Тернопіль"
-area: "Центр"
-decade: "1980-ті"
-description: "Вечірнє світло, перони й трамвайний шум."
-cover: "/photos/ternopil-station-1988/cover.jpg"
-images:
-	- "/photos/ternopil-station-1988/1.jpg"
-	- "/photos/ternopil-station-1988/2.jpg"
-tags: ["вокзал", "місто", "побут"]
+
+## Як запустити шаблон для свого архіву
+
+Приклади: архів свого міста чи села, району, школи, підприємства, родини,
+храму, тематичний (дерев'яні церкви області, вокзали, замки).
+
+### 1. Скопіювати проєкт
+
+```bash
+git clone https://github.com/romkravets/history.git my-archive
+cd my-archive
+rm -rf .git && git init && git lfs install   # почати з чистої історії
+```
+
+Видаліть чужий контент (або залиште кілька галерей як приклад, поки не
+додасте свої):
+
+```bash
+rm src/content/photos/*.md
+rm -rf public/photos/*/
+rm src/content/history/*.md
+```
+
+> Схема вимагає хоча б одну галерею для збірки — додайте першу одразу.
+
+### 2. Налаштувати назву, місто й регіон — `src/lib/site.ts`
+
+```ts
+export const SITE_NAME = "Історичний архів Бережан";
+export const SITE_TAGLINE = "Старі фото Бережан і Бережанщини";
+export const AUTHOR = { name: "Ваше ім'я", url: "https://github.com/you" };
+
+export const HOME_PLACE = {
+  name: "Бережани",
+  region: "Тернопільська область",
+  regionCode: "UA-61",          // ISO 3166-2 області
+  latitude: 49.4475,
+  longitude: 24.9364,
+};
+
+// міста архіву з іншої області (решта вважаються з `HOME_PLACE.region`)
+const REGION_OVERRIDES = { Львів: "Львівська область" };
+```
+
+Епохи фільтра (`ERAS` і `erasOf` там само) підходять для більшості
+українських архівів; за потреби змініть межі чи назви.
+
+### 3. Тексти, що згадують Кременець
+
+Пошукайте й замініть:
+
+```bash
+grep -rn "Кременець\|Кременеччин\|Тернопільщин" src/ --include=*.astro --include=*.ts
+```
+
+Основні місця: `src/pages/index.astro` (заголовок банера й підзаголовок),
+`src/layouts/Layout.astro` (опис за замовчуванням), `src/pages/about.astro`,
+`src/pages/istoriya.astro`, `src/pages/404.astro`, `src/pages/llms.txt.ts`.
+
+### 4. Історія міста — `src/content/history/*.md`
+
+Одна епоха = один файл:
+
+```markdown
+---
+order: 1
+era: "zasnuvannya"           # якір в URL: /istoriya/#zasnuvannya
+title: "Заснування та ранні згадки"
+period: "До XIV ст."
+summary: "Одне-два речення для заголовка епохи."
+sources:
+  - title: "Назва джерела"
+    url: "https://…"
 ---
 
-Коротка історія кадру, джерело або коментар свідка.
+Текст епохи.
 ```
 
-## Як додати фото в галерею на головній сторінці
+Якщо історія не потрібна — приберіть пункт «Історія» з меню в
+`src/layouts/Layout.astro` і видаліть `src/pages/istoriya.astro`.
 
-Галерея на `/` (файл `src/pages/index.astro`) автоматично показує **всі** записи
-з `src/content/photos/`, у зворотньому хронологічному порядку. Щоб додати нове
-фото — не редагуй `index.astro` напряму, а додай новий запис у контент, і воно
-з'явиться в галереї само.
+### 5. Вигляд
 
-Рекомендований спосіб — скрипт `scripts/add-photo-story.mjs`, який сам розкладає
-фото по потрібних папках і генерує Markdown-запис.
+- **Кольори** — CSS-змінні на початку `src/styles/global.css` (`--bg`,
+  `--accent` тощо; поруч у коментарях — контраст, тримайте ≥ 4,5:1).
+- **Відео-банер** — `public/video/banner.mp4`, `banner.webm`,
+  `banner-poster.jpg` (або замініть на фото в `src/pages/index.astro`).
+- **Favicon** — `public/favicon.svg`, `public/favicon.ico`.
+- **Картинка за замовчуванням для соцмереж** — параметр `image` у
+  `src/layouts/Layout.astro`.
 
-### Крок за кроком
+### 6. Адреса сайту
 
-1. Створи підпапку в `photos-incoming/`, наприклад:
+У `astro.config.mjs` змініть типову адресу або задайте змінну середовища
+`SITE_URL` у Vercel (потрібно для canonical, sitemap, Open Graph):
 
-   ```bash
-   mkdir -p photos-incoming/lviv-market-1995
-   ```
-
-2. Поклади туди фото (`.jpg`, `.jpeg`, `.png`, `.webp` — скільки завгодно штук).
-
-3. Скопіюй туди шаблон опису і заповни його:
-
-   ```bash
-   cp photos-incoming/meta.example.json photos-incoming/lviv-market-1995/meta.json
-   ```
-
-   Обов'язкові поля: `slug` (латиницею, унікальний), `title`, `date`
-   (`YYYY-MM-DD`), `city`, `decade`, `description`. Необов'язкові: `area`,
-   `story`, `tags`, `cover` (яке саме фото зробити обкладинкою — інакше
-   візьме перше за іменем файлу).
-
-4. Перевір план, нічого поки не змінюючи:
-
-   ```bash
-   npm run photos:add -- --source photos-incoming/lviv-market-1995 --dry-run
-   ```
-
-5. Якщо все виглядає правильно — застосуй по-справжньому:
-
-   ```bash
-   npm run photos:add -- --source photos-incoming/lviv-market-1995
-   ```
-
-6. Перевір результат локально:
-
-   ```bash
-   npm run dev
-   ```
-
-   Нове фото має з'явитись першим у галереї на `/` (сортування за датою).
-
-7. Закомить і запуш:
-
-   ```bash
-   git add src/content/photos public/photos
-   git commit -m "Додати фото-історію: lviv-market-1995"
-   git push
-   ```
-
-   Після push у `main` Vercel сам збере й задеплоїть сайт.
-
-### Додати декілька фото-історій за раз
-
-Створи декілька підпапок (кожна зі своїм `meta.json`) просто в
-`photos-incoming/` і вкажи в `--source` саму цю папку — скрипт знайде й
-обробить кожну підпапку окремо, продовжуючи навіть якщо одна з них містить
-помилку (звітує окремо по кожній):
-
-```bash
-npm run photos:add -- --source photos-incoming --dry-run
-npm run photos:add -- --source photos-incoming
+```js
+const site = env.SITE_URL ?? "https://my-archive.vercel.app";
 ```
 
-Повний опис формату `meta.json` і всіх прапорців скрипта — в коментарі на
-початку `scripts/add-photo-story.mjs`, і в `photos-incoming/README.md`.
+### 7. Опублікувати
+
+1. Створіть репозиторій на GitHub і запуште проєкт (`git lfs` має бути
+   увімкнений **до** першого коміту з фото).
+2. На [vercel.com](https://vercel.com) → **Add New Project** → оберіть
+   репозиторій. Framework визначиться як Astro, нічого міняти не треба.
+3. У налаштуваннях проєкту Vercel увімкніть **Git LFS**
+   (Settings → Git → Git Large File Storage).
+4. Налаштуйте **Deployment Retention** (див. нижче).
+5. Додайте сайт у [Google Search Console](https://search.google.com/search-console)
+   і [Bing Webmaster Tools](https://www.bing.com/webmasters), подайте
+   `https://<ваш-сайт>/sitemap-index.xml`.
 
-## Git LFS для фото
+### 8. Оновіть інструкції для ШІ
 
-1. Встановити LFS один раз:
+У `CLAUDE.md` / `AGENTS.md` замініть назву міста й, за потреби, правила
+(наприклад, мову описів, обов'язковість джерел, політику щодо авторських фото).
 
-```bash
-git lfs install
-```
+---
 
-2. Ініціалізувати трекінг (якщо ще не зроблено):
+## Публікація, ліміти й розмір фото
 
-```bash
-git lfs track "*.jpg" "*.jpeg" "*.png" "*.webp" "*.tif" "*.tiff"
-git add .gitattributes
-```
+Після `git push` у `main` Vercel сам збирає й публікує сайт (1–3 хв).
 
-## Публікація на Vercel
+**Кожен пуш — це повний деплой з усіма фото**, навіть якщо змінено один
+рядок коду. На безкоштовних тарифах це впирається в ліміти:
 
-Сайт: https://history-kremenets.vercel.app
+| Ліміт | Безкоштовно | Що його витрачає |
+|---|---|---|
+| Vercel Deployment Storage | 10 ГБ | кожен деплой ≈ розмір `public/photos` |
+| GitHub LFS сховище | 10 ГБ | усі версії фото в LFS |
+| GitHub LFS трафік | 10 ГБ/міс | завантаження фото при збірках і клонуваннях |
 
-Після push у `main` Vercel сам збирає сайт (`npm run build`) і публікує `dist/`.
-Адреса для canonical/sitemap/og береться з `SITE_URL` (типово — адреса Vercel);
-якщо підключиш власний домен, задай `SITE_URL` у змінних середовища Vercel.
+Що робити:
 
-## SEO та GEO
+- **Vercel → Settings → Deployment Retention**: зберігати production-деплої
+  ~30 днів, скасовані/помилкові — 1 день/тиждень. Поточний робочий деплой не
+  видаляється.
+- **Об'єднуйте зміни** — краще один пуш на кілька розборів, ніж пуш після
+  кожної папки. Локально все видно на `npm run dev`.
+- **Тримайте фото легкими**: довга сторона ≤ 1600 px (карти ≤ 2400 px).
+  Скрипти імпорту зменшують великі фото автоматично.
+- Коли архів виросте за кілька ГБ — варто винести фото в окреме сховище
+  (наприклад, Cloudflare R2), щоб пуш коду важив мегабайти.
 
-Усе генерується автоматично з контенту — нічого вручну оновлювати не треба:
+Перевірити обсяг: `du -sh public/photos`.
 
-- `/sitemap-index.xml` — карта сайту (`@astrojs/sitemap`);
-- `/robots.txt` — дозволяє індексацію і вказує sitemap;
-- `/llms.txt` — опис сайту та список галерей для ШІ-асистентів;
-- у `<head>` кожної сторінки — canonical, Open Graph/Twitter (прев'ю з обкладинкою
-  галереї), гео-мітки та JSON-LD (`WebSite`, `CollectionPage`, `ImageGallery` з
-  місцем і областю, `BreadcrumbList`, `Article` з джерелами для історії).
+---
 
-Назва, регіон і координати — у `src/lib/site.ts`. Якщо додаєш місто не з
-Тернопільщини, впиши його область у `REGION_OVERRIDES`.
+## SEO і GEO
 
-## Віддалений LLM-сервер для розробки (192.168.88.246)
+Генерується автоматично з контенту:
 
-Сервер можна використовувати як dev-ресурс для локальних моделей (Ollama або OpenAI-compatible API), а не як хостинг архіву.
+- `/sitemap-index.xml`, `/robots.txt`;
+- `/llms.txt` — опис сайту й список галерей для ШІ-асистентів;
+- у `<head>` кожної сторінки: canonical, Open Graph/Twitter (прев'ю — обкладинка
+  галереї), гео-мітки;
+- schema.org JSON-LD: `WebSite`, `Person`, `CollectionPage` (головна),
+  `ImageGallery` з місцем, областю й координатами (галерея), `BreadcrumbList`,
+  `Article` з джерелами (історія), `Map` (карта);
+- `alt` фото з підписів, `width/height` у `<img>` (без «стрибків» верстки).
 
-### 1) Відкрити SSH shell
+Що найбільше впливає на пошук: **конкретні `title` і `description`**
+(«Ринкова площа Кременця, листівки 1930-х», а не «Фото») і **підписи окремих
+фото** в `captions`.
 
-```bash
-npm run remote:ssh
-```
+---
 
-### 2) Підняти SSH tunnel до LLM API
+## Довідник команд
 
-Швидкий варіант (background + health-check однією командою):
+| Команда | Що робить |
+|---|---|
+| `npm run dev` | локальний сайт на http://localhost:4321 |
+| `npm run check` | перевірка типів і схеми контенту |
+| `npm run build` | збірка в `dist/` |
+| `npm run preview` | перегляд зібраного `dist/` |
+| `npm run photos:audit -- "<папка>"` | пошук дублікатів і мініатюри (потрібні pillow, imagehash, numpy) |
+| `npm run photos:add -- --source <папка> [--dry-run] [--force]` | створити галерею з папки з `meta.json` |
+| `npm run photos:append -- --slug <галерея> (--source <папка> \| --list <json>) [--max 1600] [--dry-run]` | дописати фото в наявну галерею |
+| `npm run photos:prepare -- --source <папка> [--dry-run]` | підготувати папки з описами `.docx`/`.txt` у `photos-incoming/` |
+| `npm run orch:*`, `npm run remote:*` | власний LLM-сервер — див. [docs/remote-llm.md](docs/remote-llm.md) |
+| `npm run sync:local` | залити `dist/` на свій сервер по rsync — там само |
 
-```bash
-npm run remote:llm:start
-```
+---
 
-Зупинити tunnel:
+## Часті проблеми
 
-```bash
-npm run remote:llm:stop
-```
+**`npm run check` пише про поле в `src/content/photos/…md`.** Найчастіше —
+лапки в тексті без екранування (`\"`) або неправильний відступ у
+`captions`/`location`. Відкрийте файл і порівняйте з
+[форматом галереї](#формат-галереї).
 
-Ручний режим (утримує поточний термінал відкритим):
+**Фото не відображаються після клонування.** Не завантажені з LFS:
+`git lfs install && git lfs pull`.
 
-```bash
-npm run remote:llm:tunnel
-```
+**Нова галерея не з'явилась на `npm run dev`.** Перезапустіть dev-сервер — Astro
+не завжди помічає файли, що з'явились «ззовні».
 
-За замовчуванням це прокидає:
+**Галерея не на карті.** Немає поля `location` або воно `false`. Координати
+зручно взяти з [openstreetmap.org](https://www.openstreetmap.org) (правий клік
+→ «Показати адресу»).
 
-- `localhost:11434` (твій Mac) -> `127.0.0.1:11434` (сервер)
+**Галерея потрапила не в ту епоху фільтра.** Епохи визначаються з тексту
+`decade` (функція `erasOf` у `src/lib/site.ts`). Уточніть `decade`
+(наприклад, «1930-ті» замість «старі фото») або розширте `erasOf`.
 
-Можна перевизначити порти:
+**Кирилиця в назвах файлів з macOS «не знаходиться».** macOS зберігає назви в
+Unicode NFD. Скрипти нормалізують це; у власних скриптах використовуйте
+`unicodedata.normalize("NFC", …)`.
 
-```bash
-LLM_LOCAL_PORT=11435 LLM_REMOTE_PORT=11434 npm run remote:llm:tunnel
-```
+---
 
-### 3) Перевірити endpoint
+## Автор
 
-```bash
-npm run remote:llm:check
-```
-
-### 4) Надіслати промпт прямо з термінала
-
-```bash
-npm run remote:llm:prompt -- "Сформуй короткий опис архівного фото вокзалу 1988 року українською мовою"
-```
-
-Або з файлу (зручно для довгих інструкцій):
-
-```bash
-npm run remote:llm:prompt -- --file prompts/archive-story.txt
-```
-
-Аналіз конкретного локального файлу (файл передається в prompt як контекст):
-
-```bash
-npm run remote:llm:prompt -- "Проаналізуй цей файл і дай список ризиків" --context-file CLAUDE.md
-```
-
-Кілька файлів одразу:
-
-```bash
-npm run remote:llm:prompt -- "Порівняй інструкції" --context-file CLAUDE.md --context-file AGENTS.md
-```
-
-Опційно можна змінити модель і system prompt:
-
-```bash
-LLM_MODEL=qwen2.5-coder:7b LLM_SYSTEM_PROMPT="Ти лаконічний редактор архіву" npm run remote:llm:prompt -- "Створи title і 5 tags для фото"
-```
-
-Після цього агенти/скрипти можуть звертатись до локального URL:
-
-- `http://127.0.0.1:11434/api/tags` (Ollama)
-- або `http://127.0.0.1:11434/v1/models` (OpenAI-compatible)
-
-## Опційно: синк архіву на локальний веб-сервер
-
-Скрипт: `scripts/sync-to-local.sh`
-
-```bash
-REMOTE_HOST=192.168.88.246 REMOTE_USER=adminr REMOTE_PATH=/var/www/history-archive npm run sync:local
-```
-
-Скрипт робить:
-
-1. `npm run build`
-2. `rsync dist/` на твій сервер по SSH
-
-Вимоги:
-
-- сервер має приймати SSH доступ;
-- встановлений `rsync` на Mac і сервері;
-- бажано SSH ключ без пароля для автоматизації.
-
-## Агентний workflow (Copilot/Claude/інший агент)
-
-Рекомендований цикл:
-
-1. Кладеш фото в `photos-incoming/<назва>/` разом із заповненим `meta.json`
-   (шаблон: `photos-incoming/meta.example.json`)
-2. Просиш агента виконати `npm run photos:add -- --source photos-incoming/<назва>`
-   (скрипт `scripts/add-photo-story.mjs` сам розкладає фото і генерує
-   Markdown у `src/content/photos/...` — детально в розділі
-   ["Як додати фото в галерею"](#як-додати-фото-в-галерею-на-головній-сторінці) вище)
-3. Агент запускає `npm run check` і `npm run build`
-4. Коміт у git
-5. Автодеплой на Vercel або `npm run sync:local` для локального стенду
-
-## Orchestrator: керування з Mac, виконання на сервері
-
-Ти можеш керувати командами з Mac (Copilot або Claude Code), але виконувати їх на сервері, щоб використовувати серверні CPU/RAM/моделі.
-
-### Швидкий старт за 1 хвилину
-
-1. Відкрий UI-майстер:
-
-npm run orch:ui
-
-2. У меню:
-
-- 2. вкажи SSH і шляхи на сервері
-- 3. вкажи джерело orchestrator:
-  - або ORCH_GIT_URL (git URL),
-  - або ORCH_LOCAL_DIR (локальна папка, яку синкнемо на сервер)
-- 4. Setup orchestrator on server
-- 1. Set mode = remote
-
-3. Запускай через єдину команду:
-
-npm run orch:auto -- apply-plan --task "Add one photo story"
-
-Якщо щось не працює, запусти діагностику:
-
-npm run orch:doctor
-
-Де зберігаються налаштування цього репозиторію:
-
-- файл [history/.orch.env.example](history/.orch.env.example) як шаблон
-- твій реальний файл [history/.orch.env](history/.orch.env) (ігнорується git)
-
-### Локальне виконання (на Mac)
-
-```bash
-npm run orch -- apply-plan --task "Add one photo story"
-```
-
-### Remote виконання (команда з Mac -> виконується на сервері)
-
-1. Підготувати orchestrator на сервері:
-
-ORCH_GIT_URL=git@github.com:<org>/llm-orchestrator.git npm run orch:remote:setup
-
-Або без git URL (через sync локальної папки orchestrator):
-
-ORCH_LOCAL_DIR=/Users/romkravets/Documents/GitHub/llm-orchestrator npm run orch:remote:setup
-
-2. Запускати команди remote:
-
-npm run orch:remote -- apply-plan --task "Add one photo story"
-npm run orch:remote -- --output json review-diff --task "Review before publish"
-
-### Важливі env-перемінні для remote
-
-- `REMOTE_HOST` (default `192.168.88.246`)
-- `REMOTE_USER` (default `hermes-agent`)
-- `SSH_PORT` (default `22`)
-- `REMOTE_PROJECT_DIR` (default `/home/hermes-agent/projects/history`)
-- `REMOTE_ORCH_DIR` (default `/home/hermes-agent/projects/llm-orchestrator`)
-
-Приклад з перевизначенням шляху проекту на сервері:
-
-REMOTE_PROJECT_DIR=/home/hermes-agent/projects/history npm run orch:remote -- run-task --task "Release checklist"
-
-### Вибір інструмента керування
-
-- Copilot у VS Code: запускаєш ті ж `npm run orch:*` команди у терміналі.
-- Claude Code: запускаєш ті ж `npm run orch:*` команди у Claude Code terminal.
-
-Тобто точка керування однакова, відрізняється лише клієнт, а виконання може бути local або remote за вибором.
-
-## Детальна інструкція: команда за командою
-
-Нижче інструкція саме під поточний стан сервера:
-
-- SSH працює
-- на сервері ще немає Node.js
-- repo history ще не клоновано
-
-### Етап 0. Один раз на Mac
-
-1. Переконайся, що ти в repo history:
-
-cd /Users/romkravets/Documents/GitHub/history
-
-2. Переконайся, що оркестратор є локально:
-
-ls /Users/romkravets/Documents/GitHub/llm-orchestrator
-
-3. Перевір локальні налаштування:
-
-npm run orch:doctor
-
-Якщо хочеш підключити цей самий orchestrator до іншого репозиторію, просто скопіюй ті самі `scripts/orch*.sh`, `package.json`-скрипти та свій `.orch.env`, а потім зміни `REMOTE_PROJECT_DIR` / `ORCH_CONFIG_FILE` під новий repo.
-
-### Етап 1. Підготувати сервер (Node.js + папка проекту)
-
-1. Підключись до сервера:
-
-npm run remote:ssh
-
-2. Встанови Node.js через nvm (без sudo):
-
-export NVM_DIR="$HOME/.nvm"
-curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-source "$HOME/.nvm/nvm.sh"
-nvm install --lts
-nvm alias default lts/*
-node -v
-npm -v
-
-3. Якщо `history` вже клонований на сервері, просто перейди в його папку.
-   Якщо ні — клонуй його один раз у будь-який зручний шлях.
-
-   Приклад для вже існуючого clone:
-
-cd /home/hermes-agent/projects/history
-
-4. Постав залежності history на сервері:
-
-npm install
-
-Примітка: якщо repo вже існує, цей крок лише оновить залежності.
-Якщо git URL приватний, переконайся, що ssh-ключі на сервері мають доступ.
-
-### Етап 2. Підготувати orchestrator на сервері
-
-Варіант A (рекомендовано, якщо `llm-orchestrator` вже є на Mac і сервері потрібна копія): sync з Mac
-
-cd /Users/romkravets/Documents/GitHub/history
-ORCH_LOCAL_DIR=/Users/romkravets/Documents/GitHub/llm-orchestrator npm run orch:remote:setup
-
-Варіант B: git clone / pull на сервері за `ORCH_GIT_URL`
-
-cd /Users/romkravets/Documents/GitHub/history
-ORCH_GIT_URL=git@github.com:<org>/llm-orchestrator.git npm run orch:remote:setup
-
-### Етап 3. Увімкнути remote-режим у цьому repo
-
-1. Відкрий UI:
-
-npm run orch:ui
-
-2. Далі:
-
-- 1. Set mode = remote
-- 2. Перевір REMOTE_HOST і REMOTE_PROJECT_DIR
-- 4. Setup orchestrator on server (запускай, якщо треба оновити orchestrator на сервері)
-- 6. Run doctor checks
-
-3. Перевір діагностику:
-
-npm run orch:doctor
-
-Очікувано має бути ok для ssh, remote project dir, remote orchestrator dir.
-
-Якщо `history` вже клонований на сервері, то головне правило таке:
-
-1. У `.orch.env` вистав `REMOTE_PROJECT_DIR` на реальний шлях цього клонованого repo, наприклад `/home/hermes-agent/projects/history`.
-2. Не роби окремий clone крок, якщо папка вже існує.
-3. Запускай `npm run orch:auto ...` або `npm run orch:remote ...`.
-
-### Етап 4. Щоденна робота (одна точка входу)
-
-Всі команди запускай через auto:
-
-npm run orch:auto -- apply-plan --task "Add one photo story"
-npm run orch:auto -- --output json review-diff --task "Review before publish"
-npm run orch:auto -- run-task --task "Release checklist"
-
-### Етап 5. Коли потрібен локальний режим
-
-1. Перемкни mode у UI (1 -> local), або зміни .orch.env:
-
-ORCH_MODE=local
-
-2. Запускай ті самі команди:
-
-npm run orch:auto -- apply-plan --task "Add one photo story"
-
-## Схема роботи всієї збірки
-
-1. Керування:
-
-- Copilot terminal або Claude Code terminal на Mac
-
-2. Диспетчер режиму:
-
-- scripts/orch-auto.sh читає .orch.env
-- ORCH_MODE=local -> scripts/orch.sh
-- ORCH_MODE=remote -> scripts/orch-remote.sh
-
-3. Виконання:
-
-- local: llm-orchestrator працює на Mac
-- remote: llm-orchestrator запускається на сервері по SSH
-
-4. Модельний шар:
-
-- provider hermes або ollama
-- fallback hermes -> ollama при помилці hermes
-
-5. Результати:
-
-- текстовий режим для людини
-- json режим для CI/автоматизації
-
-## Як використовувати в CI
-
-Приклад логіки:
-
-1. На CI runner (або self-hosted) викликаєш remote-режим.
-2. Береш --output json.
-3. Парсиш поле ok/fallbackUsed/response.
-4. Фейлиш pipeline, якщо знайдено critical issue за твоїм правилом.
-
-Практичний шаблон:
-
-npm run orch:auto -- --output json review-diff --task "Pre-merge review"
-
-## Що покращити далі
-
-1. Додати команду orch:remote:bootstrap:
-
-- автоінсталяція nvm/node
-- auto clone history
-- auto setup orchestrator
-
-2. Додати output strict-schema для review-diff:
-
-- findings масив з severity/code/file/line
-- простий парсинг у CI
-
-3. Додати профілі .orch.env для кількох repo:
-
-- .orch.history.env
-- .orch.seo-anal.env
-- перемикач через ORCH_CONFIG_FILE
-
-4. Додати remote health command:
-
-- перевірка node/hermes/ollama
-- latency та короткий smoke prompt
-
-5. Додати locking для remote setup:
-
-- щоб одночасні запуски не ламали install/build
+Роман Кравець — [github.com/romkravets](https://github.com/romkravets).
+Фото належать їхнім авторам; авторські серії публікуються з дозволу і з
+зазначенням імені.

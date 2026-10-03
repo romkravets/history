@@ -26,7 +26,9 @@
     "sync:local": "bash scripts/sync-to-local.sh",
     "photos:prepare": "node scripts/prepare-photo-stories.mjs",
     "photos:add": "node scripts/add-photo-story.mjs",
-    "astro": "astro"
+    "astro": "astro",
+    "photos:append": "node scripts/append-photos.mjs",
+    "photos:audit": "python3 scripts/audit-photos.py"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

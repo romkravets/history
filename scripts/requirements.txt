@@ -1,0 +1,4 @@
+# для scripts/audit-photos.py
+pillow
+imagehash
+numpy

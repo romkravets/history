@@ -10,12 +10,41 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 
 ## Agent Workflow For This Repository
 
-When assisting with this archive project:
+The main task in this repo: the user gives a path to a raw photo folder
+(usually Google Drive, often with subfolders, duplicates and junk) and asks to
+add it to the archive. Full human-facing description: README → «Робота з ШІ
+покроково». Follow these rules:
 
-1. Add image files under `public/photos/<slug>/`.
-2. Create one markdown card per photo story in `src/content/photos/*.md`.
-3. Validate with `npm run check` and `npm run build`.
-4. For remote LLM development server, use:
+1. **Audit first.** `.venv/bin/python scripts/audit-photos.py "<folder>" --out audit-out`
+   (create `.venv` from `scripts/requirements.txt` if missing). It compares every
+   image, including subfolders, against `public/photos` by perceptual hash, lists
+   in-folder duplicates and renders `audit-out/sheet_N.jpg` thumbnail sheets of
+   NEW images. Distance ≤ 10 = already in archive; 11–14 = check visually.
+2. **Look at the sheets** (Read the images). Identify places; drop junk (memes,
+   web screenshots, icons, puzzles, unrelated towns), tiny images (≤ 300 px) and
+   in-folder duplicates (keep the larger one). Compare borderline pairs side by side.
+3. **Sort by theme.** Append to existing galleries with
+   `npm run photos:append -- --slug <slug> --list list.json` (supports captions),
+   create new ones with `npm run photos:add -- --source photos-incoming/<slug>`
+   and a `meta.json` (see `scripts/add-photo-story.mjs` header). Images > 1600 px
+   are downscaled automatically (maps: `--max 2400`).
+4. **Texts.** Ukrainian. Title, description, `decade`, tags, per-photo `captions`,
+   `location` (coordinates from OpenStreetMap/Nominatim; `approximate: true` if not
+   exact; `location: false` for galleries not tied to one place). Do not invent
+   facts: research, cite sources in a `## Джерела` section, mark uncertain things
+   as approximate or leave them out. Read `.docx`/`.pdf` from the folder if present.
+5. **Authored photos** (watermarks, named series) — only with the author's
+   permission, which the user must confirm; credit the author in title/description.
+6. **Validate:** `npm run check` (0 errors) and `npm run build`.
+7. **Report** to the user: what was added where, what was skipped and why, what
+   you are unsure about. **Do not commit or push** — the user does that.
+   Remind that every push redeploys all photos on Vercel (storage limits), so
+   batching several imports into one push is better.
+
+For a new city/archive based on this template see README → «Як запустити
+шаблон для свого архіву» (settings live in `src/lib/site.ts`).
+
+Optional: remote LLM development server (details in `docs/remote-llm.md`):
 
 ```bash
 npm run remote:ssh

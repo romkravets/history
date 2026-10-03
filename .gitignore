@@ -40,3 +40,7 @@ photos-incoming/*
 # raw/unoptimized source video (use public/video/banner.* instead)
 src/assets/videobanner.mov
 .vercel
+
+# результати scripts/audit-photos.py і локальне Python-оточення
+audit-out/
+.venv/
