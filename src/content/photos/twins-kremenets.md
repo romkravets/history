@@ -14,9 +14,11 @@ images:
   - "/photos/twins-kremenets/5.jpg"
   - "/photos/twins-kremenets/6.jpg"
   - "/photos/twins-kremenets/7.jpg"
+  - "/photos/twins-kremenets/8.jpg"
 captions:
   "/photos/twins-kremenets/6.jpg": "Будинок «Близнюки» взимку"
   "/photos/twins-kremenets/7.jpg": "Будинок «Близнюки»"
+  "/photos/twins-kremenets/8.jpg": "Будинок «Близнюки» з боку двору, 2017"
 tags:
   - "Близнюки"
   - "Кременець"

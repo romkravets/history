@@ -117,6 +117,10 @@ images:
   - "/photos/kremenets-historic-collection/108.jpg"
   - "/photos/kremenets-historic-collection/109.jpg"
   - "/photos/kremenets-historic-collection/110.jpg"
+  - "/photos/kremenets-historic-collection/111.png"
+  - "/photos/kremenets-historic-collection/112.png"
+  - "/photos/kremenets-historic-collection/113.jpg"
+  - "/photos/kremenets-historic-collection/114.jpg"
 captions:
   "/photos/kremenets-historic-collection/96.jpg": "Кременецький замок на малюнку Яна Казимира Вільчинського з «Альбому Віленського» (1845–1875)"
   "/photos/kremenets-historic-collection/97.png": "Синагога в Кременці на старому фото"
@@ -133,6 +137,10 @@ captions:
   "/photos/kremenets-historic-collection/108.jpg": "Колегіум і собор на старому фото"
   "/photos/kremenets-historic-collection/109.jpg": "Схил гори і місто на старому негативі"
   "/photos/kremenets-historic-collection/110.jpg": "Кременець на картині"
+  "/photos/kremenets-historic-collection/111.png": "Кременець. Гора Бони (фото Г. Поддембського)"
+  "/photos/kremenets-historic-collection/112.png": "Кременець: скелі на Дівочій горі, старе фото"
+  "/photos/kremenets-historic-collection/113.jpg": "Ангар під горою на старому фото"
+  "/photos/kremenets-historic-collection/114.jpg": "Інтер'єр храму на старому фото"
 tags:
   - "Кременець"
   - "архівні фото"
