@@ -1,0 +1,65 @@
+---
+title: "Вишневецький палац до 1939 року: інтер'єри, фасади й креслення"
+date: 1930-01-01
+city: "Вишнівець"
+area: "Палац Вишневецьких"
+decade: "1920–1930-ті і XVIII ст. (креслення)"
+description: "Вишневецький палац таким, яким він був до Другої світової війни: розкішні зали з гобеленами, портретна зала, камін, обладунки, а також старі фото фасадів і французькі креслення палацу."
+cover: "/photos/vyshnivets-palace-before-1939/cover.jpg"
+images:
+  - "/photos/vyshnivets-palace-before-1939/1.jpg"
+  - "/photos/vyshnivets-palace-before-1939/2.jpg"
+  - "/photos/vyshnivets-palace-before-1939/3.jpg"
+  - "/photos/vyshnivets-palace-before-1939/4.jpg"
+  - "/photos/vyshnivets-palace-before-1939/5.jpg"
+  - "/photos/vyshnivets-palace-before-1939/6.jpg"
+  - "/photos/vyshnivets-palace-before-1939/7.jpg"
+  - "/photos/vyshnivets-palace-before-1939/8.jpg"
+  - "/photos/vyshnivets-palace-before-1939/9.jpg"
+  - "/photos/vyshnivets-palace-before-1939/10.jpg"
+  - "/photos/vyshnivets-palace-before-1939/11.jpg"
+  - "/photos/vyshnivets-palace-before-1939/12.jpg"
+  - "/photos/vyshnivets-palace-before-1939/13.jpg"
+  - "/photos/vyshnivets-palace-before-1939/14.jpg"
+  - "/photos/vyshnivets-palace-before-1939/15.jpg"
+  - "/photos/vyshnivets-palace-before-1939/16.jpg"
+  - "/photos/vyshnivets-palace-before-1939/17.jpg"
+  - "/photos/vyshnivets-palace-before-1939/18.jpg"
+  - "/photos/vyshnivets-palace-before-1939/19.jpg"
+  - "/photos/vyshnivets-palace-before-1939/20.jpg"
+captions:
+  "/photos/vyshnivets-palace-before-1939/cover.jpg": "Палац Вишневецьких, 1923"
+  "/photos/vyshnivets-palace-before-1939/1.jpg": "Палац із колонадою, 1931"
+  "/photos/vyshnivets-palace-before-1939/2.jpg": "Палац у Вишнівці на старому фото"
+  "/photos/vyshnivets-palace-before-1939/3.jpg": "Брама палацу і шеренга військових"
+  "/photos/vyshnivets-palace-before-1939/4.jpg": "Палац і парк на старовинному малюнку"
+  "/photos/vyshnivets-palace-before-1939/5.jpg": "«Façade du côté de la Ville neuve» — креслення фасаду палацу"
+  "/photos/vyshnivets-palace-before-1939/6.jpg": "Креслення фасаду палацу"
+  "/photos/vyshnivets-palace-before-1939/7.jpg": "Креслення фасаду палацу, інший вигляд"
+  "/photos/vyshnivets-palace-before-1939/8.jpg": "Вишнівець. Інтер'єр замку, листівка"
+  "/photos/vyshnivets-palace-before-1939/9.jpg": "Портретна зала палацу"
+  "/photos/vyshnivets-palace-before-1939/10.jpg": "Камін у палаці"
+  "/photos/vyshnivets-palace-before-1939/11.jpg": "Зала з ліжком і різьбленим декором"
+  "/photos/vyshnivets-palace-before-1939/12.jpg": "Зала з гобеленовими шпалерами"
+  "/photos/vyshnivets-palace-before-1939/13.jpg": "Вітальня з меблями в стилі рококо"
+  "/photos/vyshnivets-palace-before-1939/14.jpg": "Зала з різьбленим годинником"
+  "/photos/vyshnivets-palace-before-1939/15.jpg": "Зала з позолоченими арками"
+  "/photos/vyshnivets-palace-before-1939/16.jpg": "Їдальня з люстрою"
+  "/photos/vyshnivets-palace-before-1939/17.jpg": "Кабінет із портретами"
+  "/photos/vyshnivets-palace-before-1939/18.jpg": "Зала зі скульптурою"
+  "/photos/vyshnivets-palace-before-1939/19.jpg": "Зала зі зброєю й обладунками"
+  "/photos/vyshnivets-palace-before-1939/20.jpg": "Темна зала з картинами"
+tags:
+  - "Вишнівець"
+  - "палац Вишневецьких"
+  - "інтер'єри"
+  - "старі фото"
+  - "креслення"
+  - "міжвоєнний період"
+---
+
+Ці фото показують Вишневецький палац до руйнувань XX століття. На знімках 1920–1930-х років — анфілада зал з гобеленовими шпалерами, меблі в стилі рококо, портретна зала, кабінет із картинами, зала зі зброєю та обладунками, різьблений камін.
+
+Поруч — старі фото палацу ззовні (зокрема 1923 і 1931 років), брама з шеренгою військових і французькі архітектурні креслення фасадів, одне з них підписане «Façade du côté de la Ville neuve» — «фасад з боку Нового міста».
+
+Сучасний вигляд палацу — в галереях «Вишнівецький палац: фасади, парк і територія» та «Вишнівецький палац: інтер'єри та мистецтво».

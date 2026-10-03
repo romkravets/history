@@ -35,6 +35,7 @@ images:
   - "/photos/vyshnivets-archive/26.jpg"
   - "/photos/vyshnivets-archive/27.png"
   - "/photos/vyshnivets-archive/28.png"
+  - "/photos/vyshnivets-archive/29.jpg"
 captions:
   "/photos/vyshnivets-archive/23.png": "Вишнівець. Вигляд на замок (фото Г. Поддембського)"
   "/photos/vyshnivets-archive/24.png": "Вишнівець. Замкове подвір'я"
@@ -42,6 +43,7 @@ captions:
   "/photos/vyshnivets-archive/26.jpg": "Вулиця з крамницями на старій листівці"
   "/photos/vyshnivets-archive/27.png": "Палац Вишневецьких з півдня, ліворуч православна церква"
   "/photos/vyshnivets-archive/28.png": "Іконостас церкви Св. Вознесіння у Вишнівці біля замку, збудованої 1533 р."
+  "/photos/vyshnivets-archive/29.jpg": "План палацу Вишневецьких і Мнішеків та укріплень"
 tags:
   - "Вишнівець"
   - "Вишневець"
