@@ -38,6 +38,7 @@ images:
   - "/photos/kremenets-today/29.jpg"
   - "/photos/kremenets-today/30.jpg"
   - "/photos/kremenets-today/31.jpg"
+  - "/photos/kremenets-today/32.jpg"
 captions:
   "/photos/kremenets-today/cover.jpg": "Кременець і колегіум з гори"
   "/photos/kremenets-today/1.jpg": "Центр Кременця з висоти"
@@ -71,6 +72,7 @@ captions:
   "/photos/kremenets-today/29.jpg": "Вулиця з кам'яним муром під Боною"
   "/photos/kremenets-today/30.jpg": "Вулиця з кам'яним муром"
   "/photos/kremenets-today/31.jpg": "Вечірні пагорби над Кременцем"
+  "/photos/kremenets-today/32.jpg": "Панорама Кременця з гори, 2016"
 tags:
   - "Кременець"
   - "місто"

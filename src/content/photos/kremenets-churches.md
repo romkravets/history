@@ -47,6 +47,8 @@ images:
   - "/photos/kremenets-churches/38.jpg"
   - "/photos/kremenets-churches/39.jpg"
   - "/photos/kremenets-churches/40.jpg"
+  - "/photos/kremenets-churches/41.jpg"
+  - "/photos/kremenets-churches/42.jpg"
 captions:
   "/photos/kremenets-churches/cover.jpg": "Базиліка святих Ігнатія Лойоли і Станіслава Костки"
   "/photos/kremenets-churches/1.jpg": "Костел Святого Станіслава"
@@ -78,6 +80,8 @@ captions:
   "/photos/kremenets-churches/38.jpg": "Грот із хрестом"
   "/photos/kremenets-churches/39.jpg": "Блакитний собор із зеленими банями"
   "/photos/kremenets-churches/40.jpg": "Храм із зеленим дахом і блакитною дзвіницею"
+  "/photos/kremenets-churches/41.jpg": "Блакитний собор із зеленими банями, 2016"
+  "/photos/kremenets-churches/42.jpg": "Костел святого Станіслава з гори"
 tags:
   - "Кременець"
   - "храми"

@@ -45,6 +45,11 @@ images:
   - "/photos/kremenets-lyceum/36.jpg"
   - "/photos/kremenets-lyceum/37.jpg"
   - "/photos/kremenets-lyceum/38.jpg"
+  - "/photos/kremenets-lyceum/39.jpg"
+  - "/photos/kremenets-lyceum/40.jpg"
+  - "/photos/kremenets-lyceum/41.jpg"
+  - "/photos/kremenets-lyceum/42.jpg"
+  - "/photos/kremenets-lyceum/43.jpg"
 captions:
   "/photos/kremenets-lyceum/cover.jpg": "Ансамбль колишнього єзуїтського колегіуму і собор"
   "/photos/kremenets-lyceum/1.jpg": "Собор і корпуси колегіуму"
@@ -85,6 +90,11 @@ captions:
   "/photos/kremenets-lyceum/36.jpg": "Колегіум і Бона на заході сонця"
   "/photos/kremenets-lyceum/37.jpg": "Собор колегіуму в риштуванні"
   "/photos/kremenets-lyceum/38.jpg": "Колегіум за старим парканом"
+  "/photos/kremenets-lyceum/39.jpg": "Ансамбль колегіуму з гори Бона, 2016"
+  "/photos/kremenets-lyceum/40.jpg": "Сад колегіуму з пам'ятником згори"
+  "/photos/kremenets-lyceum/41.jpg": "Подвір'я колегіуму й вежа собору"
+  "/photos/kremenets-lyceum/42.jpg": "Корпус колегіуму з аркадою і сходами"
+  "/photos/kremenets-lyceum/43.jpg": "Барокова брама до подвір'я колегіуму"
 tags:
   - "Кременець"
   - "Ліцей"

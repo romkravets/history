@@ -36,6 +36,8 @@ images:
   - "/photos/kremenets-castle-ruins/27.jpg"
   - "/photos/kremenets-castle-ruins/28.jpg"
   - "/photos/kremenets-castle-ruins/29.jpg"
+  - "/photos/kremenets-castle-ruins/30.jpg"
+  - "/photos/kremenets-castle-ruins/31.jpg"
 captions:
   "/photos/kremenets-castle-ruins/cover.jpg": "Панорама руїн Кременецького замку на горі Бона"
   "/photos/kremenets-castle-ruins/1.jpeg": "Вежа Кременецького замку"
@@ -67,6 +69,8 @@ captions:
   "/photos/kremenets-castle-ruins/27.jpg": "Барокова ваза з видом на Бону"
   "/photos/kremenets-castle-ruins/28.jpg": "Надбрамна вежа на заході сонця"
   "/photos/kremenets-castle-ruins/29.jpg": "Руїни замку і стежка"
+  "/photos/kremenets-castle-ruins/30.jpg": "Мур із зубцями і прапор на вершині Бони"
+  "/photos/kremenets-castle-ruins/31.jpg": "Зруйнований мур замку"
 tags:
   - "Кременець"
   - "Кременецький замок"

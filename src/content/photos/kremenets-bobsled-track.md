@@ -28,6 +28,7 @@ images:
   - "/photos/kremenets-bobsled-track/19.jpg"
   - "/photos/kremenets-bobsled-track/20.jpg"
   - "/photos/kremenets-bobsled-track/21.jpeg"
+  - "/photos/kremenets-bobsled-track/22.jpg"
 captions:
   "/photos/kremenets-bobsled-track/cover.jpg": "Санна траса в Кременці і сани на ній"
   "/photos/kremenets-bobsled-track/1.jpg": "Санна траса серед лісу"
@@ -51,6 +52,7 @@ captions:
   "/photos/kremenets-bobsled-track/19.jpg": "Діти біля жолоба траси"
   "/photos/kremenets-bobsled-track/20.jpg": "Дерев'яний віраж траси"
   "/photos/kremenets-bobsled-track/21.jpeg": "Жолоб траси серед лісу"
+  "/photos/kremenets-bobsled-track/22.jpg": "Майданчик біля санної траси з прапорами"
 tags:
   - "Кременець"
   - "санна траса"
