@@ -5,6 +5,9 @@ city: "Кременець"
 area: "Богоявленський монастир"
 decade: "сучасні фото"
 description: "Свято-Богоявленський монастир у Кременці — пам'ятка архітектури національного значення XVIII ст.: висока біла дзвіниця, храми із зеленими дахами, монастирське подвір'я та розписані інтер'єри."
+location:
+  lat: 50.10341
+  lng: 25.72653
 cover: "/photos/kremenets-bohoyavlensky-monastery/cover.jpg"
 images:
   - "/photos/kremenets-bohoyavlensky-monastery/1.jpg"

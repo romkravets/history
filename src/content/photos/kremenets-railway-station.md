@@ -5,6 +5,9 @@ city: "Кременець"
 area: "Залізнична станція"
 decade: "Перша половина XX ст. і сучасність"
 description: "Старі фото залізничної станції Кременця: будівля вокзалу, вагони й ешелони з військовими, автобус із пасажирами — та сучасна станція й автостанція міста."
+location:
+  lat: 50.12096
+  lng: 25.70985
 cover: "/photos/kremenets-railway-station/cover.jpg"
 images:
   - "/photos/kremenets-railway-station/1.jpg"

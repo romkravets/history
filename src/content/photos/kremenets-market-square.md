@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Ринкова площа, вулиця Широка, Ліцей"
 decade: "Кінець XIX ст. – міжвоєнний період"
 description: "Старі фото й листівки історичного центру Кременця: Ринкова площа, будинок «Близнюки», Ліцей із костелом, Миколаївський собор і Замкова гора (Бона) над містом."
+location:
+  lat: 50.09637
+  lng: 25.72434
+  approximate: true
 cover: "/photos/kremenets-market-square/cover.jpg"
 images:
   - "/photos/kremenets-market-square/1.jpg"

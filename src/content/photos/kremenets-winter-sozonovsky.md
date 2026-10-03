@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Місто, Замкова гора, колегіум"
 decade: "2018 рік, сучасні фото"
 description: "Зимовий Кременець на фото В. Созоновського (2018): засніжені храми й колегіум під горою Бона, панорами міста, парки в інеї та зимовий ліс."
+location:
+  lat: 50.0961
+  lng: 25.72608
+  approximate: true
 cover: "/photos/kremenets-winter-sozonovsky/cover.jpg"
 images:
   - "/photos/kremenets-winter-sozonovsky/1.jpg"

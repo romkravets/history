@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Місто, гора Бона, Ліцей"
 decade: "1930-ті"
 description: "Художні фото Кременця 1930-х років від Генрика Германовича — майстра польської пейзажної фотографії, який викладав фотографію в Кременецькому ліцеї: гора Бона в тумані й інеї, Ліцей, старі будинки й вулиці."
+location:
+  lat: 50.0961
+  lng: 25.72608
+  approximate: true
 cover: "/photos/kremenets-hermanowicz/cover.jpg"
 images:
   - "/photos/kremenets-hermanowicz/1.jpg"

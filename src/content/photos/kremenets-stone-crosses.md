@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Старе кладовище"
 decade: "сучасні фото"
 description: "Старе кладовище в Кременці з рядами кам'яних хрестів, що вросли в землю, і високим пам'ятним знаком на пагорбі."
+location:
+  lat: 50.10235
+  lng: 25.73246
+  approximate: true
 cover: "/photos/kremenets-stone-crosses/cover.jpg"
 images:
   - "/photos/kremenets-stone-crosses/1.jpg"

@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Кременецькі гори"
 decade: "1912–1940-ві і сучасні фото"
 description: "Підземна вугільна копальня в Кременці, що, за підписами старих фото, діяла в 1870–1952 роках: знімки 1912 і 1940 років, вхід до «Кременецької шахти № 1» та сучасний вигляд закинутих штолень."
+location:
+  lat: 50.0961
+  lng: 25.72608
+  approximate: true
 cover: "/photos/kremenets-coal-mine/cover.png"
 images:
   - "/photos/kremenets-coal-mine/1.png"

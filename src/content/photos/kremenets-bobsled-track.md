@@ -5,6 +5,9 @@ city: "Кременець"
 area: "Урочище Гниле озеро"
 decade: "1970-ті — 2020-ті, сучасні фото"
 description: "Єдина дерев'яна санна траса в Україні — у Кременці, в урочищі Гниле озеро. Тут виросли майже всі українські олімпійці-саночники; з 2023 року траса закрита."
+location:
+  lat: 50.10221
+  lng: 25.69972
 cover: "/photos/kremenets-bobsled-track/cover.jpg"
 images:
   - "/photos/kremenets-bobsled-track/1.jpg"

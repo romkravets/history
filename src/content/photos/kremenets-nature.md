@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Кременецькі гори"
 decade: "сучасні фото"
 description: "Природа довкола Кременця: вапнякові скелі й печери, соснові ліси та стежки Кременецьких гір, політ на параплані і ботанічний сад."
+location:
+  lat: 50.11836
+  lng: 25.7279
+  approximate: true
 cover: "/photos/kremenets-nature/cover.jpg"
 images:
   - "/photos/kremenets-nature/1.jpg"

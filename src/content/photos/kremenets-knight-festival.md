@@ -5,6 +5,9 @@ city: "Кременець"
 area: "Замкова гора (Бона)"
 decade: "сучасні фото"
 description: "Фестивалі на Замковій горі в Кременці: лицарські бої в обладунках біля надбрамної вежі, поєдинки на мечах, учасники в історичних костюмах і хороводи біля мурів."
+location:
+  lat: 50.09483
+  lng: 25.73068
 cover: "/photos/kremenets-knight-festival/cover.jpg"
 images:
   - "/photos/kremenets-knight-festival/1.jpg"

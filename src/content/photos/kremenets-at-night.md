@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Центр міста"
 decade: "сучасні фото"
 description: "Нічний Кременець: підсвічений собор колегіуму, вогні міста з висоти та вечірні вулиці."
+location:
+  lat: 50.0961
+  lng: 25.72608
+  approximate: true
 cover: "/photos/kremenets-at-night/cover.jpg"
 images:
   - "/photos/kremenets-at-night/1.jpg"

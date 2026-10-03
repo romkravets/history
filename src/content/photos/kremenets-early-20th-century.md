@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Місто та Замкова гора"
 decade: "Початок ХХ століття"
 description: "Історичні листівки та світлини Кременця з видами замку, міста, Дівочих скель, парку, магістрату та Волинського ліцею. Підписи зберегли історичну назву міста — Krzemieniec."
+location:
+  lat: 50.0961
+  lng: 25.72608
+  approximate: true
 cover: "/photos/kremenets-early-20th-century/cover.jpg"
 images:
   - "/photos/kremenets-early-20th-century/1.jpg"

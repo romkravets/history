@@ -1,14 +1,34 @@
 :root {
+  /* Поверхні — від найтемнішої до найсвітлішої */
   --bg: #1a1411;
+  --surface: #221a16;
+  --surface-2: #2b211c;
+  --surface-hover: #352821;
+
+  /* Текст. Контраст на --bg: fg 16.2:1, fg-soft 12.3:1, muted 7.8:1; на --surface-hover усе ≥ 6:1 */
   --fg: #f5f1e8;
-  --accent: #d97757;
+  --fg-soft: #ddd3c4;
+  --muted: #b3a898;
+  --dim: #6e6157;
+
+  /* Акцент (теракота). accent на --bg 6.4:1; accent-ink на accent 6.6:1 */
+  --accent: #e0805f;
+  --accent-strong: #ef9a7b;
   --accent-2: #b85a3e;
-  --accent-3: #e89b7f;
+  --accent-3: #f0ad94;
   --accent-ink: #1a0f0a;
-  --muted: #a89e8f;
-  --dim: #5c5048;
-  --border-c: rgba(245, 241, 232, 0.22);
+  --accent-soft: rgba(224, 128, 95, 0.14);
+
+  /* Лінії та фокус */
+  --border-c: rgba(245, 241, 232, 0.2);
+  --border-strong: rgba(245, 241, 232, 0.38);
   --stripe: rgba(245, 241, 232, 0.04);
+  --focus: #ffd8a8;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
 }
 
 * {
@@ -55,7 +75,7 @@ a {
   top: 0;
   z-index: 20;
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr auto;
   gap: 10px;
   align-items: center;
   padding: 10px 16px;
@@ -75,9 +95,20 @@ a {
   transition: 0.1s;
 }
 
+.top-nav {
+  display: flex;
+  gap: 6px;
+}
+
 .top-nav a:hover {
-  background: var(--fg);
-  color: var(--bg);
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
+}
+
+.top-nav a[aria-current="page"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
 }
 
 .brand {
@@ -95,22 +126,6 @@ a {
   width: 9px;
   height: 9px;
   background: var(--accent);
-}
-
-.header-cta {
-  padding: 9px 13px;
-  border: 1px solid var(--accent);
-  color: var(--accent);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  transition: 0.1s;
-}
-
-.header-cta:hover {
-  background: var(--accent);
-  color: var(--accent-ink);
 }
 
 main {
@@ -275,8 +290,8 @@ main {
 }
 
 .btn:hover {
-  background: var(--fg);
-  color: var(--bg);
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
 }
 
 .btn-accent {
@@ -286,7 +301,9 @@ main {
 }
 
 .btn-accent:hover {
-  background: var(--fg);
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+  color: var(--accent-ink);
 }
 
 .hero-spec p {
@@ -377,9 +394,24 @@ main {
   transition: 0.1s;
 }
 
-.card:hover {
-  background: var(--accent);
-  color: var(--accent-ink);
+.card:hover,
+.card:focus-visible {
+  background: var(--surface-hover);
+  border-color: var(--accent);
+}
+
+.card:hover h2,
+.card:focus-visible h2 {
+  color: var(--accent-3);
+}
+
+.card:hover .card-more,
+.card:focus-visible .card-more {
+  color: var(--accent-strong);
+}
+
+.card:hover img {
+  filter: saturate(1) contrast(1.05);
 }
 
 .card img {
@@ -416,10 +448,12 @@ main {
   margin: 10px 0 0;
   line-height: 1.65;
   font-size: 13px;
+  color: var(--fg-soft);
 }
 
 .card-more {
   margin-top: 12px;
+  color: var(--accent);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -623,8 +657,7 @@ main {
     gap: 8px;
   }
 
-  .top-nav,
-  .header-cta {
+  .top-nav {
     justify-self: start;
   }
 
@@ -802,16 +835,41 @@ main {
   }
 }
 
-.decade-filter {
+.decade-filter-wrap {
+  position: relative;
   margin-top: 20px;
+}
+
+/* затемнення країв підказує, що ряд можна гортати */
+.decade-filter-wrap::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 6px;
+  width: 40px;
+  pointer-events: none;
+  background: linear-gradient(to right, transparent, var(--bg));
+}
+
+.decade-filter {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: var(--dim) transparent;
+  padding-bottom: 6px;
+  padding-right: 40px;
 }
 
 .decade-filter button {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  white-space: nowrap;
   border: 1px solid var(--border-c);
-  background: transparent;
+  background: var(--surface);
   color: var(--fg);
   font-family: inherit;
   padding: 9px 12px;
@@ -823,15 +881,26 @@ main {
   transition: 0.1s;
 }
 
+.decade-filter button span {
+  margin-left: 6px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
 .decade-filter button:hover {
-  background: var(--fg);
-  color: var(--bg);
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
 }
 
 .decade-filter button.active {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--accent-ink);
+}
+
+.decade-filter button.active span {
+  color: var(--accent-ink);
+  opacity: 0.75;
 }
 
 .card.is-hidden {
@@ -842,4 +911,289 @@ main {
 img {
   max-width: 100%;
   height: auto;
+}
+
+/* Навігація між галереями */
+.photo-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar-pager {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+
+.topbar-pager a {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 36px;
+  border: 1px solid var(--border-c);
+  font-size: 16px;
+}
+
+.topbar-pager a:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.gallery-pager {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.pager-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--border-c);
+  background: var(--surface);
+  transition: 0.1s;
+  min-width: 0;
+}
+
+.pager-next {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.pager-link:hover {
+  background: var(--surface-hover);
+  border-color: var(--accent);
+}
+
+.pager-arrow {
+  font-size: 22px;
+  color: var(--accent);
+}
+
+.pager-text {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.pager-text small {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.pager-text b {
+  font-family: "Unbounded", sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.pager-link:hover .pager-text b {
+  color: var(--accent-3);
+}
+
+.pager-pos {
+  align-self: center;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+
+@media (max-width: 720px) {
+  .gallery-pager {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pager-pos {
+    display: none;
+  }
+
+  .pager-link {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .pager-text small {
+    display: none;
+  }
+
+  .pager-text b {
+    font-size: 0.74rem;
+    -webkit-line-clamp: 3;
+  }
+}
+
+/* Карта */
+.map-hero h1 {
+  margin: 10px 0 0;
+}
+
+.map-section {
+  margin-top: 18px;
+}
+
+.archive-map {
+  height: min(72vh, 680px);
+  min-height: 420px;
+  border: 1px solid var(--border-c);
+  background: var(--surface);
+}
+
+.map-note {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+}
+
+.map-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0 4px -1px 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--accent-ink);
+}
+
+.map-dot:first-child {
+  margin-left: 0;
+}
+
+.map-dot--approx,
+.map-pin--approx {
+  background: transparent !important;
+  border: 2px dashed var(--accent) !important;
+}
+
+.map-pin {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--accent-ink);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.map-cluster {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: "Unbounded", sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  box-shadow: 0 0 0 6px var(--accent-soft), 0 0 0 1px var(--accent-ink) inset;
+}
+
+.archive-map .leaflet-popup-content-wrapper,
+.archive-map .leaflet-popup-tip {
+  background: var(--surface-2);
+  color: var(--fg);
+  border-radius: 0;
+  border: 1px solid var(--border-strong);
+}
+
+.archive-map .leaflet-popup-content {
+  margin: 0;
+  width: 260px !important;
+}
+
+.archive-map .leaflet-popup-close-button {
+  color: var(--fg) !important;
+  background: rgba(26, 20, 17, 0.7);
+}
+
+.map-popup {
+  display: grid;
+  gap: 6px;
+  padding-bottom: 12px;
+  color: var(--fg) !important;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.map-popup img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  display: block;
+}
+
+.map-popup-meta {
+  padding: 0 12px;
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.map-popup b {
+  padding: 0 12px;
+  font-family: "Unbounded", sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.25;
+}
+
+.map-popup-more {
+  padding: 0 12px;
+  color: var(--accent-strong);
+  font-size: 11px;
+}
+
+.map-popup:hover b {
+  color: var(--accent-3);
+}
+
+.archive-map .leaflet-control-attribution {
+  background: rgba(26, 20, 17, 0.8);
+  color: var(--muted);
+}
+
+.archive-map .leaflet-control-attribution a {
+  color: var(--fg-soft);
+}
+
+.archive-map .leaflet-bar a {
+  background: var(--surface-2);
+  color: var(--fg);
+  border-color: var(--border-c);
+}
+
+.map-link {
+  color: var(--accent);
+}
+
+.map-link:hover {
+  color: var(--accent-strong);
+  text-decoration: underline;
+}
+
+.map-list {
+  margin-top: 16px;
+  line-height: 1.8;
+}
+
+/* Світлі тайли OSM перефарбовуються в темну тему сайту */
+.archive-map .map-tiles {
+  filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9) saturate(0.6);
 }

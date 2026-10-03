@@ -10,22 +10,37 @@ import {
 } from "../../lib/site";
 
 export async function getStaticPaths() {
-  const photos = await getCollection("photos");
-  return photos.map((photo) => ({
+  // той самий порядок, що й на головній: від найновіших
+  const photos = (await getCollection("photos")).sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+  );
+  const link = (p: (typeof photos)[number]) => ({
+    href: `/photos/${p.id.replace(/\.md$/, "")}/`,
+    title: p.data.title,
+  });
+  const at = (i: number) => photos[(i + photos.length) % photos.length]!;
+  return photos.map((photo, i) => ({
     params: { slug: photo.id.replace(/\.md$/, "") },
-    props: { photo },
+    props: {
+      photo,
+      prev: link(at(i - 1)),
+      next: link(at(i + 1)),
+      position: i + 1,
+      total: photos.length,
+    },
   }));
 }
 
-const { photo } = Astro.props;
+const { photo, prev, next, position, total } = Astro.props;
 const { Content } = await render(photo);
 
 const formatDate = new Intl.DateTimeFormat("uk-UA", {
   dateStyle: "long",
 });
 
-const { title, city, area, decade, description, cover, images, captions, tags } =
+const { title, city, area, decade, description, cover, images, captions, tags, location } =
   photo.data;
+const slug = photo.id.replace(/\.md$/, "");
 const region = regionOf(city);
 const allImages = [cover, ...images];
 const sizes = await Promise.all(allImages.map((src) => imageSize(src)));
@@ -49,6 +64,9 @@ const siteUrl = absoluteUrl("/", Astro.site);
 const place = {
   "@type": "Place",
   name: area ? `${city}, ${area}` : city,
+  ...(location
+    ? { geo: { "@type": "GeoCoordinates", latitude: location.lat, longitude: location.lng } }
+    : {}),
   address: {
     "@type": "PostalAddress",
     addressLocality: city,
@@ -100,7 +118,14 @@ const jsonLd = [
   jsonLd={jsonLd}
 >
   <article class="shell photo-article">
-    <a class="back-link" href="/">Повернутися до галереї</a>
+    <div class="photo-topbar">
+      <a class="back-link" href="/#gallery">← Усі галереї</a>
+      <div class="topbar-pager">
+        <a href={prev.href} title={`Попередня: ${prev.title}`} aria-label={`Попередня галерея: ${prev.title}`}>←</a>
+        <span>{position} / {total}</span>
+        <a href={next.href} title={`Наступна: ${next.title}`} aria-label={`Наступна галерея: ${next.title}`}>→</a>
+      </div>
+    </div>
     <header class="photo-header">
       <p class="eyebrow">{photo.data.city}{photo.data.area ? ` · ${photo.data.area}` : ""}</p>
       <h1>{photo.data.title}</h1>
@@ -108,6 +133,7 @@ const jsonLd = [
       <div class="meta-row">
         <span>{formatDate.format(photo.data.date)}</span>
         <span>{photo.data.decade}</span>
+        {location && <a class="map-link" href={`/karta/#${slug}`}>◉ На карті</a>}
         {
           photo.data.tags.length > 0 &&
             <span>{photo.data.tags.map((tag: string) => `#${tag}`).join(" ")}</span>
@@ -152,6 +178,24 @@ const jsonLd = [
     <section class="story">
       <Content />
     </section>
+
+    <nav class="gallery-pager" aria-label="Інші галереї">
+      <a class="pager-link pager-prev" href={prev.href} rel="prev">
+        <span class="pager-arrow" aria-hidden="true">←</span>
+        <span class="pager-text">
+          <small>Попередня галерея</small>
+          <b>{prev.title}</b>
+        </span>
+      </a>
+      <span class="pager-pos">{position} / {total}</span>
+      <a class="pager-link pager-next" href={next.href} rel="next">
+        <span class="pager-text">
+          <small>Наступна галерея</small>
+          <b>{next.title}</b>
+        </span>
+        <span class="pager-arrow" aria-hidden="true">→</span>
+      </a>
+    </nav>
   </article>
 
   <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Перегляд фото">
@@ -223,7 +267,14 @@ const jsonLd = [
       });
 
       window.addEventListener("keydown", (e) => {
-        if (!box.classList.contains("is-open")) return;
+        if (!box.classList.contains("is-open")) {
+          // поза лайтбоксом стрілки гортають галереї
+          const t = e.target;
+          if (t instanceof HTMLElement && /INPUT|TEXTAREA|SELECT/.test(t.tagName)) return;
+          if (e.key === "ArrowLeft") document.querySelector('a[rel="prev"]')?.click();
+          if (e.key === "ArrowRight") document.querySelector('a[rel="next"]')?.click();
+          return;
+        }
         if (e.key === "Escape") close();
         if (e.key === "ArrowLeft") show(current - 1);
         if (e.key === "ArrowRight") show(current + 1);

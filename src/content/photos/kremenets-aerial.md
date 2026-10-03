@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Замкова гора, Ліцей, центр міста"
 decade: "сучасні фото"
 description: "Аерофото Кременця: Замкова гора Бона з руїнами замку, ансамбль колишнього єзуїтського колегіуму (Ліцею) з собором і панорами міста з висоти."
+location:
+  lat: 50.0961
+  lng: 25.72608
+  approximate: true
 cover: "/photos/kremenets-aerial/cover.jpg"
 images:
   - "/photos/kremenets-aerial/1.jpg"

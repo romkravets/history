@@ -5,6 +5,9 @@ city: "Підгірці"
 area: "Підгорецький замок"
 decade: "Кінець XIX — 1930-ті"
 description: "Підгорецький замок на старих листівках і фото: фасади, бастеї, тераси, костел святого Йосипа та розкішні зали — лицарська, Золота, спальня короля Яна III Собеського."
+location:
+  lat: 49.94336
+  lng: 24.98361
 cover: "/photos/pidhirtsi-postcards/cover.jpg"
 images:
   - "/photos/pidhirtsi-postcards/1.jpg"

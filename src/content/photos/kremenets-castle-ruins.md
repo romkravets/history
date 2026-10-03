@@ -5,6 +5,9 @@ city: "Кременець"
 area: "Замкова гора (Бона)"
 decade: "сучасні фото"
 description: "Руїни Кременецького замку на горі Бона з землі: вежі, мури по периметру вершини, панорама замкового двору і вигляд гори з міста."
+location:
+  lat: 50.09483
+  lng: 25.73068
 cover: "/photos/kremenets-castle-ruins/cover.jpg"
 images:
   - "/photos/kremenets-castle-ruins/1.jpeg"

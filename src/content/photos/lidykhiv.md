@@ -5,6 +5,9 @@ city: "Лідихів"
 area: "Кременецький район"
 decade: "сучасні фото"
 description: "Село Лідихів на Кременеччині: Миколаївська церква, став, лідихівські краєвиди та осінній ліс."
+location:
+  lat: 50.01909
+  lng: 25.39408
 cover: "/photos/lidykhiv/cover.jpg"
 images:
   - "/photos/lidykhiv/1.jpg"

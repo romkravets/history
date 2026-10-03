@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Вулиці міста"
 decade: "сучасні фото"
 description: "Стара житлова забудова Кременця: дерев'яні будинки з ганками, кам'яниці, садиби з колонадами, занедбані будівлі та вулиці під горою Бона."
+location:
+  lat: 50.0961
+  lng: 25.72608
+  approximate: true
 cover: "/photos/kremenets-old-houses/cover.jpg"
 images:
   - "/photos/kremenets-old-houses/1.jpg"

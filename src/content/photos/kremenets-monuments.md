@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Місто"
 decade: "сучасні фото"
 description: "Пам'ятники, скульптури й пам'ятні знаки Кременця: статуї на старих постаментах, погруддя, обеліски, сад скульптур і вхід до міського парку."
+location:
+  lat: 50.0961
+  lng: 25.72608
+  approximate: true
 cover: "/photos/kremenets-monuments/cover.jpg"
 images:
   - "/photos/kremenets-monuments/1.jpg"

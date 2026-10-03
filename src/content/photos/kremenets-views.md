@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Місто та околиці"
 decade: "сучасні фото"
 description: "Сучасна добірка краєвидів Кременця та його пам'яток: панорами міста, Замкова гора, монастир, історична забудова й міські вулиці."
+location:
+  lat: 50.0961
+  lng: 25.72608
+  approximate: true
 cover: "/photos/kremenets-views/cover.jpg"
 images:
   - "/photos/kremenets-views/1.jpg"

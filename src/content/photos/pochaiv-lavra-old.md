@@ -5,6 +5,9 @@ city: "Почаїв"
 area: "Почаївська лавра"
 decade: "XIX — початок XX ст."
 description: "Почаївська лавра на акварелях, гравюрах, дореволюційних листівках і старих фото: собор і дзвіниця на пагорбі, ринок під лаврою, тераси, брами й інтер'єри храмів."
+location:
+  lat: 50.00537
+  lng: 25.50433
 cover: "/photos/pochaiv-lavra-old/cover.jpg"
 images:
   - "/photos/pochaiv-lavra-old/1.jpg"

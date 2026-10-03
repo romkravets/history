@@ -5,6 +5,9 @@ city: "Почаїв"
 area: "Кременецький район"
 decade: "XIX-XX ст"
 description: "Почаїв — місто в Україні, розташоване в Тернопільській області. Відоме своєю історією та релігійними пам'ятками, зокрема Почаївською лаврою."
+location:
+  lat: 50.00537
+  lng: 25.50433
 cover: "/photos/pochaiv/cover.jpg"
 images:
   - "/photos/pochaiv/1.jpg"

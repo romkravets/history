@@ -5,6 +5,9 @@ city: "Вишнівець"
 area: "Палац Вишневецьких"
 decade: "сучасні фото"
 description: "Сучасні фотографії внутрішніх просторів Вишнівецького палацу: зелена кімната, різьблені меблі, дерев'яний декор, скульптура та живопис."
+location:
+  lat: 49.89921
+  lng: 25.7388
 cover: "/photos/vyshnivets-palace-interiors/cover.jpg"
 images:
   - "/photos/vyshnivets-palace-interiors/1.jpg"

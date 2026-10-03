@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Місто і гора Бона"
 decade: "XIX ст."
 description: "Кременець на гравюрах і літографіях XIX століття: кольорова літографія «Види Волині», «Widok Krzemieńca», гора Бона на малюнку 1881 року та панорами міста."
+location:
+  lat: 50.0961
+  lng: 25.72608
+  approximate: true
 cover: "/photos/kremenets-old-engravings/cover.jpg"
 images:
   - "/photos/kremenets-old-engravings/1.jpg"

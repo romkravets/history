@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Місто, Замкова гора, колегіум"
 decade: "початок XX ст. і сучасність"
 description: "Кременець тоді й тепер: старі фото й листівки поруч із сучасними знімками з тих самих місць — будинки під Боною, стара вулиця, брама з вазонами, Замкова гора з висоти та колегіум."
+location:
+  lat: 50.0961
+  lng: 25.72608
+  approximate: true
 cover: "/photos/kremenets-then-and-now/cover.jpg"
 images:
   - "/photos/kremenets-then-and-now/1.jpg"

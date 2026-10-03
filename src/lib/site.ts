@@ -89,3 +89,29 @@ export async function imageSize(publicPath: string) {
   sizeCache.set(publicPath, size);
   return size ?? undefined;
 }
+
+/** Укрупнені епохи для фільтра на головній (галерея може належати до кількох). */
+export const ERAS = [
+  { key: "early", label: "До XIX ст." },
+  { key: "19c", label: "XIX ст." },
+  { key: "1900s", label: "Початок XX ст." },
+  { key: "interwar", label: "Міжвоєнний час" },
+  { key: "soviet", label: "1940–1990-ті" },
+  { key: "modern", label: "Сучасні фото" },
+] as const;
+
+export type EraKey = (typeof ERAS)[number]["key"];
+
+export function erasOf(decade: string): EraKey[] {
+  // римські числа бувають і латиницею, і кирилицею (Х), тож зводимо до латиниці
+  const d = decade.toLowerCase().replace(/х(?=[xхiіv\s.]|$)/g, "x").replace(/(?<=x)х/g, "x");
+  const eras = new Set<EraKey>();
+  if (/\bx(iv|v|vi|vii|viii)\b/.test(d)) eras.add("early");
+  if (/\bxix\b|18\d\d/.test(d)) eras.add("19c");
+  if (/початок xx|перша половина xx|до 1918|19[01]\d|\bxx\s*ст|xix\s*[—–-]\s*(початок\s*)?xx/.test(d))
+    eras.add("1900s");
+  if (/міжвоєн|19[23]\d/.test(d)) eras.add("interwar");
+  if (/19[4-9]\d/.test(d)) eras.add("soviet");
+  if (/сучасн|20[012]\d|різні роки/.test(d)) eras.add("modern");
+  return eras.size ? [...eras] : ["modern"];
+}

@@ -5,6 +5,9 @@ city: "Бережці"
 area: "Кременецький район"
 decade: "XIX ст. і сучасні фото"
 description: "Бережці — колишнє містечко над Іквою: палац на акварелі й малюнку Наполеона Орди, мисливський павільйон, каплиця, став і макові поля."
+location:
+  lat: 50.09663
+  lng: 25.60501
 cover: "/photos/berezhtsi/cover.png"
 images:
   - "/photos/berezhtsi/1.png"

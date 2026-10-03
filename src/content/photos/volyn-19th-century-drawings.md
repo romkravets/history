@@ -5,6 +5,7 @@ city: "Кременець"
 area: "Кременеччина, Волинь"
 decade: "XIX ст."
 description: "Волинь XIX століття на ілюстраціях із довідника О. Цинкаловського: волинянки, лірники, типи селян, залубні, волинська хата, а також розкопки в Бодаках біля Вишнівця."
+location: false
 cover: "/photos/volyn-19th-century-drawings/cover.png"
 images:
   - "/photos/volyn-19th-century-drawings/1.png"

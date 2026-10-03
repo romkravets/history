@@ -5,6 +5,9 @@ city: "Кременець"
 area: "Замкова гора (Бона)"
 decade: "сучасні фото"
 description: "Аерофото Замкової гори Бона в Кременці: руїни замку, надбрамна вежа, оборонні мури на вершині та краєвиди міста довкола в різні пори року."
+location:
+  lat: 50.09483
+  lng: 25.73068
 cover: "/photos/kremenets-bona-castle-aerial/cover.jpg"
 images:
   - "/photos/kremenets-bona-castle-aerial/1.jpg"

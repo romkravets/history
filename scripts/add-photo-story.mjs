@@ -21,7 +21,8 @@
  *     "story": "Довший текст під фото (необов'язково, інакше візьме description)",
  *     "tags": ["ринок", "львів"],            (необов'язково)
  *     "cover": "photo2.jpg",                 (необов'язково, інакше перший файл за іменем)
- *     "captions": { "photo2.jpg": "Ратуша" } (необов'язково: підписи окремих фото — для alt, лайтбокса і SEO)
+ *     "captions": { "photo2.jpg": "Ратуша" }, (необов'язково: підписи окремих фото — для alt, лайтбокса і SEO)
+ *     "location": { "lat": 50.096, "lng": 25.726, "approximate": true } (необов'язково: точка на карті /karta/)
  *   }
  *
  * Використання:
@@ -213,6 +214,14 @@ function processStoryFolder(dir, { dryRun, force }) {
     ...(meta.area ? [`area: "${yamlEscape(meta.area)}"`] : []),
     `decade: "${yamlEscape(meta.decade)}"`,
     `description: "${yamlEscape(meta.description)}"`,
+    ...(meta.location
+      ? [
+          "location:",
+          `  lat: ${Number(meta.location.lat)}`,
+          `  lng: ${Number(meta.location.lng)}`,
+          ...(meta.location.approximate ? ["  approximate: true"] : []),
+        ]
+      : []),
     `cover: "${publicCoverPath}"`,
     ...(publicImagePaths.length > 0
       ? ["images:", ...publicImagePaths.map((p) => `  - "${p}"`)]

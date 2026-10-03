@@ -5,6 +5,7 @@ city: "Кременець"
 area: "Волинська губернія, Кременеччина"
 decade: "XIX — XX ст."
 description: "Старі карти Волинської губернії та околиць Кременця: генеральна карта губернії з польським і російським титулом, топографічні аркуші й сучасна туристична карта міста."
+location: false
 cover: "/photos/old-maps-volhynia/cover.jpg"
 images:
   - "/photos/old-maps-volhynia/1.jpg"

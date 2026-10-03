@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Місто, Замкова гора, парки"
 decade: "2018 рік, сучасні фото"
 description: "Весняний Кременець на фото В. Созоновського: панорами міста й гори Бона, колегіум і храми серед квітучих дерев, магнолії, рододендрони, весняні скелі й ліси."
+location:
+  lat: 50.0961
+  lng: 25.72608
+  approximate: true
 cover: "/photos/kremenets-spring-sozonovsky/cover.jpg"
 images:
   - "/photos/kremenets-spring-sozonovsky/1.jpg"

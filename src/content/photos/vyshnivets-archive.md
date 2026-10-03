@@ -5,6 +5,10 @@ city: "Вишнівець"
 area: "Палац Вишневецьких і містечко"
 decade: "Початок XX ст. (орієнтовно)"
 description: "Архівні чорно-білі світлини Вишнівця: палац Вишневецьких, костел, панорами містечка та вулиці. Датування орієнтовне, за джерельною добіркою."
+location:
+  lat: 49.89921
+  lng: 25.7388
+  approximate: true
 cover: "/photos/vyshnivets-archive/cover.jpg"
 images:
   - "/photos/vyshnivets-archive/1.jpg"

@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Кременець і околиці"
 decade: "1990-ті — 2000-ні (за назвою папки)"
 description: "Краєвиди Кременця й околиць, пам'ятники та архітектура. Назва вихідної папки відносить добірку до 1990–2000-х років, але метадані окремих фото вказують на пізніші дати."
+location:
+  lat: 50.0961
+  lng: 25.72608
+  approximate: true
 cover: "/photos/kremenets-landmarks-1990s-2000s/cover.jpg"
 images:
   - "/photos/kremenets-landmarks-1990s-2000s/1.jpg"

@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Місто"
 decade: "сучасні фото"
 description: "Сучасний Кременець: панорами міста з гір, вулиці під горою Бона, старі кам'яниці, парки з квітниками, пам'ятники й амфітеатр."
+location:
+  lat: 50.0961
+  lng: 25.72608
+  approximate: true
 cover: "/photos/kremenets-today/cover.jpg"
 images:
   - "/photos/kremenets-today/1.jpg"

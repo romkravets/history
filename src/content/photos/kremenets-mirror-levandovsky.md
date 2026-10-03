@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Колегіум, храми, гора Бона, вулиці"
 decade: "сучасні фото"
 description: "Художня фотосерія Р. Левандовського «Дзеркало»: собор колегіуму, храми, гора Бона, пам'ятники й будинки Кременця, відображені в калюжах."
+location:
+  lat: 50.0961
+  lng: 25.72608
+  approximate: true
 cover: "/photos/kremenets-mirror-levandovsky/cover.jpg"
 images:
   - "/photos/kremenets-mirror-levandovsky/1.jpg"

@@ -5,6 +5,9 @@ city: "Вишнівець"
 area: "Палац Вишневецьких і парк"
 decade: "сучасні фото"
 description: "Сучасні фотографії палацових фасадів, брами, парку, сходів і господарського подвір'я Вишнівецького палацу."
+location:
+  lat: 49.89921
+  lng: 25.7388
 cover: "/photos/vyshnivets-palace-grounds/cover.jpg"
 images:
   - "/photos/vyshnivets-palace-grounds/1.jpg"

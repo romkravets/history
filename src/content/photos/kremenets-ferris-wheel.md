@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Міський парк"
 decade: "сучасні фото"
 description: "Старе колесо огляду в кременецькому міському парку: іржаві кабінки серед дерев, атракціони, а з висоти — краєвиди на Замкову гору, храми й дахи міста."
+location:
+  lat: 50.0961
+  lng: 25.72608
+  approximate: true
 cover: "/photos/kremenets-ferris-wheel/cover.jpg"
 images:
   - "/photos/kremenets-ferris-wheel/1.jpg"

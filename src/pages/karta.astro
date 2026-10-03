@@ -1,0 +1,163 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import { SITE_NAME, absoluteUrl } from "../lib/site";
+
+const photos = (await getCollection("photos")).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+
+const points = photos.flatMap((p) => {
+  const loc = p.data.location;
+  if (!loc) return [];
+  return [
+    {
+      slug: p.id.replace(/\.md$/, ""),
+      title: p.data.title,
+      city: p.data.city,
+      decade: p.data.decade,
+      cover: p.data.cover,
+      count: 1 + p.data.images.length,
+      lat: loc.lat,
+      lng: loc.lng,
+      approximate: loc.approximate,
+    },
+  ];
+});
+
+const places = new Set(points.map((p) => `${p.lat},${p.lng}`)).size;
+const offMap = photos.length - points.length;
+const pageUrl = absoluteUrl("/karta/", Astro.site);
+const siteUrl = absoluteUrl("/", Astro.site);
+const jsonLd = [
+  {
+    "@type": "Map",
+    "@id": `${pageUrl}#map`,
+    url: pageUrl,
+    name: "Карта фотоархіву Кременеччини",
+    inLanguage: "uk",
+    isPartOf: { "@id": `${siteUrl}#website` },
+    mapType: "https://schema.org/VenueMap",
+  },
+];
+---
+
+<Layout
+  title={`Карта: де зроблені фото · ${SITE_NAME}`}
+  description={`Інтерактивна карта архіву: ${points.length} галерей у ${places} місцях Кременеччини та Західної України. Натисніть на точку, щоб побачити фото й перейти до галереї.`}
+  jsonLd={jsonLd}
+>
+  <section class="shell">
+    <div class="hero-page map-hero">
+      <p class="eyebrow">▸ ГЕОГРАФІЯ АРХІВУ</p>
+      <h1>КАРТА<br /><span>ФОТО</span></h1>
+      <p class="lead">
+        {points.length} галерей у {places} місцях. Натисніть на точку, щоб
+        побачити обкладинку й перейти до галереї. Цифра в колі — скільки галерей
+        зібрано поруч; наблизьте карту або натисніть, щоб розгорнути.
+      </p>
+    </div>
+  </section>
+
+  <section class="shell map-section">
+    <div id="archive-map" class="archive-map" role="region" aria-label="Карта галерей"></div>
+    <p class="map-note">
+      <span class="map-dot" aria-hidden="true"></span> точне місце
+      <span class="map-dot map-dot--approx" aria-hidden="true"></span> приблизне: загальні
+      види міста або місце не вдалося визначити точно
+      {offMap > 0 && <> · ще {offMap} галереї (старі карти, реконструкції) не прив'язані до одного місця</>}
+    </p>
+
+    <noscript>
+      <ul class="map-list">
+        {points.map((p) => <li><a href={`/photos/${p.slug}/`}>{p.title}</a> — {p.city}</li>)}
+      </ul>
+    </noscript>
+  </section>
+
+  <script is:inline type="application/json" id="map-data" set:html={JSON.stringify(points)} />
+
+  <script>
+    import L from "leaflet";
+    import "leaflet.markercluster";
+    import "leaflet/dist/leaflet.css";
+    import "leaflet.markercluster/dist/MarkerCluster.css";
+
+    type Point = {
+      slug: string;
+      title: string;
+      city: string;
+      decade: string;
+      cover: string;
+      count: number;
+      lat: number;
+      lng: number;
+      approximate: boolean;
+    };
+
+    const el = document.getElementById("archive-map");
+    const data: Point[] = JSON.parse(document.getElementById("map-data")?.textContent || "[]");
+
+    if (el && data.length) {
+      const map = L.map(el, { scrollWheelZoom: false, worldCopyJump: false });
+      // колесо миші вмикається після кліку по карті, щоб сторінка нормально гортала
+      map.once("focus", () => map.scrollWheelZoom.enable());
+      map.on("click", () => map.scrollWheelZoom.enable());
+
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        className: "map-tiles",
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(map);
+
+      const escape = (s: string) =>
+        s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+
+      const icon = (approx: boolean) =>
+        L.divIcon({
+          className: "",
+          html: `<span class="map-pin${approx ? " map-pin--approx" : ""}"></span>`,
+          iconSize: [18, 18],
+          iconAnchor: [9, 9],
+          popupAnchor: [0, -10],
+        });
+
+      const cluster = L.markerClusterGroup({
+        showCoverageOnHover: false,
+        spiderfyDistanceMultiplier: 1.6,
+        maxClusterRadius: 40,
+        iconCreateFunction: (c) =>
+          L.divIcon({
+            className: "",
+            html: `<span class="map-cluster">${c.getChildCount()}</span>`,
+            iconSize: [40, 40],
+          }),
+      });
+
+      const bySlug = new Map<string, L.Marker>();
+      for (const p of data) {
+        const m = L.marker([p.lat, p.lng], { icon: icon(p.approximate), title: p.title, alt: p.title });
+        m.bindPopup(
+          `<a class="map-popup" href="/photos/${p.slug}/">
+            <img src="${p.cover}" alt="" loading="lazy" width="260" height="170" />
+            <span class="map-popup-meta">${escape(p.city)} · ${escape(p.decade)}</span>
+            <b>${escape(p.title)}</b>
+            <span class="map-popup-more">${p.count} фото${p.approximate ? " · місце приблизне" : ""} — відкрити галерею →</span>
+          </a>`,
+          { maxWidth: 280, minWidth: 260 },
+        );
+        bySlug.set(p.slug, m);
+        cluster.addLayer(m);
+      }
+      map.addLayer(cluster);
+      map.fitBounds(cluster.getBounds(), { padding: [30, 30] });
+
+      // /karta/#slug — відкрити конкретну галерею (посилання «На карті»)
+      const target = bySlug.get(decodeURIComponent(location.hash.slice(1)));
+      if (target) {
+        cluster.zoomToShowLayer(target, () => target.openPopup());
+        el.scrollIntoView({ block: "center" });
+      }
+    }
+  </script>
+</Layout>

@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Місто, гора Бона, Ліцей"
 decade: "1920–1930-ті"
 description: "Кременець міжвоєнної доби на польських фотолистівках і світлинах: Widok ogólny, Liceum, Góra Bony, Góry Dziewicze, вулиця Широка, василіанський монастир, старі будинки й зимові види, марка до 130-ліття Словацького."
+location:
+  lat: 50.0961
+  lng: 25.72608
+  approximate: true
 cover: "/photos/kremenets-polish-postcards/cover.jpg"
 images:
   - "/photos/kremenets-polish-postcards/1.jpg"

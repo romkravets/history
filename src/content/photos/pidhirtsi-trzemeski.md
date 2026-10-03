@@ -5,6 +5,9 @@ city: "Підгірці"
 area: "Підгорецький замок"
 decade: "XIX ст."
 description: "Підгорецький замок і костел святого Йосипа на старих фото львівського фотографа Е. Тшемеського (E. Trzemeski): фасади, алея, колона та розкішні інтер'єри замкових зал."
+location:
+  lat: 49.94336
+  lng: 24.98361
 cover: "/photos/pidhirtsi-trzemeski/cover.jpg"
 images:
   - "/photos/pidhirtsi-trzemeski/1.jpg"

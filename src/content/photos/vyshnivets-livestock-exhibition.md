@@ -5,6 +5,9 @@ city: "Вишнівець"
 area: "Містечко"
 decade: "1920–1930-ті"
 description: "Чотири архівні світлини виставки племінних тварин у Вишнівці, датовані в джерелі 1920–1930-ми роками."
+location:
+  lat: 49.90194
+  lng: 25.75108
 cover: "/photos/vyshnivets-livestock-exhibition/cover.jpg"
 images:
   - "/photos/vyshnivets-livestock-exhibition/1.jpg"

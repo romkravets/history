@@ -32,6 +32,13 @@ const {
 } = Astro.props;
 
 const canonical = absoluteUrl(Astro.url.pathname, Astro.site);
+const path = Astro.url.pathname;
+const NAV = [
+  { href: "/", label: "Галерея", active: path === "/" || path.startsWith("/photos/") },
+  { href: "/karta/", label: "Карта", active: path.startsWith("/karta") },
+  { href: "/istoriya/", label: "Історія", active: path.startsWith("/istoriya") },
+  { href: "/about/", label: "Про архів", active: path.startsWith("/about") },
+];
 const siteUrl = absoluteUrl("/", Astro.site);
 const ogImage = absoluteUrl(image, Astro.site);
 const ogImageSize = await imageSize(image);
@@ -128,11 +135,14 @@ const graph = [
         АРХІВ ІСТОРІЇ
       </a>
       <nav class="top-nav" aria-label="Головна навігація">
-        <a href="/">[01] ГАЛЕРЕЯ</a>
-        <a href="/istoriya/">[02] ІСТОРІЯ</a>
-        <a href="/about/">[03] ПРО ІДЕЮ</a>
+        {
+          NAV.map((item) => (
+            <a href={item.href} aria-current={item.active ? "page" : undefined}>
+              {item.label}
+            </a>
+          ))
+        }
       </nav>
-      <a class="header-cta" href="/">ВІДКРИТИ АРХІВ</a>
     </header>
     <main>
       <slot />

@@ -13,6 +13,17 @@ const photos = defineCollection({
     description: z.string(),
     cover: z.string(),
     images: z.array(z.string()).default([]),
+    // Точка на карті; false — галерея не прив'язана до одного місця (карти, реконструкції)
+    location: z
+      .union([
+        z.literal(false),
+        z.object({
+          lat: z.number(),
+          lng: z.number(),
+          approximate: z.boolean().default(false),
+        }),
+      ])
+      .optional(),
     // Підписи окремих фото: { "/photos/<slug>/3.jpg": "Церква Анни Праведної" }
     captions: z.record(z.string(), z.string()).default({}),
     tags: z.array(z.string()).default([]),

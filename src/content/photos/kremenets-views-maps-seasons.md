@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Місто та околиці"
 decade: "різні роки, переважно сучасні фото"
 description: "Кременець у різні пори року та на старих картах: засніжене місто, захід сонця над Боною, макові поля, замок, колегіум, стара вулиця й карти околиць."
+location:
+  lat: 50.0961
+  lng: 25.72608
+  approximate: true
 cover: "/photos/kremenets-views-maps-seasons/cover.png"
 images:
   - "/photos/kremenets-views-maps-seasons/1.png"

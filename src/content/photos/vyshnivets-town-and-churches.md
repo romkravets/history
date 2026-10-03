@@ -5,6 +5,9 @@ city: "Вишнівець"
 area: "Містечко і околиці"
 decade: "сучасні фото"
 description: "Сучасні фотографії Вишнівця: дерев'яні церкви, краєвиди над озером, вулиці з бруківкою, люди та знахідки біля палацу."
+location:
+  lat: 49.90194
+  lng: 25.75108
 cover: "/photos/vyshnivets-town-and-churches/cover.jpg"
 images:
   - "/photos/vyshnivets-town-and-churches/1.jpg"

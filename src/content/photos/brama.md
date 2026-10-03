@@ -5,6 +5,9 @@ city: "Кременець"
 area: "Замкова гора"
 decade: "XIX-XX ст"
 description: "Вхід на Замкову гору через браму. На фото видно частину стіни та ворота, що ведуть до замку."
+location:
+  lat: 50.09483
+  lng: 25.73068
 cover: "/photos/brama/cover.jpg"
 images:
   - "/photos/brama/1.jpg"

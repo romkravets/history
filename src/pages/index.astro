@@ -5,7 +5,9 @@ import {
   SITE_NAME,
   SITE_TAGLINE,
   absoluteUrl,
+  ERAS,
   citiesByWeight,
+  erasOf,
   imageSize,
   pluralUk,
 } from "../lib/site";
@@ -19,9 +21,14 @@ const formatDate = new Intl.DateTimeFormat("uk-UA", {
 });
 
 const toSlug = (id: string) => id.replace(/\.md$/, "");
+const photoCount = photos.reduce((n, p) => n + 1 + p.data.images.length, 0);
 const cityCount = new Set(photos.map((p) => p.data.city)).size;
-const decadeCount = new Set(photos.map((p) => p.data.decade)).size;
-const decades = [...new Set(photos.map((p) => p.data.decade))].sort();
+const eraCount = ERAS.filter((e) => photos.some((p) => erasOf(p.data.decade).includes(e.key))).length;
+const eraCounts = new Map<string, number>();
+for (const p of photos)
+  for (const e of erasOf(p.data.decade))
+    eraCounts.set(e, (eraCounts.get(e) ?? 0) + 1);
+const eraFilters = ERAS.filter((e) => eraCounts.has(e.key));
 
 const cities = citiesByWeight(photos.map((p) => p.data.city));
 const cityList =
@@ -61,10 +68,10 @@ const jsonLd = [
   jsonLd={jsonLd}
 >
   <section class="shell meta-strip" aria-label="Технічна панель архіву">
-    <div><span>ID</span><b>HST-01</b></div>
-    <div><span>ФОТО</span><b>{photos.length}</b></div>
+    <div><span>ГАЛЕРЕЇ</span><b>{photos.length}</b></div>
+    <div><span>ФОТО</span><b>{photoCount}</b></div>
     <div><span>МІСТА</span><b>{cityCount}</b></div>
-    <div><span>ДЕКАДИ</span><b>{decadeCount}</b></div>
+    <div><span>ЕПОХИ</span><b>{eraCount}</b></div>
     <div><span>СТАТУС</span><b class="accent">АКТИВНО</b></div>
   </section>
 
@@ -94,8 +101,8 @@ const jsonLd = [
         Дати, місця, свідчення.
       </p>
       <div class="hero-actions">
-        <a href="#gallery" class="btn btn-accent">ВІДКРИТИ ГАЛЕРЕЮ →</a>
-        <a href="#gallery" class="btn">ПЕРЕГЛЯНУТИ ОСТАННІ КАДРИ</a>
+        <a href="#gallery" class="btn btn-accent">ВІДКРИТИ ГАЛЕРЕЮ ↓</a>
+        <a href="/istoriya/" class="btn">ІСТОРІЯ КРЕМЕНЦЯ →</a>
       </div>
     </div>
     <aside class="hero-spec" aria-label="Специфікація архіву">
@@ -119,19 +126,19 @@ const jsonLd = [
     </div>
   </section>
 
-  <div
-    class="shell decade-filter"
-    role="group"
-    aria-label="Фільтр за десятиліттям"
-  >
-    <button type="button" class="active" data-decade="all">ВСІ</button>
-    {
-      decades.map((decade) => (
-        <button type="button" data-decade={decade}>
-          {decade}
-        </button>
-      ))
-    }
+  <div class="shell decade-filter-wrap">
+    <div class="decade-filter" role="group" aria-label="Фільтр за епохою">
+      <button type="button" class="active" data-era="all" aria-pressed="true">
+        Усі <span>{photos.length}</span>
+      </button>
+      {
+        eraFilters.map((e) => (
+          <button type="button" data-era={e.key} aria-pressed="false">
+            {e.label} <span>{eraCounts.get(e.key)}</span>
+          </button>
+        ))
+      }
+    </div>
   </div>
 
   <section id="gallery" class="shell grid" aria-label="Галерея світлин">
@@ -139,7 +146,7 @@ const jsonLd = [
       photos.map((photo, i) => (
         <a
           class="card"
-          data-decade={photo.data.decade}
+          data-eras={erasOf(photo.data.decade).join(" ")}
           href={`/photos/${toSlug(photo.id)}/`}
         >
           <img
@@ -170,11 +177,14 @@ const jsonLd = [
       const cards = document.querySelectorAll("#gallery .card");
       chips.forEach((chip) => {
         chip.addEventListener("click", () => {
-          chips.forEach((c) => c.classList.remove("active"));
-          chip.classList.add("active");
-          const decade = chip.dataset.decade;
+          chips.forEach((c) => {
+            c.classList.toggle("active", c === chip);
+            c.setAttribute("aria-pressed", String(c === chip));
+          });
+          chip.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+          const era = chip.dataset.era;
           cards.forEach((card) => {
-            const show = decade === "all" || card.dataset.decade === decade;
+            const show = era === "all" || card.dataset.eras.split(" ").includes(era);
             card.classList.toggle("is-hidden", !show);
           });
         });

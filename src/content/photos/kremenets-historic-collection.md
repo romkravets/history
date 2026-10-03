@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Місто, Замкова гора та околиці"
 decade: "Початок XX ст. і міжвоєнний період (орієнтовно)"
 description: "Історичні фотографії, листівки й малюнки Кременця: вулиці та будинки, костели й церкви, ліцей, Замкова гора, єврейські пам'ятки, портрети та групові знімки. Усе зібрано з кількох папок в один альбом."
+location:
+  lat: 50.0961
+  lng: 25.72608
+  approximate: true
 cover: "/photos/kremenets-historic-collection/cover.jpg"
 images:
   - "/photos/kremenets-historic-collection/1.jpg"

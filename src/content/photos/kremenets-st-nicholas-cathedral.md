@@ -5,6 +5,9 @@ city: "Кременець"
 area: "Богоявленський монастир, центр міста"
 decade: "сучасні фото"
 description: "Миколаївський собор у Кременці — пам'ятка архітектури національного значення: фасади з блакитними вежами, аерофото з горою Бона та багатий інтер'єр з позолоченим іконостасом і розписами."
+location:
+  lat: 50.09617
+  lng: 25.72671
 cover: "/photos/kremenets-st-nicholas-cathedral/cover.jpg"
 images:
   - "/photos/kremenets-st-nicholas-cathedral/1.jpg"

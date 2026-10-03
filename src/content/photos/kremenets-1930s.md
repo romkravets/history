@@ -5,6 +5,10 @@ city: "Кременець"
 area: "Вулиці міста"
 decade: "1930-ті"
 description: "Архівні світлини Кременця, віднесені до 1930-х років за назвою джерельної папки. На них видно міські вулиці, крамниці, стару забудову та Замкову гору."
+location:
+  lat: 50.0961
+  lng: 25.72608
+  approximate: true
 cover: "/photos/kremenets-1930s/cover.jpg"
 images:
   - "/photos/kremenets-1930s/1.jpg"
