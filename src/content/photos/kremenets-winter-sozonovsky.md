@@ -34,7 +34,7 @@ images:
   - "/photos/kremenets-winter-sozonovsky/25.jpg"
 captions:
   "/photos/kremenets-winter-sozonovsky/cover.jpg": "Собор і гора Бона за ажурною огорожею"
-  "/photos/kremenets-winter-sozonovsky/1.jpg": "Блакитний собор під Боною взимку"
+  "/photos/kremenets-winter-sozonovsky/1.jpg": "Миколаївський собор під Боною взимку"
   "/photos/kremenets-winter-sozonovsky/2.jpg": "Колегіум і площа взимку"
   "/photos/kremenets-winter-sozonovsky/3.jpg": "Колегіум і храми над засніженим містом"
   "/photos/kremenets-winter-sozonovsky/4.jpg": "Колегіум крізь засніжені гілки"

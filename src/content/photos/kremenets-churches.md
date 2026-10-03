@@ -78,9 +78,9 @@ captions:
   "/photos/kremenets-churches/36.jpg": "Старі хрести і каплиця"
   "/photos/kremenets-churches/37.jpg": "Каплиця на скелі"
   "/photos/kremenets-churches/38.jpg": "Грот із хрестом"
-  "/photos/kremenets-churches/39.jpg": "Блакитний собор із зеленими банями"
+  "/photos/kremenets-churches/39.jpg": "Миколаївський собор"
   "/photos/kremenets-churches/40.jpg": "Храм із зеленим дахом і блакитною дзвіницею"
-  "/photos/kremenets-churches/41.jpg": "Блакитний собор із зеленими банями, 2016"
+  "/photos/kremenets-churches/41.jpg": "Миколаївський собор, 2016"
   "/photos/kremenets-churches/42.jpg": "Костел святого Станіслава з гори"
 tags:
   - "Кременець"
