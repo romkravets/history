@@ -27,6 +27,8 @@ images:
   - "/photos/kremenets-churches/18.jpg"
   - "/photos/kremenets-churches/19.jpg"
   - "/photos/kremenets-churches/20.jpg"
+  - "/photos/kremenets-churches/21.jpg"
+  - "/photos/kremenets-churches/22.jpg"
 captions:
   "/photos/kremenets-churches/cover.jpg": "Базиліка святих Ігнатія Лойоли і Станіслава Костки"
   "/photos/kremenets-churches/1.jpg": "Костел Святого Станіслава"
@@ -38,6 +40,8 @@ captions:
   "/photos/kremenets-churches/7.jpg": "Церква святого Іоана Предтечі"
   "/photos/kremenets-churches/8.jpg": "Церква Анни Праведної"
   "/photos/kremenets-churches/9.jpg": "Українська лютеранська церква"
+  "/photos/kremenets-churches/21.jpg": "Костел Святого Станіслава"
+  "/photos/kremenets-churches/22.jpg": "Вежа костелу Святого Станіслава"
 tags:
   - "Кременець"
   - "храми"

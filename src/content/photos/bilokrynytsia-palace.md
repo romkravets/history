@@ -11,6 +11,9 @@ images:
   - "/photos/bilokrynytsia-palace/2.jpg"
   - "/photos/bilokrynytsia-palace/3.jpg"
   - "/photos/bilokrynytsia-palace/4.jpg"
+  - "/photos/bilokrynytsia-palace/5.jpg"
+captions:
+  "/photos/bilokrynytsia-palace/5.jpg": "Білокриницький палац"
 tags:
   - "Білокриницький палац"
   - "Кременецький район"

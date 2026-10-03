@@ -102,6 +102,9 @@ images:
   - "/photos/kremenets-historic-collection/93.jpg"
   - "/photos/kremenets-historic-collection/94.jpg"
   - "/photos/kremenets-historic-collection/95.jpg"
+  - "/photos/kremenets-historic-collection/96.jpg"
+captions:
+  "/photos/kremenets-historic-collection/96.jpg": "Кременецький замок на малюнку Яна Казимира Вільчинського з «Альбому Віленського» (1845–1875)"
 tags:
   - "Кременець"
   - "архівні фото"

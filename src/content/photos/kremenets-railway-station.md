@@ -14,6 +14,8 @@ images:
   - "/photos/kremenets-railway-station/5.jpg"
   - "/photos/kremenets-railway-station/6.jpg"
   - "/photos/kremenets-railway-station/7.jpg"
+  - "/photos/kremenets-railway-station/8.jpg"
+  - "/photos/kremenets-railway-station/9.jpg"
 captions:
   "/photos/kremenets-railway-station/cover.jpg": "Будівля залізничної станції Кременець на старому фото"
   "/photos/kremenets-railway-station/1.jpg": "Вагони й військові на станції Кременець"
@@ -23,6 +25,8 @@ captions:
   "/photos/kremenets-railway-station/5.jpg": "Автобус і пасажири біля станції"
   "/photos/kremenets-railway-station/6.jpg": "Сучасна будівля залізничної станції Кременець"
   "/photos/kremenets-railway-station/7.jpg": "Автостанція Кременець"
+  "/photos/kremenets-railway-station/8.jpg": "Сучасний вокзал Кременця"
+  "/photos/kremenets-railway-station/9.jpg": "Паротяг у снігу на старому фото"
 tags:
   - "Кременець"
   - "залізниця"
