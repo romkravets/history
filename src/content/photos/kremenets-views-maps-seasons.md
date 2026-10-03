@@ -1,0 +1,52 @@
+---
+title: "Кременець: краєвиди, карти й пори року"
+date: 2026-10-03
+city: "Кременець"
+area: "Місто та околиці"
+decade: "різні роки, переважно сучасні фото"
+description: "Кременець у різні пори року та на старих картах: засніжене місто, захід сонця над Боною, макові поля, замок, колегіум, стара вулиця й карти околиць."
+cover: "/photos/kremenets-views-maps-seasons/cover.png"
+images:
+  - "/photos/kremenets-views-maps-seasons/1.png"
+  - "/photos/kremenets-views-maps-seasons/2.jpg"
+  - "/photos/kremenets-views-maps-seasons/3.jpg"
+  - "/photos/kremenets-views-maps-seasons/4.jpg"
+  - "/photos/kremenets-views-maps-seasons/5.jpg"
+  - "/photos/kremenets-views-maps-seasons/6.jpg"
+  - "/photos/kremenets-views-maps-seasons/7.jpg"
+  - "/photos/kremenets-views-maps-seasons/8.jpg"
+  - "/photos/kremenets-views-maps-seasons/9.jpg"
+  - "/photos/kremenets-views-maps-seasons/10.jpg"
+  - "/photos/kremenets-views-maps-seasons/11.jpg"
+  - "/photos/kremenets-views-maps-seasons/12.jpg"
+  - "/photos/kremenets-views-maps-seasons/13.jpg"
+  - "/photos/kremenets-views-maps-seasons/14.jpg"
+captions:
+  "/photos/kremenets-views-maps-seasons/cover.png": "Стара карта околиць Кременця"
+  "/photos/kremenets-views-maps-seasons/1.png": "Стара польська карта: Krzemieniec"
+  "/photos/kremenets-views-maps-seasons/2.jpg": "Кременець і гора Бона на старому фото"
+  "/photos/kremenets-views-maps-seasons/3.jpg": "Стара вулиця Кременця з балконами й крамницями"
+  "/photos/kremenets-views-maps-seasons/4.jpg": "Центр Кременця і колегіум узимку з висоти"
+  "/photos/kremenets-views-maps-seasons/5.jpg": "Кременець узимку"
+  "/photos/kremenets-views-maps-seasons/6.jpg": "Засніжений центр Кременця під Боною"
+  "/photos/kremenets-views-maps-seasons/7.jpg": "Брама й собор колишнього єзуїтського колегіуму"
+  "/photos/kremenets-views-maps-seasons/8.jpg": "Замок на горі Бона"
+  "/photos/kremenets-views-maps-seasons/9.jpg": "Надбрамна вежа Кременецького замку"
+  "/photos/kremenets-views-maps-seasons/10.jpg": "Захід сонця над Боною"
+  "/photos/kremenets-views-maps-seasons/11.jpg": "Краєвид Кременецьких гір"
+  "/photos/kremenets-views-maps-seasons/12.jpg": "Макове поле біля Кременця"
+  "/photos/kremenets-views-maps-seasons/13.jpg": "Квітучий сад у Кременці"
+tags:
+  - "Кременець"
+  - "краєвиди"
+  - "карти"
+  - "зима"
+  - "Замкова гора"
+  - "Бона"
+  - "природа"
+  - "старі фото"
+---
+
+Різнобічна добірка про Кременець. Тут старі карти околиць міста (зокрема польська, з назвою Krzemieniec), давні фото міста й вулиці з дерев'яними балконами та крамницями.
+
+Поруч — сучасні кадри: Кременець під снігом, захід сонця над Замковою горою, замок і надбрамна вежа, брама колишнього єзуїтського колегіуму, макове поле, краєвиди Кременецьких гір і квітучий сад.
