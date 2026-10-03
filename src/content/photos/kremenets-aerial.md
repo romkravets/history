@@ -19,6 +19,9 @@ images:
   - "/photos/kremenets-aerial/10.jpg"
   - "/photos/kremenets-aerial/11.jpg"
   - "/photos/kremenets-aerial/12.jpg"
+  - "/photos/kremenets-aerial/13.jpg"
+  - "/photos/kremenets-aerial/14.png"
+  - "/photos/kremenets-aerial/15.jpg"
 captions:
   "/photos/kremenets-aerial/cover.jpg": "Замкова гора Бона з мурами замку — аерофото"
   "/photos/kremenets-aerial/1.jpg": "Замкова гора Бона і місто — аерофото"
@@ -33,6 +36,9 @@ captions:
   "/photos/kremenets-aerial/10.jpg": "Корпуси Ліцею і парк — аерофото"
   "/photos/kremenets-aerial/11.jpg": "Панорама Кременця з висоти"
   "/photos/kremenets-aerial/12.jpg": "Центр Кременця з висоти"
+  "/photos/kremenets-aerial/13.jpg": "Замкова гора і серпантин стежки з дрона"
+  "/photos/kremenets-aerial/14.png": "Кременець і храм з висоти"
+  "/photos/kremenets-aerial/15.jpg": "Кременець з висоти, панорама"
 tags:
   - "Кременець"
   - "аерофото"

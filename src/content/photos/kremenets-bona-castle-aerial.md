@@ -36,8 +36,10 @@ images:
   - "/photos/kremenets-bona-castle-aerial/27.jpg"
   - "/photos/kremenets-bona-castle-aerial/28.jpg"
   - "/photos/kremenets-bona-castle-aerial/29.jpg"
+  - "/photos/kremenets-bona-castle-aerial/30.png"
 captions:
   "/photos/kremenets-bona-castle-aerial/10.jpg": "Мури замку на Боні восени"
+  "/photos/kremenets-bona-castle-aerial/30.png": "Мури замку на Боні з висоти восени"
 tags:
   - "Кременець"
   - "Замкова гора"

@@ -29,6 +29,13 @@ images:
   - "/photos/vyshnivets-archive/20.jpg"
   - "/photos/vyshnivets-archive/21.jpg"
   - "/photos/vyshnivets-archive/22.jpg"
+  - "/photos/vyshnivets-archive/23.png"
+  - "/photos/vyshnivets-archive/24.png"
+  - "/photos/vyshnivets-archive/25.png"
+captions:
+  "/photos/vyshnivets-archive/23.png": "Вишнівець. Вигляд на замок (фото Г. Поддембського)"
+  "/photos/vyshnivets-archive/24.png": "Вишнівець. Замкове подвір'я"
+  "/photos/vyshnivets-archive/25.png": "Вишнівець. Будинки з ганочками"
 tags:
   - "Вишнівець"
   - "Вишневець"

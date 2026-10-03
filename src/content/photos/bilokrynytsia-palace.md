@@ -12,8 +12,16 @@ images:
   - "/photos/bilokrynytsia-palace/3.jpg"
   - "/photos/bilokrynytsia-palace/4.jpg"
   - "/photos/bilokrynytsia-palace/5.jpg"
+  - "/photos/bilokrynytsia-palace/6.jpg"
+  - "/photos/bilokrynytsia-palace/7.jpg"
+  - "/photos/bilokrynytsia-palace/8.png"
+  - "/photos/bilokrynytsia-palace/9.jpg"
 captions:
   "/photos/bilokrynytsia-palace/5.jpg": "Білокриницький палац"
+  "/photos/bilokrynytsia-palace/6.jpg": "Палац у Білокриниці, видно залишки валів"
+  "/photos/bilokrynytsia-palace/7.jpg": "Білокриницький палац"
+  "/photos/bilokrynytsia-palace/8.png": "Білокриниця. Сільськогосподарська школа на старому фото"
+  "/photos/bilokrynytsia-palace/9.jpg": "Білокриницький палац"
 tags:
   - "Білокриницький палац"
   - "Кременецький район"

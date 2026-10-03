@@ -23,6 +23,11 @@ images:
   - "/photos/kremenets-ferris-wheel/14.jpg"
   - "/photos/kremenets-ferris-wheel/15.jpg"
   - "/photos/kremenets-ferris-wheel/16.jpg"
+  - "/photos/kremenets-ferris-wheel/17.jpg"
+  - "/photos/kremenets-ferris-wheel/18.jpg"
+captions:
+  "/photos/kremenets-ferris-wheel/17.jpg": "Колесо огляду за деревами парку"
+  "/photos/kremenets-ferris-wheel/18.jpg": "Колесо огляду в парку"
 tags:
   - "Кременець"
   - "колесо огляду"

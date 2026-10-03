@@ -22,6 +22,7 @@ export const HOME_PLACE = {
 const REGION_OVERRIDES: Record<string, string> = {
   Олесько: "Львівська область",
   Підкамінь: "Львівська область",
+  Підгірці: "Львівська область",
 };
 
 export function regionOf(city: string): string {
