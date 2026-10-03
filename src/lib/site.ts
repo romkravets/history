@@ -3,7 +3,7 @@ import sharp from "sharp";
 
 export const SITE_NAME = "Історичний архів Кременеччини";
 export const SITE_TAGLINE =
-  "Старі фото Кременця, Кременеччини та Тернопільщини";
+  "Старі фото Кременця, Тернопільщини та України";
 export const AUTHOR = {
   name: "Роман Кравець",
   url: "https://github.com/romkravets",

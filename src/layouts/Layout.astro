@@ -23,7 +23,7 @@ interface Props {
 
 const {
   title = `${SITE_TAGLINE} · ${SITE_NAME}`,
-  description = "Цифровий архів старих фотографій і листівок Кременця, Кременеччини та Тернопільщини: дати, описи та історія місць.",
+  description = "Цифровий архів старих фотографій і листівок Кременця, Кременеччини, Тернопільщини та інших куточків України: дати, описи та історія місць.",
   image = "/video/banner-poster.jpg",
   imageAlt = SITE_NAME,
   type = "website",
@@ -45,15 +45,18 @@ const graph = [
     description: SITE_TAGLINE,
     inLanguage: "uk",
     publisher: { "@id": `${siteUrl}#author` },
-    spatialCoverage: {
-      "@type": "Place",
-      name: `${HOME_PLACE.name}, ${HOME_PLACE.region}, Україна`,
-      geo: {
-        "@type": "GeoCoordinates",
-        latitude: HOME_PLACE.latitude,
-        longitude: HOME_PLACE.longitude,
+    spatialCoverage: [
+      { "@type": "Country", name: "Україна" },
+      {
+        "@type": "Place",
+        name: `${HOME_PLACE.name}, ${HOME_PLACE.region}, Україна`,
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: HOME_PLACE.latitude,
+          longitude: HOME_PLACE.longitude,
+        },
       },
-    },
+    ],
   },
   {
     "@type": "Person",

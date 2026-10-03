@@ -26,7 +26,7 @@ const decades = [...new Set(photos.map((p) => p.data.decade))].sort();
 const cities = citiesByWeight(photos.map((p) => p.data.city));
 const cityList =
   cities.length > 6 ? `${cities.slice(0, 6).join(", ")} та інші` : cities.join(", ");
-const pageDescription = `Старі фотографії й листівки Кременця, Кременеччини та Тернопільщини: ${cityList}. ${photos.length} ${pluralUk(photos.length, ["галерея", "галереї", "галерей"])} з датами, описами та історією місць.`;
+const pageDescription = `Старі фотографії й листівки Кременця, Кременеччини, Тернопільщини та інших куточків України: ${cityList}. ${photos.length} ${pluralUk(photos.length, ["галерея", "галереї", "галерей"])} з датами, описами та історією місць.`;
 
 const coverSizes = await Promise.all(photos.map((p) => imageSize(p.data.cover)));
 
@@ -90,7 +90,7 @@ const jsonLd = [
         <span>ЧЕРЕЗ</span> ФОТОАРХІВ
       </h1>
       <p class="lead">
-        Старі фото й листівки Кременця, Кременеччини та Тернопільщини: {cityList}.
+        Старі фото й листівки Кременця, Кременеччини, Тернопільщини та інших куточків України: {cityList}.
         Дати, місця, свідчення.
       </p>
       <div class="hero-actions">
