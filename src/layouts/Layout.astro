@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import {
+  SITE,
   AUTHOR,
   HOME_PLACE,
   SITE_NAME,
@@ -15,6 +16,9 @@ interface Props {
   /** Шлях до картинки для прев'ю в соцмережах (від кореня public/). */
   image?: string;
   imageAlt?: string;
+  /** Розміри картинки прев'ю, якщо її немає в public/ (згенерований банер). */
+  imageWidth?: number;
+  imageHeight?: number;
   type?: "website" | "article";
   /** Додаткові JSON-LD об'єкти для цієї сторінки. */
   jsonLd?: Record<string, unknown>[];
@@ -23,9 +27,11 @@ interface Props {
 
 const {
   title = `${SITE_TAGLINE} · ${SITE_NAME}`,
-  description = "Цифровий архів старих фотографій і листівок Кременця, Кременеччини, Тернопільщини та інших куточків України: дати, описи та історія місць.",
+  description = `Цифровий архів старих фотографій і листівок ${SITE.texts.coverage}: дати, описи та історія місць.`,
   image = "/video/banner-poster.jpg",
   imageAlt = SITE_NAME,
+  imageWidth,
+  imageHeight,
   type = "website",
   jsonLd = [],
   noindex = false,
@@ -36,12 +42,16 @@ const path = Astro.url.pathname;
 const NAV = [
   { href: "/", label: "Галерея", active: path === "/" || path.startsWith("/photos/") },
   { href: "/karta/", label: "Карта", active: path.startsWith("/karta") },
+  { href: "/lyudy/", label: "Люди", active: path.startsWith("/lyudy") },
+  { href: "/biblioteka/", label: "Бібліотека", active: path.startsWith("/biblioteka") },
   { href: "/istoriya/", label: "Історія", active: path.startsWith("/istoriya") },
   { href: "/about/", label: "Про архів", active: path.startsWith("/about") },
 ];
 const siteUrl = absoluteUrl("/", Astro.site);
 const ogImage = absoluteUrl(image, Astro.site);
-const ogImageSize = await imageSize(image);
+const ogImageSize =
+  imageWidth && imageHeight ? { width: imageWidth, height: imageHeight } : await imageSize(image);
+const ogImageType = /\.png$/i.test(image) ? "image/png" : "image/jpeg";
 
 const graph = [
   {
@@ -100,6 +110,8 @@ const graph = [
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:secure_url" content={ogImage} />
+    <meta property="og:image:type" content={ogImageType} />
     <meta property="og:image:alt" content={imageAlt} />
     {ogImageSize && <meta property="og:image:width" content={String(ogImageSize.width)} />}
     {ogImageSize && <meta property="og:image:height" content={String(ogImageSize.height)} />}

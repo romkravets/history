@@ -1,0 +1,123 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { LIBRARY_TYPES } from "../../content.config";
+import { SITE, absoluteUrl } from "../../lib/site";
+
+const items = (await getCollection("library")).sort(
+  (a, b) =>
+    LIBRARY_TYPES.indexOf(a.data.type) - LIBRARY_TYPES.indexOf(b.data.type) ||
+    a.data.title.localeCompare(b.data.title, "uk"),
+);
+const people = await getCollection("people");
+const personName = new Map(people.map((p) => [p.id.replace(/\.md$/, ""), p.data.name]));
+const counts = new Map<string, number>();
+for (const i of items) counts.set(i.data.type, (counts.get(i.data.type) ?? 0) + 1);
+const types = LIBRARY_TYPES.filter((t) => counts.has(t));
+
+const schemaType: Record<string, string> = {
+  книга: "Book",
+  стаття: "ScholarlyArticle",
+  "художній твір": "CreativeWork",
+  "архів/збірка": "ArchiveComponent",
+  сайт: "WebSite",
+  відео: "VideoObject",
+};
+const pageUrl = absoluteUrl("/biblioteka/", Astro.site);
+const jsonLd = [
+  {
+    "@type": "CollectionPage",
+    url: pageUrl,
+    name: `Бібліотека краєзнавства: ${SITE.name}`,
+    inLanguage: "uk",
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: items.map((i, n) => ({
+        "@type": "ListItem",
+        position: n + 1,
+        item: {
+          "@type": schemaType[i.data.type] ?? "CreativeWork",
+          name: i.data.title,
+          ...(i.data.author ? { author: i.data.author } : {}),
+          ...(i.data.year ? { datePublished: i.data.year } : {}),
+          ...(i.data.url ? { url: i.data.url } : {}),
+          description: i.data.description,
+        },
+      })),
+    },
+  },
+];
+---
+
+<Layout
+  title={`Бібліотека краєзнавства: книги, статті й ресурси · ${SITE.name}`}
+  description={`Книги, статті, художні твори, архіви й сайти про історію ${SITE.home.genitive} і ${SITE.home.regionGenitive} — з посиланнями, де читати.`}
+  jsonLd={jsonLd}
+>
+  <section class="shell">
+    <div class="hero-page">
+      <p class="eyebrow">▸ ДЖЕРЕЛА Й ЧИТАННЯ</p>
+      <h1>БІБЛІОТЕКА<br /><span>КРАЄЗНАВСТВА</span></h1>
+      <p class="lead">
+        {`Книги, наукові статті, художні твори, архіви й сайти про історію ${SITE.home.genitive} і краю — з посиланнями, де їх прочитати. На ці джерела спираються описи галерей і біографії.`}
+      </p>
+    </div>
+  </section>
+
+  <div class="shell decade-filter-wrap">
+    <div class="decade-filter" role="group" aria-label="Тип матеріалу">
+      <button type="button" class="active" data-type="all" aria-pressed="true">Усе <span>{items.length}</span></button>
+      {types.map((t) => (
+        <button type="button" data-type={t} aria-pressed="false">{t} <span>{counts.get(t)}</span></button>
+      ))}
+    </div>
+  </div>
+
+  <section class="shell library-list" aria-label="Матеріали">
+    {
+      items.map((i) => (
+        <article class="library-item" data-type={i.data.type}>
+          <span class="book-type">{i.data.type}</span>
+          <h2>
+            {i.data.url ? (
+              <a href={i.data.url} target="_blank" rel="noopener noreferrer">{i.data.title}</a>
+            ) : (
+              i.data.title
+            )}
+          </h2>
+          {(i.data.author || i.data.year) && (
+            <p class="book-meta">{[i.data.author, i.data.year].filter(Boolean).join(" · ")}</p>
+          )}
+          <p class="library-desc">{i.data.description}</p>
+          <p class="library-links">
+            {i.data.url && (
+              <a class="library-open" href={i.data.url} target="_blank" rel="noopener noreferrer">
+                {i.data.type === "сайт" ? "Відкрити сайт" : "Де читати"} ↗
+              </a>
+            )}
+            {i.data.people.map((p) =>
+              personName.has(p) ? <a class="library-person" href={`/lyudy/${p}/`}>{personName.get(p)}</a> : null,
+            )}
+          </p>
+        </article>
+      ))
+    }
+  </section>
+
+  <script is:inline>
+    (() => {
+      const chips = document.querySelectorAll(".decade-filter button");
+      const items = document.querySelectorAll(".library-item");
+      chips.forEach((chip) =>
+        chip.addEventListener("click", () => {
+          chips.forEach((c) => {
+            c.classList.toggle("active", c === chip);
+            c.setAttribute("aria-pressed", String(c === chip));
+          });
+          const t = chip.dataset.type;
+          items.forEach((i) => i.classList.toggle("is-hidden", t !== "all" && i.dataset.type !== t));
+        }),
+      );
+    })();
+  </script>
+</Layout>

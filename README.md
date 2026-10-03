@@ -8,7 +8,9 @@
 
 **Живий сайт:** https://history-kremenets.vercel.app
 
-Проєкт задуманий як **шаблон**: його можна розгорнути для будь-якого міста,
+Проєкт задуманий як **шаблон**: його можна розгорнути для будь-якого міста
+однією командою `npm run template:init` — див.
+**[docs/new-archive.md](docs/new-archive.md)** (покроково, ~30–60 хв). Підходить для
 села, району, родинного чи шкільного архіву. Усе — фото, тексти, історія змін —
 лежить у git-репозиторії, а рутинну роботу (сортування сотень фото, пошук
 дублікатів, підписи, чернетки описів) допомагає виконувати ШІ-асистент.
@@ -42,7 +44,13 @@
 - **Карта** (`/karta/`) — точки всіх галерей на OpenStreetMap, групування
   близьких точок, картка з обкладинкою й переходом у галерею; точні й
   приблизні місця розрізняються.
+- **Люди** (`/lyudy/`) — біографії відомих людей краю з джерелами, пов'язаними
+  галереями й літературою.
+- **Бібліотека** (`/biblioteka/`) — книги, статті, художні твори, архіви, сайти
+  й відео про край з посиланнями, де читати; фільтр за типом.
 - **Історія міста** (`/istoriya/`) — хронологія епох з джерелами.
+- **Поділитися** — кнопки Facebook, Telegram, Viber, WhatsApp, X, копіювання
+  посилання; для прев'ю кожна галерея має банер 1200×630.
 - **Про архів** (`/about/`) — опис проєкту й того, як він робиться.
 - **SEO/GEO** — sitemap, robots.txt, `llms.txt`, Open Graph з обкладинкою,
   розмітка schema.org з місцем і координатами.
@@ -90,13 +98,18 @@ src/
   content/
     photos/*.md          ← одна галерея = один Markdown-файл (метадані + текст)
     history/*.md         ← епохи для сторінки «Історія»
+    people/*.md          ← відомі люди (текст файлу — біографія)
+    library/*.md         ← бібліотека: книги, статті, сайти…
+  site.config.ts         ← ★ назва, місто, відмінки, область, тексти — усе, що міняти для нового регіону
   content.config.ts      ← схема полів (що обов'язкове, які типи)
-  lib/site.ts            ← назва сайту, місто, координати, області, епохи фільтра
+  lib/site.ts            ← утиліти: епохи фільтра, розміри фото, URL
   layouts/Layout.astro   ← шапка, меню, <head>: SEO, Open Graph, schema.org
   pages/
     index.astro          ← головна: статистика, банер, фільтр, картки
     photos/[slug].astro  ← сторінка галереї, лайтбокс, перехід між галереями
     karta.astro          ← карта
+    lyudy/, biblioteka/  ← люди й бібліотека
+    og/[slug].jpg.ts     ← банери 1200×630 для прев'ю в соцмережах
     istoriya.astro       ← хронологія
     about.astro          ← про архів
     404.astro, robots.txt.ts, llms.txt.ts
@@ -109,8 +122,10 @@ scripts/
   add-photo-story.mjs    ← створити НОВУ галерею з папки
   append-photos.mjs      ← дописати фото в НАЯВНУ галерею
   prepare-photo-stories.mjs ← підготувати папки з Google Диска (опис з .docx/.txt)
+  template-init.mjs      ← налаштувати шаблон під нове місто
 photos-incoming/         ← «вхідна зона» для імпорту (у .gitignore)
 CLAUDE.md, AGENTS.md     ← інструкції для ШІ-агентів, що працюють у репо
+docs/new-archive.md      ← як розгорнути архів для іншого міста/регіону
 docs/remote-llm.md       ← опційно: власний LLM-сервер і orchestrator
 ```
 
@@ -350,120 +365,25 @@ git push
 
 ## Як запустити шаблон для свого архіву
 
-Приклади: архів свого міста чи села, району, школи, підприємства, родини,
-храму, тематичний (дерев'яні церкви області, вокзали, замки).
-
-### 1. Скопіювати проєкт
+Повна покрокова інструкція — **[docs/new-archive.md](docs/new-archive.md)**.
+Коротко:
 
 ```bash
-git clone https://github.com/romkravets/history.git my-archive
-cd my-archive
-rm -rf .git && git init && git lfs install   # почати з чистої історії
+git clone https://github.com/<ви>/<ваш-архів>.git && cd <ваш-архів>
+git lfs install && npm install
+npm run template:init -- --clean   # місто, відмінки, область, адреса; прибирає контент Кременця
+npm run dev
 ```
 
-Видаліть чужий контент (або залиште кілька галерей як приклад, поки не
-додасте свої):
+`template:init` записує все, що прив'язує сайт до місця, у
+[src/site.config.ts](src/site.config.ts) (назва, місто й відмінки, область,
+координати з OpenStreetMap, адреса, автор, тексти банера) і з `--clean`
+залишає по одному прикладу галереї, епохи, людини й книги. Далі — відео
+банера, кольори, сторінка «Про архів», контент і публікація на Vercel.
 
-```bash
-rm src/content/photos/*.md
-rm -rf public/photos/*/
-rm src/content/history/*.md
-```
-
-> Схема вимагає хоча б одну галерею для збірки — додайте першу одразу.
-
-### 2. Налаштувати назву, місто й регіон — `src/lib/site.ts`
-
-```ts
-export const SITE_NAME = "Історичний архів Бережан";
-export const SITE_TAGLINE = "Старі фото Бережан і Бережанщини";
-export const AUTHOR = { name: "Ваше ім'я", url: "https://github.com/you" };
-
-export const HOME_PLACE = {
-  name: "Бережани",
-  region: "Тернопільська область",
-  regionCode: "UA-61",          // ISO 3166-2 області
-  latitude: 49.4475,
-  longitude: 24.9364,
-};
-
-// міста архіву з іншої області (решта вважаються з `HOME_PLACE.region`)
-const REGION_OVERRIDES = { Львів: "Львівська область" };
-```
-
-Епохи фільтра (`ERAS` і `erasOf` там само) підходять для більшості
-українських архівів; за потреби змініть межі чи назви.
-
-### 3. Тексти, що згадують Кременець
-
-Пошукайте й замініть:
-
-```bash
-grep -rn "Кременець\|Кременеччин\|Тернопільщин" src/ --include=*.astro --include=*.ts
-```
-
-Основні місця: `src/pages/index.astro` (заголовок банера й підзаголовок),
-`src/layouts/Layout.astro` (опис за замовчуванням), `src/pages/about.astro`,
-`src/pages/istoriya.astro`, `src/pages/404.astro`, `src/pages/llms.txt.ts`.
-
-### 4. Історія міста — `src/content/history/*.md`
-
-Одна епоха = один файл:
-
-```markdown
----
-order: 1
-era: "zasnuvannya"           # якір в URL: /istoriya/#zasnuvannya
-title: "Заснування та ранні згадки"
-period: "До XIV ст."
-summary: "Одне-два речення для заголовка епохи."
-sources:
-  - title: "Назва джерела"
-    url: "https://…"
----
-
-Текст епохи.
-```
-
-Якщо історія не потрібна — приберіть пункт «Історія» з меню в
-`src/layouts/Layout.astro` і видаліть `src/pages/istoriya.astro`.
-
-### 5. Вигляд
-
-- **Кольори** — CSS-змінні на початку `src/styles/global.css` (`--bg`,
-  `--accent` тощо; поруч у коментарях — контраст, тримайте ≥ 4,5:1).
-- **Відео-банер** — `public/video/banner.mp4`, `banner.webm`,
-  `banner-poster.jpg` (або замініть на фото в `src/pages/index.astro`).
-- **Favicon** — `public/favicon.svg`, `public/favicon.ico`.
-- **Картинка за замовчуванням для соцмереж** — параметр `image` у
-  `src/layouts/Layout.astro`.
-
-### 6. Адреса сайту
-
-У `astro.config.mjs` змініть типову адресу або задайте змінну середовища
-`SITE_URL` у Vercel (потрібно для canonical, sitemap, Open Graph):
-
-```js
-const site = env.SITE_URL ?? "https://my-archive.vercel.app";
-```
-
-### 7. Опублікувати
-
-1. Створіть репозиторій на GitHub і запуште проєкт (`git lfs` має бути
-   увімкнений **до** першого коміту з фото).
-2. На [vercel.com](https://vercel.com) → **Add New Project** → оберіть
-   репозиторій. Framework визначиться як Astro, нічого міняти не треба.
-3. У налаштуваннях проєкту Vercel увімкніть **Git LFS**
-   (Settings → Git → Git Large File Storage).
-4. Налаштуйте **Deployment Retention** (див. нижче).
-5. Додайте сайт у [Google Search Console](https://search.google.com/search-console)
-   і [Bing Webmaster Tools](https://www.bing.com/webmasters), подайте
-   `https://<ваш-сайт>/sitemap-index.xml`.
-
-### 8. Оновіть інструкції для ШІ
-
-У `CLAUDE.md` / `AGENTS.md` замініть назву міста й, за потреби, правила
-(наприклад, мову описів, обов'язковість джерел, політику щодо авторських фото).
+Ідеї варіантів: село чи громада, район, школа чи підприємство, родинний,
+тематичний (замки, дерев'яні церкви), музейний — таблиця в
+[docs/new-archive.md](docs/new-archive.md#ідеї-для-інших-варіантів-архіву).
 
 ---
 
@@ -527,6 +447,7 @@ const site = env.SITE_URL ?? "https://my-archive.vercel.app";
 | `npm run photos:add -- --source <папка> [--dry-run] [--force]` | створити галерею з папки з `meta.json` |
 | `npm run photos:append -- --slug <галерея> (--source <папка> \| --list <json>) [--max 1600] [--dry-run]` | дописати фото в наявну галерею |
 | `npm run photos:prepare -- --source <папка> [--dry-run]` | підготувати папки з описами `.docx`/`.txt` у `photos-incoming/` |
+| `npm run template:init [-- --clean] [--dry-run]` | налаштувати шаблон під нове місто ([docs/new-archive.md](docs/new-archive.md)) |
 | `npm run orch:*`, `npm run remote:*` | власний LLM-сервер — див. [docs/remote-llm.md](docs/remote-llm.md) |
 | `npm run sync:local` | залити `dist/` на свій сервер по rsync — там само |
 

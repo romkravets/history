@@ -1,11 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { SITE_NAME } from "../lib/site";
+import { SITE, SITE_NAME } from "../lib/site";
 ---
 
 <Layout
   title={`Сторінку не знайдено · ${SITE_NAME}`}
-  description="Такої сторінки в архіві немає. Поверніться до галереї старих фото Кременця, Тернопільщини та України."
+  description={`Такої сторінки в архіві немає. Поверніться до галереї старих фото ${SITE.texts.coverage}.`}
   noindex
 >
   <section class="shell">
@@ -18,7 +18,7 @@ import { SITE_NAME } from "../lib/site";
       </p>
       <div class="hero-actions">
         <a href="/" class="btn btn-accent">ДО ГАЛЕРЕЇ →</a>
-        <a href="/istoriya/" class="btn">ІСТОРІЯ КРЕМЕНЦЯ</a>
+        <a href="/istoriya/" class="btn">Історія {SITE.home.genitive}</a>
       </div>
     </div>
   </section>

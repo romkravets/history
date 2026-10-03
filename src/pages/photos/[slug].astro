@@ -2,6 +2,8 @@
 import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import {
+  OG_HEIGHT,
+  OG_WIDTH,
   SITE_NAME,
   absoluteUrl,
   imageSize,
@@ -32,6 +34,9 @@ export async function getStaticPaths() {
 }
 
 const { photo, prev, next, position, total } = Astro.props;
+const relatedPeople = (await getCollection("people")).filter((p) =>
+  p.data.galleries.includes(photo.id.replace(/\.md$/, "")),
+);
 const { Content } = await render(photo);
 
 const formatDate = new Intl.DateTimeFormat("uk-UA", {
@@ -60,6 +65,15 @@ const kind = /фото|світлин|листівк|знімк|реконстр
 const pageTitle = `${title}${mentionsCity(title, city) ? "" : `, ${city}`}${kind} · ${SITE_NAME}`;
 
 const pageUrl = absoluteUrl(Astro.url.pathname, Astro.site);
+const shareText = `${title} — ${description}`;
+const enc = encodeURIComponent;
+const shareLinks = [
+  { name: "Facebook", href: `https://www.facebook.com/sharer/sharer.php?u=${enc(pageUrl)}` },
+  { name: "Telegram", href: `https://t.me/share/url?url=${enc(pageUrl)}&text=${enc(title)}` },
+  { name: "Viber", href: `viber://forward?text=${enc(`${title} ${pageUrl}`)}` },
+  { name: "WhatsApp", href: `https://wa.me/?text=${enc(`${title} ${pageUrl}`)}` },
+  { name: "X", href: `https://twitter.com/intent/tweet?url=${enc(pageUrl)}&text=${enc(title)}` },
+];
 const siteUrl = absoluteUrl("/", Astro.site);
 const place = {
   "@type": "Place",
@@ -112,8 +126,10 @@ const jsonLd = [
 <Layout
   title={pageTitle}
   description={description}
-  image={cover}
+  image={`/og/${slug}.jpg`}
   imageAlt={altFor(0)}
+  imageWidth={OG_WIDTH}
+  imageHeight={OG_HEIGHT}
   type="article"
   jsonLd={jsonLd}
 >
@@ -138,6 +154,19 @@ const jsonLd = [
           photo.data.tags.length > 0 &&
             <span>{photo.data.tags.map((tag: string) => `#${tag}`).join(" ")}</span>
         }
+      </div>
+
+      <div class="share" data-share-url={pageUrl} data-share-title={title} data-share-text={shareText}>
+        <span class="share-label">Поділитися:</span>
+        <button type="button" class="share-btn share-native" hidden>Поділитися…</button>
+        {
+          shareLinks.map((l) => (
+            <a class="share-btn" href={l.href} target="_blank" rel="noopener noreferrer" aria-label={`Поділитися в ${l.name}`}>
+              {l.name}
+            </a>
+          ))
+        }
+        <button type="button" class="share-btn share-copy">Копіювати посилання</button>
       </div>
     </header>
 
@@ -179,6 +208,21 @@ const jsonLd = [
       <Content />
     </section>
 
+    {
+      relatedPeople.length > 0 && (
+        <section class="related">
+          <h2>Люди, пов'язані з цією галереєю</h2>
+          <p class="related-people">
+            {relatedPeople.map((p) => (
+              <a href={`/lyudy/${p.id.replace(/\.md$/, "")}/`}>
+                {p.data.name} <small>{p.data.role}</small>
+              </a>
+            ))}
+          </p>
+        </section>
+      )
+    }
+
     <nav class="gallery-pager" aria-label="Інші галереї">
       <a class="pager-link pager-prev" href={prev.href} rel="prev">
         <span class="pager-arrow" aria-hidden="true">←</span>
@@ -205,6 +249,33 @@ const jsonLd = [
     <button type="button" class="lightbox-nav lightbox-next" data-lightbox-next aria-label="Наступне фото">›</button>
     <p class="lightbox-counter"></p>
   </div>
+
+  <script is:inline>
+    (() => {
+      const box = document.querySelector(".share");
+      if (!box) return;
+      const { shareUrl: url, shareTitle: title, shareText: text } = box.dataset;
+      const native = box.querySelector(".share-native");
+      // на телефонах — системне меню «Поділитися» (усі встановлені месенджери)
+      if (navigator.share && native) {
+        native.hidden = false;
+        native.addEventListener("click", () => navigator.share({ title, text, url }).catch(() => {}));
+      }
+      const copy = box.querySelector(".share-copy");
+      copy?.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(url);
+        } catch {
+          const t = document.createElement("textarea");
+          t.value = url; document.body.append(t); t.select(); document.execCommand("copy"); t.remove();
+        }
+        const old = copy.textContent;
+        copy.textContent = "Скопійовано ✓";
+        copy.classList.add("is-done");
+        setTimeout(() => { copy.textContent = old; copy.classList.remove("is-done"); }, 2000);
+      });
+    })();
+  </script>
 
   <script
     is:inline

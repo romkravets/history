@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
-import { SITE_NAME, absoluteUrl } from "../lib/site";
+import { SITE, SITE_NAME, absoluteUrl } from "../lib/site";
 
 const photos = (await getCollection("photos")).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
@@ -34,7 +34,7 @@ const jsonLd = [
     "@type": "Map",
     "@id": `${pageUrl}#map`,
     url: pageUrl,
-    name: "Карта фотоархіву Кременеччини",
+    name: `Карта: ${SITE.name}`,
     inLanguage: "uk",
     isPartOf: { "@id": `${siteUrl}#website` },
     mapType: "https://schema.org/VenueMap",
@@ -44,7 +44,7 @@ const jsonLd = [
 
 <Layout
   title={`Карта: де зроблені фото · ${SITE_NAME}`}
-  description={`Інтерактивна карта архіву: ${points.length} галерей у ${places} місцях Кременеччини та Західної України. Натисніть на точку, щоб побачити фото й перейти до галереї.`}
+  description={`Інтерактивна карта архіву: ${points.length} галерей у ${places} місцях: ${SITE.texts.coverage}. Натисніть на точку, щоб побачити фото й перейти до галереї.`}
   jsonLd={jsonLd}
 >
   <section class="shell">

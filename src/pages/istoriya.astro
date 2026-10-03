@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import Layout from "../layouts/Layout.astro";
-import { HOME_PLACE, absoluteUrl } from "../lib/site";
+import { HOME_PLACE, SITE, absoluteUrl } from "../lib/site";
 
 const eras = (await getCollection("history")).sort(
 	(a, b) => a.data.order - b.data.order,
@@ -21,7 +21,7 @@ const jsonLd = [
 		"@type": "Article",
 		"@id": `${pageUrl}#article`,
 		url: pageUrl,
-		headline: "Історія Кременця: хронологія від заснування до сьогодення",
+		headline: `Історія ${SITE.home.genitive}: хронологія від заснування до сьогодення`,
 		inLanguage: "uk",
 		isPartOf: { "@id": `${siteUrl}#website` },
 		author: { "@id": `${siteUrl}#author` },
@@ -53,16 +53,16 @@ const jsonLd = [
 ---
 
 <Layout
-	title="Історія Кременця: хронологія від заснування до сьогодення · Історичний архів Кременеччини"
-	description="Хронологія Кременця за перевіреними джерелами: Замкова гора і перші згадки, литовська доба, Річ Посполита, австрійська й російська влада, XX століття і сьогодення."
+	title={`Історія ${SITE.home.genitive}: хронологія від заснування до сьогодення · ${SITE.name}`}
+	description={`Хронологія ${SITE.home.genitive} за перевіреними джерелами: ${eras.map((e) => e.data.title).join(", ")}.`}
 	jsonLd={jsonLd}
 >
 	<section class="shell">
 		<div class="hero-page">
 			<p class="eyebrow">▸ ХРОНОЛОГІЯ</p>
-			<h1>ІСТОРІЯ<br /><span>КРЕМЕНЦЯ</span></h1>
+			<h1>ІСТОРІЯ<br /><span>{SITE.home.genitive.toUpperCase()}</span></h1>
 			<p class="lead">
-				Хронологія Кременця, зібрана з архівних і краєзнавчих джерел — від
+				Хронологія {SITE.home.genitive}, зібрана з архівних і краєзнавчих джерел — від
 				перших згадок до сьогодення. Де джерела мовчать, мовчить і текст.
 			</p>
 		</div>

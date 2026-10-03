@@ -41,8 +41,15 @@ add it to the archive. Full human-facing description: README → «Робота 
    Remind that every push redeploys all photos on Vercel (storage limits), so
    batching several imports into one push is better.
 
+**People & library hub.** `src/content/people/*.md` (biographies) and
+`src/content/library/*.md` (books, articles, works, archives, sites, videos) —
+schemas in `src/content.config.ts`. Same rules: every fact sourced (`sources:`),
+every library `url` opened and confirmed to load; link people to galleries via
+`galleries:` and library items to people via `people:`; unknown dates are left
+out, not guessed.
+
 For a new city/archive based on this template see README → «Як запустити
-шаблон для свого архіву» (settings live in `src/lib/site.ts`).
+шаблон для свого архіву», `docs/new-archive.md` and `npm run template:init` (all place-specific settings live in `src/site.config.ts`).
 
 Optional: remote LLM development server (details in `docs/remote-llm.md`):
 

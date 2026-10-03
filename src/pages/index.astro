@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import {
+  SITE,
   SITE_NAME,
   SITE_TAGLINE,
   absoluteUrl,
@@ -22,7 +23,8 @@ const formatDate = new Intl.DateTimeFormat("uk-UA", {
 
 const toSlug = (id: string) => id.replace(/\.md$/, "");
 const photoCount = photos.reduce((n, p) => n + 1 + p.data.images.length, 0);
-const cityCount = new Set(photos.map((p) => p.data.city)).size;
+// «Західна Україна» в реконструкціях — не місто, тож рахуємо лише галереї з місцем
+const cityCount = new Set(photos.filter((p) => p.data.location !== false).map((p) => p.data.city)).size;
 const eraCount = ERAS.filter((e) => photos.some((p) => erasOf(p.data.decade).includes(e.key))).length;
 const eraCounts = new Map<string, number>();
 for (const p of photos)
@@ -33,7 +35,7 @@ const eraFilters = ERAS.filter((e) => eraCounts.has(e.key));
 const cities = citiesByWeight(photos.map((p) => p.data.city));
 const cityList =
   cities.length > 6 ? `${cities.slice(0, 6).join(", ")} та інші` : cities.join(", ");
-const pageDescription = `Старі фотографії й листівки Кременця, Кременеччини, Тернопільщини та інших куточків України: ${cityList}. ${photos.length} ${pluralUk(photos.length, ["галерея", "галереї", "галерей"])} з датами, описами та історією місць.`;
+const pageDescription = `Старі фотографії й листівки ${SITE.texts.coverage}: ${cityList}. ${photos.length} ${pluralUk(photos.length, ["галерея", "галереї", "галерей"])} з датами, описами та історією місць.`;
 
 const coverSizes = await Promise.all(photos.map((p) => imageSize(p.data.cover)));
 
@@ -67,17 +69,9 @@ const jsonLd = [
   description={pageDescription}
   jsonLd={jsonLd}
 >
-  <section class="shell meta-strip" aria-label="Технічна панель архіву">
-    <div><span>ГАЛЕРЕЇ</span><b>{photos.length}</b></div>
-    <div><span>ФОТО</span><b>{photoCount}</b></div>
-    <div><span>МІСТА</span><b>{cityCount}</b></div>
-    <div><span>ЕПОХИ</span><b>{eraCount}</b></div>
-    <div><span>СТАТУС</span><b class="accent">АКТИВНО</b></div>
-  </section>
-
-  <section class="hero shell">
+  <section class="hero-full" aria-label="Про архів">
     <video
-      class="hero-video"
+      class="hero-full-video"
       autoplay
       muted
       loop
@@ -89,29 +83,33 @@ const jsonLd = [
       <source src="/video/banner.webm" type="video/webm" />
       <source src="/video/banner.mp4" type="video/mp4" />
     </video>
-    <div class="hero-video-overlay" aria-hidden="true"></div>
-    <div class="hero-left">
-      <p class="eyebrow">▸ ЦИФРОВА ПАМ'ЯТЬ</p>
+    <div class="hero-full-shade" aria-hidden="true"></div>
+
+    <div class="shell hero-full-inner">
+      <p class="eyebrow">▸ {SITE.texts.heroEyebrow}</p>
       <h1>
-        КРЕМЕНЕЦЬ І КРАЙ<br />
-        <span>ЧЕРЕЗ</span> ФОТОАРХІВ
+        {SITE.texts.heroTitle[0]}<br />
+        <span>{SITE.texts.heroTitle[1]}</span> {SITE.texts.heroTitle[2]}
       </h1>
-      <p class="lead">
-        Старі фото й листівки Кременця, Кременеччини, Тернопільщини та інших куточків України: {cityList}.
+      <p class="hero-full-lead">
+        Старі фото й листівки {SITE.texts.coverage}: {cityList}.
         Дати, місця, свідчення.
       </p>
       <div class="hero-actions">
-        <a href="#gallery" class="btn btn-accent">ВІДКРИТИ ГАЛЕРЕЮ ↓</a>
-        <a href="/istoriya/" class="btn">ІСТОРІЯ КРЕМЕНЦЯ →</a>
+        <a href="#gallery" class="btn btn-accent">Відкрити галерею ↓</a>
+        <a href="/karta/" class="btn btn-glass">Карта фото →</a>
+        <a href="/istoriya/" class="btn btn-glass">Історія {SITE.home.genitive} →</a>
       </div>
+
+      <dl class="hero-stats">
+        <div><dt>Галерей</dt><dd>{photos.length}</dd></div>
+        <div><dt>Фото</dt><dd>{photoCount.toLocaleString("uk-UA")}</dd></div>
+        <div><dt>Міст і сіл</dt><dd>{cityCount}</dd></div>
+        <div><dt>Епох</dt><dd>{eraCount}</dd></div>
+      </dl>
     </div>
-    <aside class="hero-spec" aria-label="Специфікація архіву">
-      <p><span>СТЕК</span><b>ASTRO / MD / GIT</b></p>
-      <p><span>ПУБЛІКАЦІЯ</span><b>VERCEL</b></p>
-      <p><span>МЕДІА</span><b>GIT LFS</b></p>
-      <p><span>ФОРМАТ</span><b>ФОТО + ІСТОРІЯ</b></p>
-      <p class="spec-accent"><span>РЕЖИМ</span><b>ГОТОВО</b></p>
-    </aside>
+
+    <button type="button" class="hero-video-toggle" aria-label="Зупинити відео" data-playing="true">❚❚</button>
   </section>
 
   <section class="ticker" aria-hidden="true">
@@ -170,6 +168,28 @@ const jsonLd = [
       ))
     }
   </section>
+
+  <script is:inline>
+    (() => {
+      const video = document.querySelector(".hero-full-video");
+      const toggle = document.querySelector(".hero-video-toggle");
+      if (!video || !toggle) return;
+      const set = (playing) => {
+        toggle.dataset.playing = String(playing);
+        toggle.textContent = playing ? "❚❚" : "▶";
+        toggle.setAttribute("aria-label", playing ? "Зупинити відео" : "Відтворити відео");
+      };
+      // з налаштуванням «зменшити рух» відео не грає — лишається постер
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        video.removeAttribute("autoplay");
+        video.pause();
+        set(false);
+      }
+      toggle.addEventListener("click", () => {
+        if (video.paused) { video.play(); set(true); } else { video.pause(); set(false); }
+      });
+    })();
+  </script>
 
   <script is:inline>
     (() => {

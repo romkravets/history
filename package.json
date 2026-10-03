@@ -28,7 +28,8 @@
     "photos:add": "node scripts/add-photo-story.mjs",
     "astro": "astro",
     "photos:append": "node scripts/append-photos.mjs",
-    "photos:audit": "python3 scripts/audit-photos.py"
+    "photos:audit": "python3 scripts/audit-photos.py",
+    "template:init": "node scripts/template-init.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
-import { SITE_NAME, SITE_TAGLINE, citiesByWeight } from "../lib/site";
+import { SITE, SITE_NAME, SITE_TAGLINE, citiesByWeight } from "../lib/site";
 
 // llms.txt — короткий опис сайту для ШІ-асистентів (https://llmstxt.org).
 export const GET: APIRoute = async ({ site }) => {
@@ -12,6 +12,8 @@ export const GET: APIRoute = async ({ site }) => {
   const eras = (await getCollection("history")).sort(
     (a, b) => a.data.order - b.data.order,
   );
+  const people = (await getCollection("people")).sort((a, b) => a.data.name.localeCompare(b.data.name, "uk"));
+  const library = await getCollection("library");
   const cities = citiesByWeight(photos.map((p) => p.data.city));
 
   const lines = [
@@ -28,13 +30,36 @@ export const GET: APIRoute = async ({ site }) => {
         `- [${p.data.title}](${url(`/photos/${p.id.replace(/\.md$/, "")}/`)}): ${p.data.city}${p.data.area ? `, ${p.data.area}` : ""}; ${p.data.decade}. ${p.data.description}`,
     ),
     "",
-    "## Історія Кременця",
+    `## Історія ${SITE.home.genitive}`,
     "",
     ...eras.map(
       (e) =>
         `- [${e.data.period} — ${e.data.title}](${url(`/istoriya/#${e.data.era}`)}): ${e.data.summary}`,
     ),
     "",
+    ...(people.length
+      ? [
+          "## Відомі люди",
+          "",
+          ...people.map(
+            (p) => `- [${p.data.name}](${url(`/lyudy/${p.id.replace(/\.md$/, "")}/`)}): ${p.data.role}. ${p.data.connection}`,
+          ),
+          "",
+        ]
+      : []),
+    ...(library.length
+      ? [
+          "## Бібліотека краєзнавства",
+          "",
+          `Список книг, статей і ресурсів: ${url("/biblioteka/")}`,
+          "",
+          ...library.map(
+            (b) =>
+              `- ${b.data.title}${b.data.author ? ` — ${b.data.author}` : ""}${b.data.year ? ` (${b.data.year})` : ""} [${b.data.type}]${b.data.url ? `: ${b.data.url}` : ""}`,
+          ),
+          "",
+        ]
+      : []),
     "## Про проєкт",
     "",
     `- [Про архів](${url("/about/")}): автор, джерела та як збирається архів`,

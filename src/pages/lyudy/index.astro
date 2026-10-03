@@ -1,0 +1,66 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { SITE, absoluteUrl, initials, lifeYears } from "../../lib/site";
+
+const people = (await getCollection("people")).sort(
+  (a, b) =>
+    (a.data.order ?? 999) - (b.data.order ?? 999) || a.data.name.localeCompare(b.data.name, "uk"),
+);
+const slug = (id: string) => id.replace(/\.md$/, "");
+const pageUrl = absoluteUrl("/lyudy/", Astro.site);
+const jsonLd = [
+  {
+    "@type": "CollectionPage",
+    url: pageUrl,
+    name: `Відомі люди: ${SITE.name}`,
+    inLanguage: "uk",
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: people.map((p, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: absoluteUrl(`/lyudy/${slug(p.id)}/`, Astro.site),
+        name: p.data.name,
+      })),
+    },
+  },
+];
+---
+
+<Layout
+  title={`Відомі люди ${SITE.home.regionGenitive} · ${SITE.name}`}
+  description={`Відомі люди, пов'язані з ${SITE.home.instrumental} і краєм: ${people.slice(0, 6).map((p) => p.data.name).join(", ")} та інші — біографії, джерела, фото й література.`}
+  jsonLd={jsonLd}
+>
+  <section class="shell">
+    <div class="hero-page">
+      <p class="eyebrow">▸ ЛЮДИ КРАЮ</p>
+      <h1>ВІДОМІ<br /><span>ЛЮДИ</span></h1>
+      <p class="lead">
+        Поети, науковці, фотографи, власники замків і меценати — ті, хто
+        народився тут, жив, працював або залишив слід в історії краю.
+        Кожна біографія — з джерелами.
+      </p>
+    </div>
+  </section>
+
+  <section class="shell people-grid" aria-label="Список людей">
+    {
+      people.map((p) => (
+        <a class="person-card" href={`/lyudy/${slug(p.id)}/`}>
+          {p.data.portrait ? (
+            <img class="person-portrait" src={p.data.portrait} alt={p.data.name} loading="lazy" />
+          ) : (
+            <span class="person-portrait person-monogram" aria-hidden="true">{initials(p.data.name)}</span>
+          )}
+          <span class="person-card-body">
+            <span class="meta">{[lifeYears(p.data.born, p.data.died), p.data.role].filter(Boolean).join(" · ")}</span>
+            <b>{p.data.name}</b>
+            <span class="person-connection">{p.data.connection}</span>
+          </span>
+        </a>
+      ))
+    }
+  </section>
+</Layout>
