@@ -16,6 +16,7 @@ images:
   - "/photos/kremenets-castle-ruins/7.jpg"
   - "/photos/kremenets-castle-ruins/8.jpg"
   - "/photos/kremenets-castle-ruins/9.jpg"
+  - "/photos/kremenets-castle-ruins/10.jpg"
 captions:
   "/photos/kremenets-castle-ruins/cover.jpg": "Панорама руїн Кременецького замку на горі Бона"
   "/photos/kremenets-castle-ruins/1.jpeg": "Вежа Кременецького замку"
@@ -27,6 +28,7 @@ captions:
   "/photos/kremenets-castle-ruins/7.jpg": "Гора Бона з руїнами замку"
   "/photos/kremenets-castle-ruins/8.jpg": "Гора Бона навесні"
   "/photos/kremenets-castle-ruins/9.jpg": "Гора Бона над будинками Кременця"
+  "/photos/kremenets-castle-ruins/10.jpg": "Надбрамна вежа Кременецького замку"
 tags:
   - "Кременець"
   - "Кременецький замок"
