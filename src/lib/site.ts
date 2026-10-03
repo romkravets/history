@@ -23,6 +23,7 @@ const REGION_OVERRIDES: Record<string, string> = {
   Олесько: "Львівська область",
   Підкамінь: "Львівська область",
   Підгірці: "Львівська область",
+  "Західна Україна": "Західна Україна",
 };
 
 export function regionOf(city: string): string {
@@ -45,8 +46,12 @@ export function citiesByWeight(cities: string[]): string[] {
 
 /** Чи згадано місто в тексті з урахуванням відмінків (Кременець → Кременця). */
 export function mentionsCity(text: string, city: string): boolean {
-  const stem = city.toLowerCase().slice(0, Math.max(4, city.length - 3));
-  return text.toLowerCase().includes(stem);
+  const lower = text.toLowerCase();
+  // кожне слово назви за основою: «Західна Україна» → «західн», «україн»
+  return city
+    .toLowerCase()
+    .split(/\s+/)
+    .every((w) => lower.includes(w.slice(0, Math.max(4, w.length - 3))));
 }
 
 /** 1 галерея, 2 галереї, 5 галерей. */

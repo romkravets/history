@@ -37,7 +37,7 @@ const altFor = (idx: number) =>
     : `${title} — ${city}, фото ${idx + 1} з ${allImages.length}`;
 
 const isModern = /сучасн/i.test(decade);
-const kind = /фото|світлин|листівк|знімк/i.test(title)
+const kind = /фото|світлин|листівк|знімк|реконструкц|малюнк|гравюр|карт/i.test(title)
   ? ""
   : isModern
     ? " — фото"
