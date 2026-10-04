@@ -1,0 +1,39 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { SITE } from "../../lib/site";
+
+const routes = await getCollection("routes");
+const slug = (id: string) => id.replace(/\.md$/, "");
+---
+
+<Layout
+  title={`Маршрути старим містом · ${SITE.name}`}
+  description={`Пішохідні маршрути ${SITE.home.instrumental === "Кременцем" ? "старим Кременцем" : "містом"} зі старими фото й порівняннями «тоді й тепер» на кожній зупинці.`}
+>
+  <section class="shell">
+    <div class="hero-page">
+      <p class="eyebrow">▸ ПРОГУЛЯНКИ</p>
+      <h1>МАРШРУТИ<br /><span>СТАРИМ МІСТОМ</span></h1>
+      <p class="lead">Пройдіть містом із фотоархівом у телефоні: на кожній зупинці — старе фото того самого місця.</p>
+    </div>
+  </section>
+  <section class="shell route-cards">
+    {
+      routes.map((r) => (
+        <a class="card" href={`/marshruty/${slug(r.id)}/`}>
+          <div class="card-media">
+            <img src={r.data.cover} alt={r.data.title} loading="lazy" />
+            <span class="card-count">{r.data.stops.length} зупинок</span>
+          </div>
+          <div class="card-body">
+            <p class="meta">{r.data.duration}</p>
+            <h2>{r.data.title}</h2>
+            <p>{r.data.description}</p>
+            <p class="card-more">ВІДКРИТИ МАРШРУТ →</p>
+          </div>
+        </a>
+      ))
+    }
+  </section>
+</Layout>

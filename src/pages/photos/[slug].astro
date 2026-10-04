@@ -1,7 +1,9 @@
 ---
 import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
+import BeforeAfter from "../../components/BeforeAfter.astro";
 import {
+  SITE,
   OG_HEIGHT,
   OG_WIDTH,
   SITE_NAME,
@@ -65,6 +67,16 @@ const kind = /фото|світлин|листівк|знімк|реконстр
 const pageTitle = `${title}${mentionsCity(title, city) ? "" : `, ${city}`}${kind} · ${SITE_NAME}`;
 
 const pageUrl = absoluteUrl(Astro.url.pathname, Astro.site);
+const fb = SITE.feedback;
+const feedbackBase = fb.formUrl
+  ? (() => {
+      const u = new URL(fb.formUrl);
+      u.searchParams.set("usp", "pp_url");
+      if (fb.fields.gallery) u.searchParams.set(fb.fields.gallery, title);
+      if (fb.fields.url) u.searchParams.set(fb.fields.url, pageUrl);
+      return u.href;
+    })()
+  : "";
 const shareText = `${title} — ${description}`;
 const enc = encodeURIComponent;
 const shareLinks = [
@@ -156,6 +168,18 @@ const jsonLd = [
         }
       </div>
 
+      {
+        feedbackBase && (
+          <div class="feedback-cta">
+            <p>Впізнали місце чи людей? Маєте старі фото цього місця?</p>
+            <a class="btn btn-accent" href={feedbackBase} target="_blank" rel="noopener noreferrer">
+              Знаєте, що на фото? Напишіть →
+            </a>
+            <a class="btn" href={feedbackBase} target="_blank" rel="noopener noreferrer">Надіслати своє фото</a>
+          </div>
+        )
+      }
+
       <div class="share" data-share-url={pageUrl} data-share-title={title} data-share-text={shareText}>
         <span class="share-label">Поділитися:</span>
         <button type="button" class="share-btn share-native" hidden>Поділитися…</button>
@@ -183,6 +207,19 @@ const jsonLd = [
         data-lightbox-index="0"
       />
     </figure>
+
+    {
+      photo.data.comparisons.length > 0 && (
+        <section class="ba-section" aria-label="Тоді й тепер">
+          <h2 class="section-title">Тоді й тепер <small>— потягніть повзунок</small></h2>
+          <div class="ba-list">
+            {photo.data.comparisons.map((c) => (
+              <BeforeAfter before={c.before} after={c.after} caption={c.caption} />
+            ))}
+          </div>
+        </section>
+      )
+    }
 
     {
       photo.data.images.length > 0 && (
@@ -248,6 +285,20 @@ const jsonLd = [
     <img class="lightbox-image" alt="" />
     <button type="button" class="lightbox-nav lightbox-next" data-lightbox-next aria-label="Наступне фото">›</button>
     <p class="lightbox-counter"></p>
+    {
+      feedbackBase && (
+        <a
+          class="lightbox-feedback"
+          href={feedbackBase}
+          data-base={feedbackBase}
+          data-photo-field={fb.fields.photo}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Знаєте, що на цьому фото?
+        </a>
+      )
+    }
   </div>
 
   <script is:inline>
@@ -308,16 +359,31 @@ const jsonLd = [
         counter.textContent = items[current].caption
           ? `${current + 1} / ${items.length} · ${items[current].caption}`
           : `${current + 1} / ${items.length}`;
+        // адреса конкретного фото (#foto-3) — щоб ним можна було поділитися
+        if (box.classList.contains("is-open"))
+          history.replaceState(null, "", `#foto-${current + 1}`);
+        // посилання на форму з номером і підписом саме цього фото
+        const fbLink = box.querySelector(".lightbox-feedback");
+        if (fbLink && fbLink.dataset.photoField) {
+          const u = new URL(fbLink.dataset.base);
+          u.searchParams.set(
+            fbLink.dataset.photoField,
+            `Фото ${current + 1} з ${items.length}${items[current].caption ? ` — ${items[current].caption}` : ""} (${location.origin}${location.pathname}#foto-${current + 1})`,
+          );
+          fbLink.href = u.href;
+        }
       };
 
       const open = (i) => {
-        show(i);
         box.classList.add("is-open");
+        show(i);
         box.setAttribute("aria-hidden", "false");
         document.body.style.overflow = "hidden";
       };
 
       const close = () => {
+        if (/^#foto-\d+$/.test(location.hash))
+          history.replaceState(null, "", location.pathname + location.search);
         box.classList.remove("is-open");
         box.setAttribute("aria-hidden", "true");
         document.body.style.overflow = "";
@@ -350,6 +416,9 @@ const jsonLd = [
         if (e.key === "ArrowLeft") show(current - 1);
         if (e.key === "ArrowRight") show(current + 1);
       });
+
+      const m = location.hash.match(/^#foto-(\d+)$/);
+      if (m && Number(m[1]) >= 1 && Number(m[1]) <= items.length) open(Number(m[1]) - 1);
     })();
   </script>
 </Layout>

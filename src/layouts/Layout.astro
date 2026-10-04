@@ -43,6 +43,7 @@ const path = Astro.url.pathname;
 const NAV = [
   { href: "/", label: "Галерея", active: path === "/" || path.startsWith("/photos/") },
   { href: "/karta/", label: "Карта", active: path.startsWith("/karta") },
+  { href: "/marshruty/", label: "Маршрути", active: path.startsWith("/marshruty") },
   { href: "/lyudy/", label: "Люди", active: path.startsWith("/lyudy") },
   { href: "/biblioteka/", label: "Бібліотека", active: path.startsWith("/biblioteka") },
   { href: "/istoriya/", label: "Історія", active: path.startsWith("/istoriya") },

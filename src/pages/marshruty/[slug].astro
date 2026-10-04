@@ -1,0 +1,147 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import BeforeAfter from "../../components/BeforeAfter.astro";
+import { SITE, absoluteUrl } from "../../lib/site";
+
+export async function getStaticPaths() {
+  const routes = await getCollection("routes");
+  return routes.map((route) => ({ params: { slug: route.id.replace(/\.md$/, "") }, props: { route } }));
+}
+
+const { route } = Astro.props;
+const { Content } = await render(route);
+const { title, description, duration, cover, stops } = route.data;
+const people = new Map((await getCollection("people")).map((p) => [p.id.replace(/\.md$/, ""), p.data.name]));
+const galleries = new Map((await getCollection("photos")).map((p) => [p.id.replace(/\.md$/, ""), p.data.title]));
+
+// посилання на пішохідний маршрут у Google Maps (до 9 проміжних точок)
+const pt = (s: { lat: number; lng: number }) => `${s.lat},${s.lng}`;
+const gmaps =
+  "https://www.google.com/maps/dir/?api=1&travelmode=walking" +
+  `&origin=${pt(stops[0]!)}&destination=${pt(stops[stops.length - 1]!)}` +
+  (stops.length > 2 ? `&waypoints=${stops.slice(1, -1).slice(0, 9).map(pt).join("%7C")}` : "");
+
+const pageUrl = absoluteUrl(Astro.url.pathname, Astro.site);
+const jsonLd = [
+  {
+    "@type": "TouristTrip",
+    name: title,
+    description,
+    url: pageUrl,
+    inLanguage: "uk",
+    itinerary: {
+      "@type": "ItemList",
+      itemListElement: stops.map((s, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        item: {
+          "@type": "TouristAttraction",
+          name: s.title,
+          description: s.text,
+          geo: { "@type": "GeoCoordinates", latitude: s.lat, longitude: s.lng },
+        },
+      })),
+    },
+  },
+];
+const points = stops.map((s, i) => ({ n: i + 1, title: s.title, lat: s.lat, lng: s.lng, approximate: s.approximate }));
+---
+
+<Layout title={`${title} · ${SITE.name}`} description={description} image={cover} imageAlt={title} jsonLd={jsonLd}>
+  <article class="shell route-article">
+    <div class="photo-topbar">
+      <a class="back-link" href="/marshruty/">← Усі маршрути</a>
+    </div>
+    <header class="photo-header">
+      <p class="eyebrow">Маршрут · {stops.length} зупинок · {duration}</p>
+      <h1>{title}</h1>
+      <p class="lead">{description}</p>
+      <div class="route-actions">
+        <a class="btn btn-accent" href={gmaps} target="_blank" rel="noopener noreferrer">Відкрити в Google Maps ↗</a>
+        <a class="btn" href="#stop-1">До першої зупинки ↓</a>
+      </div>
+    </header>
+
+    <div id="route-map" class="archive-map route-map" role="region" aria-label="Карта маршруту"></div>
+    <section class="story"><Content /></section>
+
+    <ol class="route-stops">
+      {
+        stops.map((s, i) => (
+          <li class="route-stop" id={`stop-${i + 1}`}>
+            <div class="route-stop-head">
+              <span class="route-num">{i + 1}</span>
+              <div>
+                <h2>{s.title}</h2>
+                {s.approximate && <p class="meta">точка приблизна</p>}
+              </div>
+            </div>
+            <div class="route-stop-body">
+              <div class="route-stop-media">
+                {s.compare ? (
+                  <BeforeAfter before={s.compare.before} after={s.compare.after} caption={s.compare.caption} />
+                ) : (
+                  s.photo && (
+                    <figure class="route-photo">
+                      <img src={s.photo} alt={s.photoCaption ?? s.title} loading="lazy" />
+                      {s.photoCaption && <figcaption>{s.photoCaption}</figcaption>}
+                    </figure>
+                  )
+                )}
+              </div>
+              <div>
+                <p class="route-text">{s.text}</p>
+                <p class="route-links">
+                  {s.gallery && galleries.has(s.gallery) && (
+                    <a href={`/photos/${s.gallery}/`}>Галерея: {galleries.get(s.gallery)} →</a>
+                  )}
+                  {s.person && people.has(s.person) && <a href={`/lyudy/${s.person}/`}>{people.get(s.person)} →</a>}
+                  <a href={`https://www.google.com/maps/search/?api=1&query=${s.lat},${s.lng}`} target="_blank" rel="noopener noreferrer">
+                    Точка на карті ↗
+                  </a>
+                </p>
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </article>
+
+  <script is:inline type="application/json" id="route-data" set:html={JSON.stringify(points)} />
+  <script>
+    import L from "leaflet";
+    import "leaflet/dist/leaflet.css";
+
+    const el = document.getElementById("route-map");
+    const pts: { n: number; title: string; lat: number; lng: number; approximate: boolean }[] = JSON.parse(
+      document.getElementById("route-data")?.textContent || "[]",
+    );
+    if (el && pts.length) {
+      const map = L.map(el, { scrollWheelZoom: false });
+      map.on("click", () => map.scrollWheelZoom.enable());
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        className: "map-tiles",
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(map);
+      const line = L.polyline(
+        pts.map((p) => [p.lat, p.lng] as [number, number]),
+        { color: "#e0805f", weight: 4, dashArray: "8 8", opacity: 0.9 },
+      ).addTo(map);
+      for (const p of pts) {
+        L.marker([p.lat, p.lng], {
+          title: p.title,
+          icon: L.divIcon({
+            className: "",
+            html: `<a class="route-pin${p.approximate ? " route-pin--approx" : ""}" href="#stop-${p.n}">${p.n}</a>`,
+            iconSize: [30, 30],
+            iconAnchor: [15, 15],
+          }),
+        }).addTo(map);
+      }
+      map.fitBounds(line.getBounds(), { padding: [40, 40] });
+    }
+  </script>
+</Layout>

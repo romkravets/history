@@ -1,0 +1,79 @@
+---
+/**
+ * «Фото дня»: щодня інше фото з архіву. Під час збірки показується фото на
+ * дату збірки (працює без JS), браузер підставляє фото на сьогоднішню дату.
+ */
+import { getCollection } from "astro:content";
+import { absoluteUrl } from "../lib/site";
+
+const photos = (await getCollection("photos")).sort((a, b) => a.id.localeCompare(b.id));
+const pool = photos
+  .filter((p) => p.data.location !== false)
+  .flatMap((p) => {
+    const slug = p.id.replace(/\.md$/, "");
+    return [p.data.cover, ...p.data.images]
+      .map((src, i) => ({ src, i }))
+      .filter(({ src, i }) => i === 0 || p.data.captions[src])
+      .map(({ src, i }) => ({ s: src, c: p.data.captions[src] ?? p.data.title, g: slug, t: p.data.title, d: p.data.decade, n: i + 1 }));
+  });
+// той самий алгоритм, що в скрипті нижче
+const dayIndex = (date: Date, n: number) => {
+  const day = Math.floor(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / 86400000);
+  return (day * 7919) % n;
+};
+const today = pool[dayIndex(new Date(), pool.length)]!;
+const href = `/photos/${today.g}/#foto-${today.n}`;
+const site = absoluteUrl("/", Astro.site);
+---
+
+<section class="shell potd" aria-labelledby="potd-title" data-site={site}>
+  <a class="potd-media" href={href} data-potd-link>
+    <img src={today.s} alt={today.c} loading="lazy" decoding="async" data-potd-img />
+  </a>
+  <div class="potd-body">
+    <p class="eyebrow">▸ Фото дня · <time data-potd-date></time></p>
+    <h2 id="potd-title" data-potd-caption>{today.c}</h2>
+    <p class="meta" data-potd-meta>{today.t} · {today.d}</p>
+    <p class="potd-text">Щодня — інше фото з архіву. Заходьте завтра або підпишіться, щоб не пропустити.</p>
+    <div class="potd-actions">
+      <a class="btn btn-accent" href={href} data-potd-link>Відкрити фото →</a>
+      <a class="btn" href={`/photos/${today.g}/`} data-potd-gallery>Уся галерея</a>
+    </div>
+    <p class="potd-share">
+      Поділитися:
+      <a data-share="telegram" target="_blank" rel="noopener noreferrer" href="#">Telegram</a>
+      <a data-share="facebook" target="_blank" rel="noopener noreferrer" href="#">Facebook</a>
+      <a data-share="viber" href="#">Viber</a>
+    </p>
+  </div>
+</section>
+
+<script define:vars={{ fallback: today }}>
+  (async () => {
+    const box = document.querySelector(".potd");
+    if (!box) return;
+    const now = new Date();
+    const fmt = new Intl.DateTimeFormat("uk-UA", { day: "numeric", month: "long" });
+    box.querySelector("[data-potd-date]").textContent = fmt.format(now);
+    let p = fallback;
+    try {
+      const pool = await (await fetch("/foto-dnya.json")).json();
+      const day = Math.floor(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 86400000);
+      p = pool[(day * 7919) % pool.length] ?? fallback;
+    } catch {}
+    const href = `/photos/${p.g}/#foto-${p.n}`;
+    const img = box.querySelector("[data-potd-img]");
+    img.src = p.s;
+    img.alt = p.c;
+    box.querySelector("[data-potd-caption]").textContent = p.c;
+    box.querySelector("[data-potd-meta]").textContent = `${p.t} · ${p.d}`;
+    box.querySelectorAll("[data-potd-link]").forEach((a) => (a.href = href));
+    box.querySelector("[data-potd-gallery]").href = `/photos/${p.g}/`;
+    const url = new URL(href, box.dataset.site).href;
+    const text = `Фото дня: ${p.c}`;
+    const enc = encodeURIComponent;
+    box.querySelector('[data-share="telegram"]').href = `https://t.me/share/url?url=${enc(url)}&text=${enc(text)}`;
+    box.querySelector('[data-share="facebook"]').href = `https://www.facebook.com/sharer/sharer.php?u=${enc(url)}`;
+    box.querySelector('[data-share="viber"]').href = `viber://forward?text=${enc(`${text} ${url}`)}`;
+  })();
+</script>

@@ -24,6 +24,10 @@ const photos = defineCollection({
         }),
       ])
       .optional(),
+    // Пари «тоді й тепер» для повзунка порівняння (шляхи з images/cover)
+    comparisons: z
+      .array(z.object({ before: z.string(), after: z.string(), caption: z.string() }))
+      .default([]),
     // Підписи окремих фото: { "/photos/<slug>/3.jpg": "Церква Анни Праведної" }
     captions: z.record(z.string(), z.string()).default({}),
     tags: z.array(z.string()).default([]),
@@ -98,9 +102,37 @@ const library = defineCollection({
   }),
 });
 
+// Пішохідні маршрути: зупинки з координатами, фото й порівняннями «тоді й тепер».
+const routes = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/routes" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    /** Орієнтовна тривалість і довжина: «1,5 км · 1–1,5 год». */
+    duration: z.string(),
+    cover: z.string(),
+    stops: z.array(
+      z.object({
+        title: z.string(),
+        lat: z.number(),
+        lng: z.number(),
+        /** Точка орієнтовна (місце зйомки старого фото відоме неточно). */
+        approximate: z.boolean().default(false),
+        text: z.string(),
+        photo: z.string().optional(),
+        photoCaption: z.string().optional(),
+        compare: z.object({ before: z.string(), after: z.string(), caption: z.string() }).optional(),
+        gallery: z.string().optional(),
+        person: z.string().optional(),
+      }),
+    ),
+  }),
+});
+
 export const collections = {
   photos,
   history,
   people,
   library,
+  routes,
 };

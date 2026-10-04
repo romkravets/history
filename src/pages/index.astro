@@ -1,6 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
+import PhotoOfDay from "../components/PhotoOfDay.astro";
+import BeforeAfter from "../components/BeforeAfter.astro";
 import {
   SITE,
   SITE_NAME,
@@ -26,6 +28,11 @@ const photoCount = photos.reduce((n, p) => n + 1 + p.data.images.length, 0);
 // «Західна Україна» в реконструкціях — не місто, тож рахуємо лише галереї з місцем
 const cityCount = new Set(photos.filter((p) => p.data.location !== false).map((p) => p.data.city)).size;
 const eraCount = ERAS.filter((e) => photos.some((p) => erasOf(p.data.decade).includes(e.key))).length;
+const withCompare = photos.find((p) => p.data.comparisons.length > 0);
+const featuredCompare = withCompare && {
+  ...withCompare.data.comparisons[0]!,
+  slug: toSlug(withCompare.id),
+};
 const eraCounts = new Map<string, number>();
 for (const p of photos)
   for (const e of erasOf(p.data.decade))
@@ -111,6 +118,23 @@ const jsonLd = [
 
     <button type="button" class="hero-video-toggle" aria-label="Зупинити відео" data-playing="true">❚❚</button>
   </section>
+
+  <PhotoOfDay />
+
+  {
+    featuredCompare && (
+      <section class="shell home-ba" aria-label="Тоді й тепер">
+        <div class="home-ba-head">
+          <h2 class="section-title">Тоді й тепер <small>— потягніть повзунок</small></h2>
+          <div class="home-ba-links">
+            <a href={`/photos/${featuredCompare.slug}/`}>Усі порівняння →</a>
+            <a href="/marshruty/">Маршрут старим містом →</a>
+          </div>
+        </div>
+        <BeforeAfter before={featuredCompare.before} after={featuredCompare.after} caption={featuredCompare.caption} />
+      </section>
+    )
+  }
 
   <section class="ticker" aria-hidden="true">
     <div>

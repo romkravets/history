@@ -1,0 +1,51 @@
+---
+/**
+ * Повзунок «тоді й тепер»: два фото одне над одним, межу тягнуть мишкою,
+ * пальцем або клавішами ←/→ (це звичайний <input type="range">).
+ */
+import { imageSize } from "../lib/site";
+
+interface Props {
+  before: string;
+  after: string;
+  caption: string;
+  beforeLabel?: string;
+  afterLabel?: string;
+}
+const { before, after, caption, beforeLabel = "Тоді", afterLabel = "Тепер" } = Astro.props;
+const size = await imageSize(after);
+// пропорції кадру — за сучасним фото, але не вужче за 4:3 і не вище за квадрат
+const ratio = size ? Math.min(Math.max(size.width / size.height, 1), 16 / 9) : 4 / 3;
+---
+
+<figure class="ba" style={`--ba-ratio:${ratio.toFixed(3)}`}>
+  <div class="ba-frame">
+    <img class="ba-img ba-after" src={after} alt={`${caption} — ${afterLabel.toLowerCase()}`} loading="lazy" decoding="async" />
+    <div class="ba-before-wrap">
+      <img class="ba-img ba-before" src={before} alt={`${caption} — ${beforeLabel.toLowerCase()}`} loading="lazy" decoding="async" />
+    </div>
+    <span class="ba-label ba-label-before" aria-hidden="true">{beforeLabel}</span>
+    <span class="ba-label ba-label-after" aria-hidden="true">{afterLabel}</span>
+    <span class="ba-handle" aria-hidden="true"><span>⟷</span></span>
+    <input
+      class="ba-range"
+      type="range"
+      min="0"
+      max="100"
+      value="50"
+      step="0.5"
+      aria-label={`Порівняти: ${caption}. Ліворуч — ${beforeLabel.toLowerCase()}, праворуч — ${afterLabel.toLowerCase()}`}
+    />
+  </div>
+  <figcaption>{caption}</figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".ba").forEach((ba) => {
+    const range = ba.querySelector<HTMLInputElement>(".ba-range");
+    if (!range) return;
+    const set = () => ba.style.setProperty("--ba-pos", `${range.value}%`);
+    range.addEventListener("input", set);
+    set();
+  });
+</script>
