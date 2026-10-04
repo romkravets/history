@@ -147,7 +147,16 @@ const graph = [
         <span class="brand-dot" aria-hidden="true"></span>
         АРХІВ ІСТОРІЇ
       </a>
-      <nav class="top-nav" aria-label="Головна навігація">
+      <button
+        type="button"
+        class="nav-toggle"
+        aria-expanded="false"
+        aria-controls="top-nav"
+        aria-label="Відкрити меню"
+      >
+        <span aria-hidden="true"></span>
+      </button>
+      <nav class="top-nav" id="top-nav" aria-label="Головна навігація">
         {
           NAV.map((item) => (
             <a href={item.href} aria-current={item.active ? "page" : undefined}>
@@ -161,17 +170,73 @@ const graph = [
       <slot />
     </main>
     <footer class="site-footer">
-      <div class="shell site-footer-inner">
-        <span>ІСТОРИЧНИЙ АРХІВ КРЕМЕНЕЧЧИНИ</span>
-        <a
-          href="https://github.com/romkravets"
-          target="_blank"
-          rel="me noopener noreferrer"
-        >
-          Розробник: Роман Кравець · GitHub
-        </a>
+      <div class="shell site-footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="/">
+            <span class="brand-dot" aria-hidden="true"></span>
+            {SITE.name}
+          </a>
+          <p>{SITE.tagline}. Фото, листівки, карти, люди й історія краю — з джерелами.</p>
+        </div>
+        <nav class="footer-nav" aria-label="Розділи сайту">
+          <p class="footer-title">Розділи</p>
+          {NAV.map((item) => <a href={item.href}>{item.label}</a>)}
+        </nav>
+        <div class="footer-author">
+          <p class="footer-title">Автор</p>
+          <span>{AUTHOR.name}</span>
+          {SITE.author.github && (
+            <a href={SITE.author.github} target="_blank" rel="me noopener noreferrer">GitHub ↗</a>
+          )}
+          {SITE.author.linkedin && (
+            <a href={SITE.author.linkedin} target="_blank" rel="me noopener noreferrer">LinkedIn ↗</a>
+          )}
+        </div>
+      </div>
+      <div class="shell footer-bottom">
+        <span>© {new Date().getFullYear()} {SITE.name}</span>
+        <span>Фото належать їхнім авторам</span>
       </div>
     </footer>
+
+    <button type="button" class="to-top" aria-label="Повернутися нагору" hidden>↑</button>
+    <script is:inline>
+      (() => {
+        // бургер-меню для планшетів і телефонів
+        const header = document.querySelector(".site-header");
+        const toggle = document.querySelector(".nav-toggle");
+        if (!header || !toggle) return;
+        const set = (open) => {
+          header.classList.toggle("nav-open", open);
+          toggle.setAttribute("aria-expanded", String(open));
+          toggle.setAttribute("aria-label", open ? "Закрити меню" : "Відкрити меню");
+        };
+        toggle.addEventListener("click", () => set(!header.classList.contains("nav-open")));
+        document.addEventListener("keydown", (e) => e.key === "Escape" && set(false));
+        document.addEventListener("click", (e) => {
+          if (header.classList.contains("nav-open") && !header.contains(e.target)) set(false);
+        });
+        matchMedia("(min-width: 901px)").addEventListener("change", (e) => e.matches && set(false));
+      })();
+    </script>
+    <script is:inline>
+      (() => {
+        // кнопка «нагору» — з'являється, коли сторінку прогорнуто далеко вниз
+        const btn = document.querySelector(".to-top");
+        if (!btn) return;
+        const update = () => {
+          const root = document.documentElement;
+          btn.hidden = !(root.scrollTop > Math.max(600, innerHeight * 1.2));
+        };
+        btn.addEventListener("click", () => {
+          const smooth = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+          window.scrollTo({ top: 0, behavior: smooth ? "smooth" : "auto" });
+          document.querySelector(".brand")?.focus({ preventScroll: true });
+        });
+        addEventListener("scroll", update, { passive: true });
+        update();
+      })();
+    </script>
     <script is:inline>
       (() => {
         const bar = document.querySelector(".scroll-progress");

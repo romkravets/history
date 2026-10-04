@@ -80,7 +80,12 @@ export const SITE = {
   name: ${q(c.name)},
   tagline: ${q(c.tagline)},
   url: ${q(c.url)},
-  author: { name: ${q(c.author)}, url: ${q(c.authorUrl)} },
+  author: {
+    name: ${q(c.author)},
+    url: ${q(c.authorUrl)},
+    github: ${q(c.authorUrl.includes("github.com") ? c.authorUrl : "")},
+    linkedin: "",
+  },
 
   home: {
     name: ${q(c.city)},

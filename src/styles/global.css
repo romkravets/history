@@ -134,26 +134,185 @@ main {
 
 .site-footer {
   border-top: 1px solid var(--border-c);
-  padding: 20px 0 26px;
+  background: var(--surface);
+  padding: 36px 0 0;
+  color: var(--muted);
+  font-size: 12px;
 }
 
-.site-footer-inner {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  color: var(--muted);
+.site-footer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 28px;
+}
+
+.footer-about .brand {
+  font-size: 0.9rem;
+  color: var(--fg);
+}
+
+.footer-about p {
+  margin: 12px 0 0;
+  max-width: 44ch;
+  line-height: 1.7;
+}
+
+.footer-title {
+  margin: 0 0 10px;
+  color: var(--accent);
   font-size: 10px;
   font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.footer-nav,
+.footer-author {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.footer-nav a,
+.footer-author a {
+  color: var(--fg-soft);
+}
+
+.footer-nav a:hover,
+.footer-author a:hover {
+  color: var(--accent-3);
+}
+
+.footer-author span {
+  color: var(--fg);
+}
+
+.shell.footer-bottom {
+  margin-top: 30px;
+  padding-top: 14px;
+  padding-bottom: 18px;
+  border-top: 1px solid var(--border-c);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
-.site-footer a {
-  color: var(--accent);
+/* бургер: прихований на широких екранах */
+.nav-toggle {
+  display: none;
+  width: 44px;
+  height: 40px;
+  border: 1px solid var(--border-c);
+  background: var(--surface);
+  color: var(--fg);
+  cursor: pointer;
+  place-items: center;
 }
 
-.site-footer a:hover {
-  color: var(--fg);
+.nav-toggle span,
+.nav-toggle span::before,
+.nav-toggle span::after {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  transition: transform 0.15s, opacity 0.15s;
+}
+
+.nav-toggle span {
+  position: relative;
+}
+
+.nav-toggle span::before,
+.nav-toggle span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+}
+
+.nav-toggle span::before {
+  top: -6px;
+}
+
+.nav-toggle span::after {
+  top: 6px;
+}
+
+.nav-open .nav-toggle span {
+  background: transparent;
+}
+
+.nav-open .nav-toggle span::before {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.nav-open .nav-toggle span::after {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* кнопка «нагору» */
+.to-top {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 25;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.to-top:hover {
+  background: var(--accent-strong);
+}
+
+.to-top[hidden] {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .site-header {
+    grid-template-columns: 1fr auto;
+  }
+
+  .nav-toggle {
+    display: grid;
+  }
+
+  .top-nav {
+    display: none;
+    grid-column: 1 / -1;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px 0 4px;
+  }
+
+  .nav-open .top-nav {
+    display: flex;
+  }
+
+  .top-nav a {
+    padding: 12px 14px;
+    font-size: 12px;
+  }
+
+  .site-footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-about {
+    grid-column: 1 / -1;
+  }
 }
 
 .shell {
@@ -547,22 +706,6 @@ main {
 }
 
 @media (max-width: 720px) {
-  .site-header {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  .top-nav {
-    justify-self: stretch;
-    flex-wrap: wrap;
-  }
-
-  .top-nav a {
-    padding: 8px 9px;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-  }
-
   .site-header {
     padding-top: 12px;
   }

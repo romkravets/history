@@ -12,7 +12,13 @@ export const SITE = {
   tagline: "Старі фото Кременця, Тернопільщини та України",
   /** Типова адреса сайту; на Vercel можна перевизначити змінною SITE_URL. */
   url: "https://history-kremenets.vercel.app",
-  author: { name: "Роман Кравець", url: "https://github.com/romkravets" },
+  author: {
+    name: "Роман Кравець",
+    url: "https://github.com/romkravets",
+    /** Посилання в підвалі сайту (порожній рядок — не показувати). */
+    github: "https://github.com/romkravets",
+    linkedin: "https://www.linkedin.com/in/romkravets/",
+  },
 
   /** Головне місто архіву — центр карти, гео-мітки, schema.org. */
   home: {
