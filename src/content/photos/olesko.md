@@ -8,19 +8,19 @@ description: "Фотоальбом Олеського замку, відомог
 location:
   lat: 49.96838
   lng: 24.90094
-cover: "/photos/olesko/cover.jpg"
+cover: "/photos/olesko/cover.webp"
 images:
-  - "/photos/olesko/1.jpg"
-  - "/photos/olesko/2.jpg"
-  - "/photos/olesko/3.jpg"
-  - "/photos/olesko/4.jpg"
-  - "/photos/olesko/5.jpg"
-  - "/photos/olesko/6.jpg"
-  - "/photos/olesko/7.jpg"
-  - "/photos/olesko/8.jpg"
-  - "/photos/olesko/9.jpg"
-  - "/photos/olesko/10.jpg"
-  - "/photos/olesko/11.jpg"
+  - "/photos/olesko/1.webp"
+  - "/photos/olesko/2.webp"
+  - "/photos/olesko/3.webp"
+  - "/photos/olesko/4.webp"
+  - "/photos/olesko/5.webp"
+  - "/photos/olesko/6.webp"
+  - "/photos/olesko/7.webp"
+  - "/photos/olesko/8.webp"
+  - "/photos/olesko/9.webp"
+  - "/photos/olesko/10.webp"
+  - "/photos/olesko/11.webp"
 tags:
   - "Олесько"
   - "Олеський замок"

@@ -8,7 +8,7 @@ description: "Стари́й Оле́ксинець — село в Україн
 location:
   lat: 49.83845
   lng: 25.55145
-cover: "/photos/stari-oleksinets/cover.jpg"
+cover: "/photos/stari-oleksinets/cover.webp"
 images: []
 tags:
   - "Старий Олексинець"

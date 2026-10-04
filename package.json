@@ -29,10 +29,12 @@
     "astro": "astro",
     "photos:append": "node scripts/append-photos.mjs",
     "photos:audit": "python3 scripts/audit-photos.py",
-    "template:init": "node scripts/template-init.mjs"
+    "template:init": "node scripts/template-init.mjs",
+    "photos:webp": "node scripts/convert-webp.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
+    "@vercel/analytics": "^2.0.1",
     "astro": "^7.1.6",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",

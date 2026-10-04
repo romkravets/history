@@ -8,11 +8,11 @@ description: "Чотири архівні світлини виставки пл
 location:
   lat: 49.90194
   lng: 25.75108
-cover: "/photos/vyshnivets-livestock-exhibition/cover.jpg"
+cover: "/photos/vyshnivets-livestock-exhibition/cover.webp"
 images:
-  - "/photos/vyshnivets-livestock-exhibition/1.jpg"
-  - "/photos/vyshnivets-livestock-exhibition/2.jpg"
-  - "/photos/vyshnivets-livestock-exhibition/3.jpg"
+  - "/photos/vyshnivets-livestock-exhibition/1.webp"
+  - "/photos/vyshnivets-livestock-exhibition/2.webp"
+  - "/photos/vyshnivets-livestock-exhibition/3.webp"
 tags:
   - "Вишнівець"
   - "виставка"

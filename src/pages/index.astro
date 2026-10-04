@@ -147,14 +147,16 @@ const jsonLd = [
           data-eras={erasOf(photo.data.decade).join(" ")}
           href={`/photos/${toSlug(photo.id)}/`}
         >
-          <img
-            src={photo.data.cover}
-            alt={`${photo.data.title} — ${photo.data.city}, ${photo.data.decade}`}
-            width={coverSizes[i]?.width}
-            height={coverSizes[i]?.height}
-            loading="lazy"
-            decoding="async"
-          />
+          <div class="card-media">
+            <img
+              src={photo.data.cover}
+              alt={`${photo.data.title} — ${photo.data.city}, ${photo.data.decade}`}
+              width={coverSizes[i]?.width}
+              height={coverSizes[i]?.height}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
           <div class="card-body">
             <p class="meta">
               [{photo.data.decade}] · {photo.data.city}

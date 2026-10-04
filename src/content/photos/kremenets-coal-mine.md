@@ -9,22 +9,22 @@ location:
   lat: 50.0961
   lng: 25.72608
   approximate: true
-cover: "/photos/kremenets-coal-mine/cover.png"
+cover: "/photos/kremenets-coal-mine/cover.webp"
 images:
-  - "/photos/kremenets-coal-mine/1.png"
-  - "/photos/kremenets-coal-mine/2.png"
-  - "/photos/kremenets-coal-mine/3.png"
-  - "/photos/kremenets-coal-mine/4.png"
-  - "/photos/kremenets-coal-mine/5.jpg"
-  - "/photos/kremenets-coal-mine/6.jpg"
-  - "/photos/kremenets-coal-mine/7.jpg"
+  - "/photos/kremenets-coal-mine/1.webp"
+  - "/photos/kremenets-coal-mine/2.webp"
+  - "/photos/kremenets-coal-mine/3.webp"
+  - "/photos/kremenets-coal-mine/4.webp"
+  - "/photos/kremenets-coal-mine/5.webp"
+  - "/photos/kremenets-coal-mine/6.webp"
+  - "/photos/kremenets-coal-mine/7.webp"
 captions:
-  "/photos/kremenets-coal-mine/cover.png": "Копальня вугілля в Кременці, загальний вигляд, 1940"
-  "/photos/kremenets-coal-mine/1.png": "Кременець. Копальні кам'яного вугілля, 1912"
-  "/photos/kremenets-coal-mine/2.png": "Вхід до штольні «Кременецька шахта № 1»"
-  "/photos/kremenets-coal-mine/5.jpg": "Залишки входу до штольні з радянським гербом"
-  "/photos/kremenets-coal-mine/6.jpg": "Бетонний портал штольні"
-  "/photos/kremenets-coal-mine/7.jpg": "Затоплений хід штольні"
+  "/photos/kremenets-coal-mine/cover.webp": "Копальня вугілля в Кременці, загальний вигляд, 1940"
+  "/photos/kremenets-coal-mine/1.webp": "Кременець. Копальні кам'яного вугілля, 1912"
+  "/photos/kremenets-coal-mine/2.webp": "Вхід до штольні «Кременецька шахта № 1»"
+  "/photos/kremenets-coal-mine/5.webp": "Залишки входу до штольні з радянським гербом"
+  "/photos/kremenets-coal-mine/6.webp": "Бетонний портал штольні"
+  "/photos/kremenets-coal-mine/7.webp": "Затоплений хід штольні"
 tags:
   - "Кременець"
   - "копальня"

@@ -33,7 +33,6 @@
  */
 
 import {
-  copyFileSync,
   existsSync,
   mkdirSync,
   readdirSync,
@@ -43,6 +42,17 @@ import {
 } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import sharp from "sharp";
+
+// Усі фото зберігаються як WebP з довгою стороною ≤ 1600 px (менший деплой, швидший сайт).
+const MAX_SIDE = 1600;
+async function toWebp(src, dest) {
+  await sharp(src)
+    .rotate()
+    .resize(MAX_SIDE, MAX_SIDE, { fit: "inside", withoutEnlargement: true })
+    .webp({ quality: 75, effort: 5 })
+    .toFile(dest);
+}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
@@ -139,7 +149,7 @@ function validateMeta(meta, folderName) {
   }
 }
 
-function processStoryFolder(dir, { dryRun, force }) {
+async function processStoryFolder(dir, { dryRun, force }) {
   const folderName = path.basename(dir);
   const metaPath = path.join(dir, "meta.json");
   let meta;
@@ -185,11 +195,8 @@ function processStoryFolder(dir, { dryRun, force }) {
     );
   }
 
-  const coverExt = path.extname(coverFile).toLowerCase();
-  const coverDest = `cover${coverExt}`;
-  const restDest = restFiles.map(
-    (f, i) => `${i + 1}${path.extname(f).toLowerCase()}`,
-  );
+  const coverDest = "cover.webp";
+  const restDest = restFiles.map((f, i) => `${i + 1}.webp`);
 
   const publicCoverPath = `/photos/${slug}/${coverDest}`;
   const publicImagePaths = restDest.map((d) => `/photos/${slug}/${d}`);
@@ -256,16 +263,16 @@ function processStoryFolder(dir, { dryRun, force }) {
   }
 
   mkdirSync(publicDir, { recursive: true });
-  copyFileSync(path.join(dir, coverFile), path.join(publicDir, coverDest));
-  restFiles.forEach((f, i) =>
-    copyFileSync(path.join(dir, f), path.join(publicDir, restDest[i])),
-  );
+  await toWebp(path.join(dir, coverFile), path.join(publicDir, coverDest));
+  for (const [i, f] of restFiles.entries()) {
+    await toWebp(path.join(dir, f), path.join(publicDir, restDest[i]));
+  }
   writeFileSync(contentPath, fileContent, "utf8");
 
   return { slug, dryRun: false };
 }
 
-function main() {
+async function main() {
   const args = parseArgs(process.argv.slice(2));
   if (args.help || !args.source) {
     printHelp();
@@ -299,7 +306,7 @@ function main() {
   const failed = [];
   for (const dir of storyFolders) {
     try {
-      ok.push(processStoryFolder(dir, args));
+      ok.push(await processStoryFolder(dir, args));
     } catch (err) {
       failed.push({ dir, message: err.message });
       console.error(`\n✗ ${err.message}`);

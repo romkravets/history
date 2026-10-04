@@ -8,22 +8,22 @@ description: "Бережці — колишнє містечко над Ікво
 location:
   lat: 50.09663
   lng: 25.60501
-cover: "/photos/berezhtsi/cover.png"
+cover: "/photos/berezhtsi/cover.webp"
 images:
-  - "/photos/berezhtsi/1.png"
-  - "/photos/berezhtsi/2.png"
-  - "/photos/berezhtsi/3.png"
-  - "/photos/berezhtsi/4.jpg"
-  - "/photos/berezhtsi/5.jpg"
-  - "/photos/berezhtsi/6.jpeg"
+  - "/photos/berezhtsi/1.webp"
+  - "/photos/berezhtsi/2.webp"
+  - "/photos/berezhtsi/3.webp"
+  - "/photos/berezhtsi/4.webp"
+  - "/photos/berezhtsi/5.webp"
+  - "/photos/berezhtsi/6.webp"
 captions:
-  "/photos/berezhtsi/cover.png": "Великі Бережці. Загальний вигляд палацу, акварель Наполеона Орди"
-  "/photos/berezhtsi/1.png": "Палац у Бережцях на малюнку Наполеона Орди"
-  "/photos/berezhtsi/2.png": "Мисливський павільйон"
-  "/photos/berezhtsi/3.png": "Каплиця"
-  "/photos/berezhtsi/4.jpg": "Палац і парк на старовинній гравюрі"
-  "/photos/berezhtsi/5.jpg": "Став у Бережцях"
-  "/photos/berezhtsi/6.jpeg": "Макове поле і пагорби біля Бережців"
+  "/photos/berezhtsi/cover.webp": "Великі Бережці. Загальний вигляд палацу, акварель Наполеона Орди"
+  "/photos/berezhtsi/1.webp": "Палац у Бережцях на малюнку Наполеона Орди"
+  "/photos/berezhtsi/2.webp": "Мисливський павільйон"
+  "/photos/berezhtsi/3.webp": "Каплиця"
+  "/photos/berezhtsi/4.webp": "Палац і парк на старовинній гравюрі"
+  "/photos/berezhtsi/5.webp": "Став у Бережцях"
+  "/photos/berezhtsi/6.webp": "Макове поле і пагорби біля Бережців"
 tags:
   - "Бережці"
   - "Тарновські"

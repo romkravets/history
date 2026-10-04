@@ -8,16 +8,16 @@ description: "Вхід на Замкову гору через браму. На 
 location:
   lat: 50.09483
   lng: 25.73068
-cover: "/photos/brama/cover.jpg"
+cover: "/photos/brama/cover.webp"
 images:
-  - "/photos/brama/1.jpg"
-  - "/photos/brama/2.jpg"
-  - "/photos/brama/3.jpg"
-  - "/photos/brama/4.jpg"
-  - "/photos/brama/5.jpg"
-  - "/photos/brama/6.jpg"
-  - "/photos/brama/7.jpg"
-  - "/photos/brama/8.jpg"
+  - "/photos/brama/1.webp"
+  - "/photos/brama/2.webp"
+  - "/photos/brama/3.webp"
+  - "/photos/brama/4.webp"
+  - "/photos/brama/5.webp"
+  - "/photos/brama/6.webp"
+  - "/photos/brama/7.webp"
+  - "/photos/brama/8.webp"
 tags:
   - "Україна"
   - "Кременець"

@@ -7,22 +7,22 @@ description: "Ридомиль — село Кременецького райо�
 location:
   lat: 49.91334
   lng: 25.60089
-cover: "/photos/ridomil/cover.jpg"
+cover: "/photos/ridomil/cover.webp"
 images:
-  - "/photos/ridomil/1.jpg"
-  - "/photos/ridomil/2.jpg"
-  - "/photos/ridomil/3.png"
-  - "/photos/ridomil/4.png"
-  - "/photos/ridomil/5.jpg"
-  - "/photos/ridomil/6.jpg"
-  - "/photos/ridomil/7.jpg"
+  - "/photos/ridomil/1.webp"
+  - "/photos/ridomil/2.webp"
+  - "/photos/ridomil/3.webp"
+  - "/photos/ridomil/4.webp"
+  - "/photos/ridomil/5.webp"
+  - "/photos/ridomil/6.webp"
+  - "/photos/ridomil/7.webp"
 captions:
-  "/photos/ridomil/2.jpg": "Храм святої Параскеви 1730 року в Ридомлі"
-  "/photos/ridomil/3.png": "Руїни замку-палацу на гравюрі за малюнком Х. Пеєра (H. Peyer)"
-  "/photos/ridomil/4.png": "Скелі в околицях Ридомля на старому фото"
-  "/photos/ridomil/5.jpg": "Озеро біля Ридомля"
-  "/photos/ridomil/6.jpg": "Ридомльські краєвиди"
-  "/photos/ridomil/7.jpg": "Сани в Ридомлі"
+  "/photos/ridomil/2.webp": "Храм святої Параскеви 1730 року в Ридомлі"
+  "/photos/ridomil/3.webp": "Руїни замку-палацу на гравюрі за малюнком Х. Пеєра (H. Peyer)"
+  "/photos/ridomil/4.webp": "Скелі в околицях Ридомля на старому фото"
+  "/photos/ridomil/5.webp": "Озеро біля Ридомля"
+  "/photos/ridomil/6.webp": "Ридомльські краєвиди"
+  "/photos/ridomil/7.webp": "Сани в Ридомлі"
 tags:
   - "Ридомиль"
   - "історія"

@@ -9,22 +9,22 @@ location:
   lat: 50.09637
   lng: 25.72434
   approximate: true
-cover: "/photos/twins-kremenets/cover.jpg"
+cover: "/photos/twins-kremenets/cover.webp"
 images:
-  - "/photos/twins-kremenets/1.jpg"
-  - "/photos/twins-kremenets/2.jpg"
-  - "/photos/twins-kremenets/3.jpg"
-  - "/photos/twins-kremenets/4.jpg"
-  - "/photos/twins-kremenets/5.jpg"
-  - "/photos/twins-kremenets/6.jpg"
-  - "/photos/twins-kremenets/7.jpg"
-  - "/photos/twins-kremenets/8.jpg"
-  - "/photos/twins-kremenets/9.jpg"
+  - "/photos/twins-kremenets/1.webp"
+  - "/photos/twins-kremenets/2.webp"
+  - "/photos/twins-kremenets/3.webp"
+  - "/photos/twins-kremenets/4.webp"
+  - "/photos/twins-kremenets/5.webp"
+  - "/photos/twins-kremenets/6.webp"
+  - "/photos/twins-kremenets/7.webp"
+  - "/photos/twins-kremenets/8.webp"
+  - "/photos/twins-kremenets/9.webp"
 captions:
-  "/photos/twins-kremenets/6.jpg": "Будинок «Близнюки» взимку"
-  "/photos/twins-kremenets/7.jpg": "Будинок «Близнюки»"
-  "/photos/twins-kremenets/8.jpg": "Будинок «Близнюки» з боку двору, 2017"
-  "/photos/twins-kremenets/9.jpg": "Будинок «Близнюки»"
+  "/photos/twins-kremenets/6.webp": "Будинок «Близнюки» взимку"
+  "/photos/twins-kremenets/7.webp": "Будинок «Близнюки»"
+  "/photos/twins-kremenets/8.webp": "Будинок «Близнюки» з боку двору, 2017"
+  "/photos/twins-kremenets/9.webp": "Будинок «Близнюки»"
 tags:
   - "Близнюки"
   - "Кременець"

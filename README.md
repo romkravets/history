@@ -115,7 +115,7 @@ src/
     404.astro, robots.txt.ts, llms.txt.ts
   styles/global.css      ← палітра (CSS-змінні на початку файлу) і всі стилі
 public/
-  photos/<slug>/         ← фото галереї: cover.jpg, 1.jpg, 2.jpg, …
+  photos/<slug>/         ← фото галереї: cover.webp, 1.webp, 2.webp, … (WebP)
   video/                 ← відео-банер головної
 scripts/
   audit-photos.py        ← пошук дублікатів і аркуші мініатюр
@@ -151,13 +151,13 @@ location:                        # точка на карті; або `location:
   lat: 50.0961
   lng: 25.7261
   approximate: true              # пунктирна точка «місце приблизне»
-cover: "/photos/kremenets-churches/cover.jpg"
+cover: "/photos/kremenets-churches/cover.webp"
 images:
-  - "/photos/kremenets-churches/1.jpg"
-  - "/photos/kremenets-churches/2.jpg"
+  - "/photos/kremenets-churches/1.webp"
+  - "/photos/kremenets-churches/2.webp"
 captions:                        # необов'язково: підписи окремих фото
-  "/photos/kremenets-churches/cover.jpg": "Базиліка святих Ігнатія Лойоли і Станіслава Костки"
-  "/photos/kremenets-churches/1.jpg": "Костел Святого Станіслава"
+  "/photos/kremenets-churches/cover.webp": "Базиліка святих Ігнатія Лойоли і Станіслава Костки"
+  "/photos/kremenets-churches/1.webp": "Костел Святого Станіслава"
 tags:
   - "Кременець"
   - "храми"
@@ -234,7 +234,7 @@ npm run photos:append -- --slug kremenets-churches --list list.json
 ]
 ```
 
-Фото більші за 1600 px зменшуються автоматично (для карт: `--max 2400`).
+Фото зберігаються як WebP (якість 75), більші за 1600 px зменшуються автоматично (для карт: `--max 2400`).
 
 ### Папки з Google Диска з описом у .docx
 
@@ -447,6 +447,7 @@ npm run dev
 | `npm run photos:add -- --source <папка> [--dry-run] [--force]` | створити галерею з папки з `meta.json` |
 | `npm run photos:append -- --slug <галерея> (--source <папка> \| --list <json>) [--max 1600] [--dry-run]` | дописати фото в наявну галерею |
 | `npm run photos:prepare -- --source <папка> [--dry-run]` | підготувати папки з описами `.docx`/`.txt` у `photos-incoming/` |
+| `npm run photos:webp [-- --dry-run] [--slug <галерея>]` | перевести фото у WebP (≤ 1600 px, якість 75) і оновити шляхи — для фото, доданих вручну |
 | `npm run template:init [-- --clean] [--dry-run]` | налаштувати шаблон під нове місто ([docs/new-archive.md](docs/new-archive.md)) |
 | `npm run orch:*`, `npm run remote:*` | власний LLM-сервер — див. [docs/remote-llm.md](docs/remote-llm.md) |
 | `npm run sync:local` | залити `dist/` на свій сервер по rsync — там само |

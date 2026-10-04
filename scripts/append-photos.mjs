@@ -11,10 +11,10 @@
  *           — так додаються вибрані фото з різних місць і з підписами
  * --max     найбільша сторона в пікселях (типово 1600; для карт — 2000–2400)
  *
- * Фото більші за --max зменшуються й зберігаються як JPEG (якість 85).
+ * Фото зберігаються як WebP (якість 75); більші за --max — зменшуються.
  * Нумерація продовжує наявну (якщо в галереї є 1..27, нові стануть 28, 29, …).
  */
-import { existsSync, readdirSync, readFileSync, writeFileSync, copyFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
@@ -74,13 +74,15 @@ for (const { file, caption } of items) {
   n += 1;
   const meta = await sharp(file).metadata();
   const big = Math.max(meta.width ?? 0, meta.height ?? 0) > args.max;
-  const ext = big ? ".jpg" : path.extname(file).toLowerCase();
-  const name = `${n}${ext}`;
+  const name = `${n}.webp`;
   const pub = `/photos/${args.slug}/${name}`;
   console.log(`  ${path.basename(file)} → ${pub}${big ? ` (зменшено до ${args.max}px)` : ""}${caption ? `  «${caption}»` : ""}`);
   if (!args.dryRun) {
-    if (big) await sharp(file).rotate().resize(args.max, args.max, { fit: "inside" }).jpeg({ quality: 85 }).toFile(path.join(pubDir, name));
-    else copyFileSync(file, path.join(pubDir, name));
+    await sharp(file)
+      .rotate()
+      .resize(args.max, args.max, { fit: "inside", withoutEnlargement: true })
+      .webp({ quality: 75, effort: 5 })
+      .toFile(path.join(pubDir, name));
   }
   newImgs.push(`  - "${pub}"`);
   if (caption) newCaps.push(`  "${pub}": "${yaml(caption)}"`);

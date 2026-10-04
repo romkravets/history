@@ -9,16 +9,16 @@ location:
   lat: 50.10235
   lng: 25.73246
   approximate: true
-cover: "/photos/kremenets-stone-crosses/cover.jpg"
+cover: "/photos/kremenets-stone-crosses/cover.webp"
 images:
-  - "/photos/kremenets-stone-crosses/1.jpg"
-  - "/photos/kremenets-stone-crosses/2.jpg"
-  - "/photos/kremenets-stone-crosses/3.jpg"
+  - "/photos/kremenets-stone-crosses/1.webp"
+  - "/photos/kremenets-stone-crosses/2.webp"
+  - "/photos/kremenets-stone-crosses/3.webp"
 captions:
-  "/photos/kremenets-stone-crosses/cover.jpg": "Старе кладовище з кам'яними хрестами і пам'ятним знаком"
-  "/photos/kremenets-stone-crosses/1.jpg": "Кам'яні хрести серед трави"
-  "/photos/kremenets-stone-crosses/2.jpg": "Старі кам'яні хрести"
-  "/photos/kremenets-stone-crosses/3.jpg": "Старі надгробки серед трави"
+  "/photos/kremenets-stone-crosses/cover.webp": "Старе кладовище з кам'яними хрестами і пам'ятним знаком"
+  "/photos/kremenets-stone-crosses/1.webp": "Кам'яні хрести серед трави"
+  "/photos/kremenets-stone-crosses/2.webp": "Старі кам'яні хрести"
+  "/photos/kremenets-stone-crosses/3.webp": "Старі надгробки серед трави"
 tags:
   - "Кременець"
   - "кам'яні хрести"

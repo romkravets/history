@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import Analytics from "@vercel/analytics/astro";
 import {
   SITE,
   AUTHOR,
@@ -185,5 +186,6 @@ const graph = [
         window.addEventListener("scroll", onScroll, { passive: true });
       })();
     </script>
+    <Analytics />
   </body>
 </html>

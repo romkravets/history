@@ -8,16 +8,16 @@ description: "Село Лідихів на Кременеччині: Микол�
 location:
   lat: 50.01909
   lng: 25.39408
-cover: "/photos/lidykhiv/cover.jpg"
+cover: "/photos/lidykhiv/cover.webp"
 images:
-  - "/photos/lidykhiv/1.jpg"
-  - "/photos/lidykhiv/2.jpg"
-  - "/photos/lidykhiv/3.jpg"
+  - "/photos/lidykhiv/1.webp"
+  - "/photos/lidykhiv/2.webp"
+  - "/photos/lidykhiv/3.webp"
 captions:
-  "/photos/lidykhiv/cover.jpg": "Миколаївська церква в селі Лідихів"
-  "/photos/lidykhiv/1.jpg": "Лідихівський пейзаж"
-  "/photos/lidykhiv/2.jpg": "Став у Лідихові"
-  "/photos/lidykhiv/3.jpg": "Осінній ліс біля Лідихова"
+  "/photos/lidykhiv/cover.webp": "Миколаївська церква в селі Лідихів"
+  "/photos/lidykhiv/1.webp": "Лідихівський пейзаж"
+  "/photos/lidykhiv/2.webp": "Став у Лідихові"
+  "/photos/lidykhiv/3.webp": "Осінній ліс біля Лідихова"
 tags:
   - "Лідихів"
   - "Кременеччина"

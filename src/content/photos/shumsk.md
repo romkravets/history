@@ -7,12 +7,12 @@ description: "Перша письмова згадка про Шумськ мі�
 location:
   lat: 50.11836
   lng: 26.11862
-cover: "/photos/shumsk/cover.jpg"
+cover: "/photos/shumsk/cover.webp"
 images:
-  - "/photos/shumsk/1.jpg"
-  - "/photos/shumsk/2.jpg"
-  - "/photos/shumsk/3.jpg"
-  - "/photos/shumsk/4.jpg"
+  - "/photos/shumsk/1.webp"
+  - "/photos/shumsk/2.webp"
+  - "/photos/shumsk/3.webp"
+  - "/photos/shumsk/4.webp"
 tags:
   - "Шумськ"
   - "Кременецький район"

@@ -8,13 +8,13 @@ description: "Архітектурні візуалізації проєкту �
 location:
   lat: 50.09483
   lng: 25.73068
-cover: "/photos/kremenets-castle-reconstruction/cover.jpg"
+cover: "/photos/kremenets-castle-reconstruction/cover.webp"
 images:
-  - "/photos/kremenets-castle-reconstruction/1.jpg"
-  - "/photos/kremenets-castle-reconstruction/2.jpg"
-  - "/photos/kremenets-castle-reconstruction/3.jpg"
-  - "/photos/kremenets-castle-reconstruction/4.jpg"
-  - "/photos/kremenets-castle-reconstruction/5.jpg"
+  - "/photos/kremenets-castle-reconstruction/1.webp"
+  - "/photos/kremenets-castle-reconstruction/2.webp"
+  - "/photos/kremenets-castle-reconstruction/3.webp"
+  - "/photos/kremenets-castle-reconstruction/4.webp"
+  - "/photos/kremenets-castle-reconstruction/5.webp"
 tags:
   - "Кременець"
   - "Кременецький замок"

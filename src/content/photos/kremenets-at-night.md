@@ -9,20 +9,20 @@ location:
   lat: 50.0961
   lng: 25.72608
   approximate: true
-cover: "/photos/kremenets-at-night/cover.jpg"
+cover: "/photos/kremenets-at-night/cover.webp"
 images:
-  - "/photos/kremenets-at-night/1.jpg"
-  - "/photos/kremenets-at-night/2.jpg"
-  - "/photos/kremenets-at-night/3.jpg"
-  - "/photos/kremenets-at-night/4.jpg"
-  - "/photos/kremenets-at-night/5.jpg"
+  - "/photos/kremenets-at-night/1.webp"
+  - "/photos/kremenets-at-night/2.webp"
+  - "/photos/kremenets-at-night/3.webp"
+  - "/photos/kremenets-at-night/4.webp"
+  - "/photos/kremenets-at-night/5.webp"
 captions:
-  "/photos/kremenets-at-night/cover.jpg": "Собор колегіуму вночі"
-  "/photos/kremenets-at-night/1.jpg": "Ліцей і собор у нічному підсвіченні"
-  "/photos/kremenets-at-night/2.jpg": "Нічний Кременець з висоти"
-  "/photos/kremenets-at-night/3.jpg": "Нічна вулиця Кременця"
-  "/photos/kremenets-at-night/4.jpg": "Нічна вулиця біля колегіуму"
-  "/photos/kremenets-at-night/5.jpg": "Зимовий вечір у місті"
+  "/photos/kremenets-at-night/cover.webp": "Собор колегіуму вночі"
+  "/photos/kremenets-at-night/1.webp": "Ліцей і собор у нічному підсвіченні"
+  "/photos/kremenets-at-night/2.webp": "Нічний Кременець з висоти"
+  "/photos/kremenets-at-night/3.webp": "Нічна вулиця Кременця"
+  "/photos/kremenets-at-night/4.webp": "Нічна вулиця біля колегіуму"
+  "/photos/kremenets-at-night/5.webp": "Зимовий вечір у місті"
 tags:
   - "Кременець"
   - "вночі"

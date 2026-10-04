@@ -8,16 +8,16 @@ description: "Фестивалі на Замковій горі в Кремен�
 location:
   lat: 50.09483
   lng: 25.73068
-cover: "/photos/kremenets-knight-festival/cover.jpg"
+cover: "/photos/kremenets-knight-festival/cover.webp"
 images:
-  - "/photos/kremenets-knight-festival/1.jpg"
-  - "/photos/kremenets-knight-festival/2.jpg"
-  - "/photos/kremenets-knight-festival/3.jpg"
+  - "/photos/kremenets-knight-festival/1.webp"
+  - "/photos/kremenets-knight-festival/2.webp"
+  - "/photos/kremenets-knight-festival/3.webp"
 captions:
-  "/photos/kremenets-knight-festival/cover.jpg": "Лицарський бій біля надбрамної вежі"
-  "/photos/kremenets-knight-festival/1.jpg": "Поєдинок на мечах перед глядачами"
-  "/photos/kremenets-knight-festival/2.jpg": "Учасники фестивалю в лицарських обладунках"
-  "/photos/kremenets-knight-festival/3.jpg": "Хоровод біля замкових мурів"
+  "/photos/kremenets-knight-festival/cover.webp": "Лицарський бій біля надбрамної вежі"
+  "/photos/kremenets-knight-festival/1.webp": "Поєдинок на мечах перед глядачами"
+  "/photos/kremenets-knight-festival/2.webp": "Учасники фестивалю в лицарських обладунках"
+  "/photos/kremenets-knight-festival/3.webp": "Хоровод біля замкових мурів"
 tags:
   - "Кременець"
   - "фестиваль"
