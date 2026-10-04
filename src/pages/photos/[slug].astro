@@ -2,6 +2,8 @@
 import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import BeforeAfter from "../../components/BeforeAfter.astro";
+import RelatedCarousel from "../../components/RelatedCarousel.astro";
+import { relatedGalleries } from "../../lib/related";
 import {
   SITE,
   OG_HEIGHT,
@@ -36,7 +38,9 @@ export async function getStaticPaths() {
 }
 
 const { photo, prev, next, position, total } = Astro.props;
-const relatedPeople = (await getCollection("people")).filter((p) =>
+const allPeople = await getCollection("people");
+const related = relatedGalleries(photo, await getCollection("photos"), allPeople, 10);
+const relatedPeople = allPeople.filter((p) =>
   p.data.galleries.includes(photo.id.replace(/\.md$/, "")),
 );
 const { Content } = await render(photo);
@@ -259,6 +263,8 @@ const jsonLd = [
         </section>
       )
     }
+
+    <RelatedCarousel items={related} />
 
     <nav class="gallery-pager" aria-label="Інші галереї">
       <a class="pager-link pager-prev" href={prev.href} rel="prev">

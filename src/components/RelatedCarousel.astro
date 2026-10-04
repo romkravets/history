@@ -1,0 +1,58 @@
+---
+import type { Related } from "../lib/related";
+
+interface Props {
+  items: Related[];
+  title?: string;
+}
+const { items, title = "Схожі галереї" } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <section class="related-rail" aria-label={title}>
+      <div class="rail-head">
+        <h2 class="section-title">{title}</h2>
+        <div class="rail-nav">
+          <button type="button" class="rail-btn" data-dir="-1" aria-label="Прокрутити назад">←</button>
+          <button type="button" class="rail-btn" data-dir="1" aria-label="Прокрутити вперед">→</button>
+        </div>
+      </div>
+      <div class="rail-track" tabindex="0">
+        {items.map(({ photo, slug, reason }) => (
+          <a class="rail-card" href={`/photos/${slug}/`}>
+            <span class="rail-media">
+              <img src={photo.data.cover} alt={photo.data.title} loading="lazy" decoding="async" />
+              <span class="rail-count">{1 + photo.data.images.length} фото</span>
+            </span>
+            <span class="rail-body">
+              <span class="rail-reason">{reason}</span>
+              <b>{photo.data.title}</b>
+              <span class="meta">{photo.data.city} · {photo.data.decade}</span>
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+<script>
+  document.querySelectorAll<HTMLElement>(".related-rail").forEach((rail) => {
+    const track = rail.querySelector<HTMLElement>(".rail-track");
+    const btns = rail.querySelectorAll<HTMLButtonElement>(".rail-btn");
+    if (!track) return;
+    const update = () => {
+      btns[0]!.disabled = track.scrollLeft <= 4;
+      btns[1]!.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+    };
+    btns.forEach((b) =>
+      b.addEventListener("click", () =>
+        track.scrollBy({ left: Number(b.dataset.dir) * track.clientWidth * 0.85, behavior: "smooth" }),
+      ),
+    );
+    track.addEventListener("scroll", update, { passive: true });
+    addEventListener("resize", update);
+    update();
+  });
+</script>
