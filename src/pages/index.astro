@@ -156,6 +156,10 @@ const jsonLd = [
               loading="lazy"
               decoding="async"
             />
+            <span class="card-count" aria-label={`${1 + photo.data.images.length} фото в галереї`}>
+              <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path fill="currentColor" d="M2 4h9v8H2zM5 2h9v8h-1V3H5z"/></svg>
+              {1 + photo.data.images.length} фото
+            </span>
           </div>
           <div class="card-body">
             <p class="meta">

@@ -287,6 +287,38 @@ main {
   position: relative;
 }
 
+/* лічильник фото поверх обкладинки */
+.card-count {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 9px;
+  background: rgba(26, 20, 17, 0.82);
+  border: 1px solid var(--border-strong);
+  backdrop-filter: blur(4px);
+  color: var(--fg);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.card-count svg {
+  color: var(--accent);
+}
+
+.card:hover .card-count {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+.card:hover .card-count svg {
+  color: var(--accent-ink);
+}
+
 .card img {
   display: block;
   width: 100%;
