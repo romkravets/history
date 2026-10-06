@@ -1735,20 +1735,31 @@ main:has(> .hero-full:first-child) {
   pointer-events: none;
 }
 
-.ba-handle span {
+.ba-knob {
   position: absolute;
   top: 50%;
   left: 50%;
-  translate: -50% -50%;
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
+  border: 2px solid var(--fg);
   background: var(--accent);
   color: var(--accent-ink);
-  font-weight: 700;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  transition: transform 0.15s ease;
+}
+
+.ba-knob svg {
+  display: block;
+}
+
+.ba-frame:hover .ba-knob,
+.ba-frame:has(.ba-range:active) .ba-knob {
+  transform: translate(-50%, -50%) scale(1.08);
 }
 
 .ba-range {

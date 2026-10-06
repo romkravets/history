@@ -26,7 +26,13 @@ const ratio = size ? Math.min(Math.max(size.width / size.height, 1), 16 / 9) : 4
     </div>
     <span class="ba-label ba-label-before" aria-hidden="true">{beforeLabel}</span>
     <span class="ba-label ba-label-after" aria-hidden="true">{afterLabel}</span>
-    <span class="ba-handle" aria-hidden="true"><span>⟷</span></span>
+    <span class="ba-handle" aria-hidden="true">
+      <span class="ba-knob">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 6 3 12l6 6M15 6l6 6-6 6" />
+        </svg>
+      </span>
+    </span>
     <input
       class="ba-range"
       type="range"
