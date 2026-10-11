@@ -18,14 +18,14 @@ const lang = Astro.props.lang as Lang;
 const T = t(lang);
 const R = T.routes;
 const { Content } = await render(route.body);
-const { title, description, duration, cover, stops } = route.data;
+const { title, description, duration, cover, stops, mode } = route.data;
 const people = new Map((await getPeople(lang)).map((p) => [p.id.replace(/\.md$/, ""), p.data.name]));
 const galleries = new Map((await getPhotos(lang)).map((p) => [p.id.replace(/\.md$/, ""), p.data.title]));
 
 // посилання на пішохідний маршрут у Google Maps (до 9 проміжних точок)
 const pt = (s: { lat: number; lng: number }) => `${s.lat},${s.lng}`;
 const gmaps =
-  "https://www.google.com/maps/dir/?api=1&travelmode=walking" +
+  `https://www.google.com/maps/dir/?api=1&travelmode=${mode === "drive" ? "driving" : "walking"}` +
   `&origin=${pt(stops[0]!)}&destination=${pt(stops[stops.length - 1]!)}` +
   (stops.length > 2 ? `&waypoints=${stops.slice(1, -1).slice(0, 9).map(pt).join("%7C")}` : "");
 
@@ -61,7 +61,7 @@ const points = stops.map((s, i) => ({ n: i + 1, title: s.title, lat: s.lat, lng:
       <a class="back-link" href={lp(lang, "/marshruty/")}>{R.all}</a>
     </div>
     <header class="photo-header">
-      <p class="eyebrow">{R.route} · {stops.length} {plural(lang, stops.length, R.stopForms)} · {duration}</p>
+      <p class="eyebrow">{R.route} {mode === "drive" ? R.modeDrive : R.modeWalk} · {stops.length} {plural(lang, stops.length, R.stopForms)} · {duration}</p>
       <h1>{title}</h1>
       <p class="lead">{description}</p>
       <div class="route-actions">

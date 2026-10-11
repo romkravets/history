@@ -7,7 +7,7 @@ export const getStaticPaths = langPaths;
 const lang = Astro.props.lang as Lang;
 const T = t(lang);
 const R = T.routes;
-const routes = await getRoutes(lang);
+const routes = (await getRoutes(lang)).sort((a, b) => a.data.order - b.data.order);
 const slug = (id: string) => id.replace(/\.md$/, "");
 ---
 
@@ -31,7 +31,7 @@ const slug = (id: string) => id.replace(/\.md$/, "");
             <span class="card-count">{r.data.stops.length} {plural(lang, r.data.stops.length, R.stopForms)}</span>
           </div>
           <div class="card-body">
-            <p class="meta">{r.data.duration}</p>
+            <p class="meta">{r.data.mode === "drive" ? R.modeDrive : R.modeWalk} · {r.data.duration}</p>
             <h2>{r.data.title}</h2>
             <p>{r.data.description}</p>
             <p class="card-more">{R.openRoute}</p>

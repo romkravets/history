@@ -110,6 +110,10 @@ const routes = defineCollection({
     description: z.string(),
     /** Орієнтовна тривалість і довжина: «1,5 км · 1–1,5 год». */
     duration: z.string(),
+    /** walk — пішки містом, drive — автомобілем між містами. */
+    mode: z.enum(["walk", "drive"]).default("walk"),
+    /** Порядок у списку маршрутів (менше — вище). */
+    order: z.number().default(100),
     cover: z.string(),
     stops: z.array(
       z.object({
