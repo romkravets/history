@@ -80,4 +80,33 @@ export const SITE = {
     aboutGeography:
       "Волинь, Поділля й Галичина: Кременець і Кременеччина (звідки архів починався), Дубно, Острог, Луцьк, Броди, Збараж, Тернопіль та інші міста й села",
   },
+
+  /**
+   * Відео для банера на головній: при кожному відкритті показується одне випадкове.
+   * Файли — у public/video. Для чужих відео вкажіть автора й ліцензію (credit) і сторінку джерела (source).
+   */
+  banners: [
+    { place: "Кременець", src: "/video/banner", poster: "/video/banner-poster.jpg" },
+    {
+      place: "Почаївська лавра",
+      src: "/video/banner-pochaiv",
+      poster: "/video/banner-pochaiv-poster.jpg",
+      credit: "Олексій Бухало, CC BY-SA 4.0",
+      source: "https://commons.wikimedia.org/wiki/File:Почаївська_Лавра_взимку.webm",
+    },
+    {
+      place: "Олеський замок",
+      src: "/video/banner-olesko",
+      poster: "/video/banner-olesko-poster.jpg",
+      credit: "Drone Grand Tour, CC BY 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Drone_Grand_Tour_-_Olesko_Castle._Ukraine.webm",
+    },
+    {
+      place: "Підгорецький замок",
+      src: "/video/banner-pidhirtsi",
+      poster: "/video/banner-pidhirtsi-poster.jpg",
+      credit: "Drone Grand Tour, CC BY 3.0",
+      source: "https://commons.wikimedia.org/wiki/File:Drone_Grand_Tour_-_Pidhirtsi_Castle_Western_Ukraine.webm",
+    },
+  ] as { place: string; src: string; poster: string; credit?: string; source?: string }[],
 };

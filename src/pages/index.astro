@@ -91,12 +91,36 @@ const jsonLd = [
       loop
       playsinline
       preload="metadata"
-      poster="/video/banner-poster.jpg"
+      poster={SITE.banners[0].poster}
       aria-hidden="true"
-    >
-      <source src="/video/banner.webm" type="video/webm" />
-      <source src="/video/banner.mp4" type="video/mp4" />
-    </video>
+    ></video>
+    <p class="hero-video-credit" hidden>
+      <span></span><a target="_blank" rel="noopener"></a>
+    </p>
+    <script is:inline define:vars={{ banners: SITE.banners }}>
+      // випадкове відео для банера; джерела додаємо тут, щоб браузер не вантажив зайве
+      (() => {
+        const video = document.querySelector(".hero-full-video");
+        const b = banners[Math.floor(Math.random() * banners.length)];
+        video.poster = b.poster;
+        for (const [ext, type] of [["webm", "video/webm"], ["mp4", "video/mp4"]]) {
+          const s = document.createElement("source");
+          s.src = `${b.src}.${ext}`;
+          s.type = type;
+          video.append(s);
+        }
+        video.load();
+        const cap = document.querySelector(".hero-video-credit");
+        if (!cap) return;
+        cap.querySelector("span").textContent = b.place;
+        const a = cap.querySelector("a");
+        if (b.credit && b.source) {
+          a.textContent = ` · відео: ${b.credit}`;
+          a.href = b.source;
+        } else a.remove();
+        cap.hidden = false;
+      })();
+    </script>
     <div class="hero-full-shade" aria-hidden="true"></div>
 
     <div class="shell hero-full-inner">
