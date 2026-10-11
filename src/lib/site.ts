@@ -138,3 +138,11 @@ export function humanDate(d?: string): string {
   if (m) return `${MONTHS_NOM[Number(m[2]) - 1]} ${m[1]}`;
   return d;
 }
+
+export type LandKey = string;
+/** Край міста: Волинь, Поділля, Галичина… (налаштування — SITE.lands). null — не прив'язано. */
+export function landOf(city: string): { key: string; label: string } | null {
+  if (city === "Західна Україна") return null;
+  const land = SITE.lands.find((l) => l.cities.includes(city)) ?? SITE.lands.find((l) => l.key === SITE.defaultLand);
+  return land ? { key: land.key, label: land.label } : null;
+}

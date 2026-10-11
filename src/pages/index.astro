@@ -11,6 +11,7 @@ import {
   ERAS,
   citiesByWeight,
   erasOf,
+  landOf,
   imageSize,
   pluralUk,
 } from "../lib/site";
@@ -38,6 +39,12 @@ for (const p of photos)
   for (const e of erasOf(p.data.decade))
     eraCounts.set(e, (eraCounts.get(e) ?? 0) + 1);
 const eraFilters = ERAS.filter((e) => eraCounts.has(e.key));
+const landCounts = new Map<string, number>();
+for (const p of photos) {
+  const l = landOf(p.data.city);
+  if (l) landCounts.set(l.key, (landCounts.get(l.key) ?? 0) + 1);
+}
+const landFilters = SITE.lands.filter((l) => landCounts.has(l.key));
 
 const cities = citiesByWeight(photos.map((p) => p.data.city));
 const cityList =
@@ -148,8 +155,25 @@ const jsonLd = [
     </div>
   </section>
 
+  {
+    landFilters.length > 1 && (
+      <div class="shell decade-filter-wrap">
+        <div class="decade-filter land-filter" role="group" aria-label="Фільтр за краєм">
+          <button type="button" class="active" data-land="all" aria-pressed="true">
+            Усі краї
+          </button>
+          {landFilters.map((l) => (
+            <button type="button" data-land={l.key} aria-pressed="false">
+              {l.label} <span>{landCounts.get(l.key)}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
   <div class="shell decade-filter-wrap">
-    <div class="decade-filter" role="group" aria-label="Фільтр за епохою">
+    <div class="decade-filter era-filter" role="group" aria-label="Фільтр за епохою">
       <button type="button" class="active" data-era="all" aria-pressed="true">
         Усі <span>{photos.length}</span>
       </button>
@@ -169,6 +193,7 @@ const jsonLd = [
         <a
           class="card"
           data-eras={erasOf(photo.data.decade).join(" ")}
+          data-land={landOf(photo.data.city)?.key ?? ""}
           href={`/photos/${toSlug(photo.id)}/`}
         >
           <div class="card-media">
@@ -223,22 +248,28 @@ const jsonLd = [
 
   <script is:inline>
     (() => {
-      const chips = document.querySelectorAll(".decade-filter button");
       const cards = document.querySelectorAll("#gallery .card");
-      chips.forEach((chip) => {
-        chip.addEventListener("click", () => {
-          chips.forEach((c) => {
-            c.classList.toggle("active", c === chip);
-            c.setAttribute("aria-pressed", String(c === chip));
-          });
-          chip.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-          const era = chip.dataset.era;
-          cards.forEach((card) => {
-            const show = era === "all" || card.dataset.eras.split(" ").includes(era);
-            card.classList.toggle("is-hidden", !show);
-          });
+      const state = { era: "all", land: "all" };
+      const apply = () =>
+        cards.forEach((card) => {
+          const okEra = state.era === "all" || card.dataset.eras.split(" ").includes(state.era);
+          const okLand = state.land === "all" || card.dataset.land === state.land;
+          card.classList.toggle("is-hidden", !(okEra && okLand));
         });
-      });
+      for (const [sel, key] of [[".era-filter", "era"], [".land-filter", "land"]]) {
+        const chips = document.querySelectorAll(`${sel} button`);
+        chips.forEach((chip) =>
+          chip.addEventListener("click", () => {
+            chips.forEach((c) => {
+              c.classList.toggle("active", c === chip);
+              c.setAttribute("aria-pressed", String(c === chip));
+            });
+            chip.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+            state[key] = chip.dataset[key];
+            apply();
+          }),
+        );
+      }
     })();
   </script>
 </Layout>

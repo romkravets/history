@@ -402,6 +402,11 @@ npm run dev
 
 Що робити:
 
+- **Пуші без змін сайту не збираються.** `vercel.json` → `ignoreCommand`: якщо в коміті
+  не змінились `src/`, `public/`, `package*.json`, `astro.config.mjs` чи `tsconfig.json`
+  (наприклад, лише README, `docs/`, `scripts/`), Vercel пропускає збірку й не створює
+  деплой. Якщо колись потрібно зібрати попри це — Vercel → Deployments → Redeploy.
+
 - **Vercel → Settings → Deployment Retention**: зберігати production-деплої
   ~30 днів, скасовані/помилкові — 1 день/тиждень. Поточний робочий деплой не
   видаляється.

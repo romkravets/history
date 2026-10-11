@@ -2236,3 +2236,21 @@ main:has(> .hero-full:first-child) {
     grid-auto-columns: 78%;
   }
 }
+
+.land-filter button.active {
+  background: var(--fg);
+  border-color: var(--fg);
+  color: var(--bg);
+}
+
+.land-filter + * {
+  margin-top: 0;
+}
+
+.decade-filter-wrap + .decade-filter-wrap {
+  margin-top: 8px;
+}
+
+.map-land-filter {
+  margin-bottom: 10px;
+}
