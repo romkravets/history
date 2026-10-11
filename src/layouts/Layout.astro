@@ -10,6 +10,7 @@ import {
   absoluteUrl,
   imageSize,
 } from "../lib/site";
+import { LANGS, LANG_META, langFromPath, lp, switchLang, t } from "../i18n/ui";
 
 interface Props {
   title?: string;
@@ -26,11 +27,14 @@ interface Props {
   noindex?: boolean;
 }
 
+const path = Astro.url.pathname;
+const lang = langFromPath(path);
+const T = t(lang);
 const {
-  title = `${SITE_TAGLINE} · ${SITE_NAME}`,
-  description = `Цифровий архів старих фотографій і листівок ${SITE.texts.coverage}: дати, описи та історія місць.`,
+  title = `${T.tagline} · ${T.siteName}`,
+  description = T.defaultDescription(T.coverage),
   image = "/video/banner-poster.jpg",
-  imageAlt = SITE_NAME,
+  imageAlt = T.siteName,
   imageWidth,
   imageHeight,
   type = "website",
@@ -38,17 +42,23 @@ const {
   noindex = false,
 } = Astro.props;
 
-const canonical = absoluteUrl(Astro.url.pathname, Astro.site);
-const path = Astro.url.pathname;
+const canonical = absoluteUrl(path, Astro.site);
+// шлях без мовного префікса — для підсвічування пункту меню
+const bare = path.replace(/^\/pl(?=\/|$)/, "") || "/";
 const NAV = [
-  { href: "/", label: "Галерея", active: path === "/" || path.startsWith("/photos/") },
-  { href: "/karta/", label: "Карта", active: path.startsWith("/karta") },
-  { href: "/marshruty/", label: "Маршрути", active: path.startsWith("/marshruty") },
-  { href: "/lyudy/", label: "Люди", active: path.startsWith("/lyudy") },
-  { href: "/biblioteka/", label: "Бібліотека", active: path.startsWith("/biblioteka") },
-  { href: "/istoriya/", label: "Історія", active: path.startsWith("/istoriya") },
-  { href: "/about/", label: "Про архів", active: path.startsWith("/about") },
-];
+  { href: "/", label: T.nav.gallery, active: bare === "/" || bare.startsWith("/photos/") },
+  { href: "/karta/", label: T.nav.map, active: bare.startsWith("/karta") },
+  { href: "/marshruty/", label: T.nav.routes, active: bare.startsWith("/marshruty") },
+  { href: "/lyudy/", label: T.nav.people, active: bare.startsWith("/lyudy") },
+  { href: "/biblioteka/", label: T.nav.library, active: bare.startsWith("/biblioteka") },
+  { href: "/istoriya/", label: T.nav.history, active: bare.startsWith("/istoriya") },
+  { href: "/about/", label: T.nav.about, active: bare.startsWith("/about") },
+].map((item) => ({ ...item, href: lp(lang, item.href) }));
+// 404 є лише українською — для неї альтернатив немає
+const alternates = noindex
+  ? []
+  : LANGS.map((l) => ({ lang: l, href: absoluteUrl(switchLang(path, l), Astro.site) }));
+const home = lp(lang, "/");
 const siteUrl = absoluteUrl("/", Astro.site);
 const ogImage = absoluteUrl(image, Astro.site);
 const ogImageSize =
@@ -61,11 +71,12 @@ const graph = [
     "@id": `${siteUrl}#website`,
     url: siteUrl,
     name: SITE_NAME,
+    alternateName: t("pl").siteName,
     description: SITE_TAGLINE,
-    inLanguage: "uk",
+    inLanguage: [...LANGS],
     publisher: { "@id": `${siteUrl}#author` },
     spatialCoverage: [
-      { "@type": "Country", name: "Україна" },
+      { "@type": "Country", name: T.country },
       {
         "@type": "Place",
         name: `${HOME_PLACE.name}, ${HOME_PLACE.region}, Україна`,
@@ -89,7 +100,7 @@ const graph = [
 ---
 
 <!doctype html>
-<html lang="uk">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -101,6 +112,8 @@ const graph = [
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
+    {alternates.length > 0 && <link rel="alternate" hreflang="x-default" href={alternates[0]!.href} />}
     {noindex && <meta name="robots" content="noindex, follow" />}
     <meta name="author" content={AUTHOR.name} />
     <meta name="theme-color" content="#1a1411" />
@@ -108,8 +121,9 @@ const graph = [
     <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
 
     <meta property="og:type" content={type} />
-    <meta property="og:site_name" content={SITE_NAME} />
-    <meta property="og:locale" content="uk_UA" />
+    <meta property="og:site_name" content={T.siteName} />
+    <meta property="og:locale" content={LANG_META[lang].og} />
+    {LANGS.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={LANG_META[l].og} />)}
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -146,20 +160,35 @@ const graph = [
     <div class="scroll-progress" aria-hidden="true"></div>
     <div class="bg-atmosphere" aria-hidden="true"></div>
     <header class="site-header">
-      <a class="brand" href="/">
+      <a class="brand" href={home}>
         <span class="brand-dot" aria-hidden="true"></span>
-        ФОТОАРХІВ
+        {T.brand}
       </a>
+      <nav class="lang-switch" aria-label={T.langSwitch}>
+        {LANGS.map((l) => (
+          <a
+            href={switchLang(path, l)}
+            hreflang={l}
+            lang={l}
+            title={LANG_META[l].name}
+            aria-current={l === lang ? "true" : undefined}
+          >
+            {LANG_META[l].label}
+          </a>
+        ))}
+      </nav>
       <button
         type="button"
         class="nav-toggle"
         aria-expanded="false"
         aria-controls="top-nav"
-        aria-label="Відкрити меню"
+        aria-label={T.menuOpen}
+        data-label-open={T.menuOpen}
+        data-label-close={T.menuClose}
       >
         <span aria-hidden="true"></span>
       </button>
-      <nav class="top-nav" id="top-nav" aria-label="Головна навігація">
+      <nav class="top-nav" id="top-nav" aria-label={T.mainNav}>
         {
           NAV.map((item) => (
             <a href={item.href} aria-current={item.active ? "page" : undefined}>
@@ -175,19 +204,19 @@ const graph = [
     <footer class="site-footer">
       <div class="shell site-footer-grid">
         <div class="footer-about">
-          <a class="brand" href="/">
+          <a class="brand" href={home}>
             <span class="brand-dot" aria-hidden="true"></span>
-            {SITE.name}
+            {T.siteName}
           </a>
-          <p>{SITE.tagline}. Фото, листівки, карти, люди й історія краю — з джерелами.</p>
+          <p>{T.tagline}. {T.footerAbout}</p>
         </div>
-        <nav class="footer-nav" aria-label="Розділи сайту">
-          <p class="footer-title">Розділи</p>
+        <nav class="footer-nav" aria-label={T.footerSections}>
+          <p class="footer-title">{T.footerSections}</p>
           {NAV.map((item) => <a href={item.href}>{item.label}</a>)}
         </nav>
         <div class="footer-author">
-          <p class="footer-title">Автор</p>
-          <span>{AUTHOR.name}</span>
+          <p class="footer-title">{T.footerAuthor}</p>
+          <span>{T.authorName}</span>
           {SITE.author.github && (
             <a href={SITE.author.github} target="_blank" rel="me noopener noreferrer">GitHub ↗</a>
           )}
@@ -197,12 +226,12 @@ const graph = [
         </div>
       </div>
       <div class="shell footer-bottom">
-        <span>© {new Date().getFullYear()} {SITE.name}</span>
-        <span>Фото належать їхнім авторам</span>
+        <span>© {new Date().getFullYear()} {T.siteName}</span>
+        <span>{T.footerRights}</span>
       </div>
     </footer>
 
-    <button type="button" class="to-top" aria-label="Повернутися нагору" hidden>↑</button>
+    <button type="button" class="to-top" aria-label={T.toTop} hidden>↑</button>
     <script is:inline>
       (() => {
         // бургер-меню для планшетів і телефонів
@@ -212,7 +241,7 @@ const graph = [
         const set = (open) => {
           header.classList.toggle("nav-open", open);
           toggle.setAttribute("aria-expanded", String(open));
-          toggle.setAttribute("aria-label", open ? "Закрити меню" : "Відкрити меню");
+          toggle.setAttribute("aria-label", open ? toggle.dataset.labelClose : toggle.dataset.labelOpen);
         };
         toggle.addEventListener("click", () => set(!header.classList.contains("nav-open")));
         document.addEventListener("keydown", (e) => e.key === "Escape" && set(false));

@@ -4,6 +4,7 @@
  * пальцем або клавішами ←/→ (це звичайний <input type="range">).
  */
 import { imageSize } from "../lib/site";
+import { langFromPath, t } from "../i18n/ui";
 
 interface Props {
   before: string;
@@ -12,7 +13,8 @@ interface Props {
   beforeLabel?: string;
   afterLabel?: string;
 }
-const { before, after, caption, beforeLabel = "Тоді", afterLabel = "Тепер" } = Astro.props;
+const B = t(langFromPath(Astro.url.pathname)).ba;
+const { before, after, caption, beforeLabel = B.before, afterLabel = B.after } = Astro.props;
 const size = await imageSize(after);
 // пропорції кадру — за сучасним фото, але не вужче за 4:3 і не вище за квадрат
 const ratio = size ? Math.min(Math.max(size.width / size.height, 1), 16 / 9) : 4 / 3;
@@ -40,7 +42,7 @@ const ratio = size ? Math.min(Math.max(size.width / size.height, 1), 16 / 9) : 4
       max="100"
       value="50"
       step="0.5"
-      aria-label={`Порівняти: ${caption}. Ліворуч — ${beforeLabel.toLowerCase()}, праворуч — ${afterLabel.toLowerCase()}`}
+      aria-label={`${B.compare}: ${caption}. ${B.left[0]!.toUpperCase()}${B.left.slice(1)} — ${beforeLabel.toLowerCase()}, ${B.right} — ${afterLabel.toLowerCase()}`}
     />
   </div>
   <figcaption>{caption}</figcaption>

@@ -1,0 +1,16 @@
+---
+era: "lytovska-doba"
+title: "Okres litewski"
+period: "XIV–XVI w."
+summary: "Przez ponad sto lat zamek krzemieniecki przechodzi z rąk do rąk między książętami litewskimi a Koroną Polską – a raz służy nawet za więzienie przyszłemu wielkiemu księciu."
+---
+
+Po zniszczeniach z 1261 roku odbudowa rozpoczęła się nie wcześniej niż w latach 90. XIII wieku – z inicjatywy księcia wołyńskiego Mścisława. Dokładnej daty przejścia umocnień od drewna do kamienia źródła pisane nie podają: Latopis halicko-wołyński urywa się na roku 1290, dlatego badacze ustalają chronologię murowania pośrednio – na podstawie gotyckiego stylu budowli (charakterystycznego dla ziem ukraińskich od końca XIII w.) i pokrewieństwa z murami zamku w Łucku, który prawdopodobnie wznoszono według krzemienieckich wzorów. Najważniejszym dowodem pośrednim jest sama wzmianka o zamku w aktach z 1372 roku z dopiskiem „arx”, czyli warowny.
+
+Lata 40.–90. XIV wieku to czas upadku księstwa halicko-wołyńskiego i walki o jego ziemie między Litwą, Polską a Węgrami, a zamek krzemieniecki znajduje się w samym centrum tych zmagań. W 1349 roku król Polski Kazimierz Wielki zastaje w mieście litewskiego księcia Lubarta; na mocy zawartego między nimi układu Krzemieniec na dwa lata przechodzi w ręce Jerzego Narymuntowicza – bez prawa odbudowy zamku, co sugeruje jego ówczesny zaniedbany stan. W 1354 roku miasto jest już w posiadaniu polskim, a na mocy dokumentu z 1366 roku, zawartego między Kazimierzem a książętami litewskimi Olgierdem, Kiejstutem, Jawnutą i Lubartem, południowo-zachodnia część ziemi łuckiej (Krzemieniec, Olesko, Peremyśl) przechodzi pod polskie zwierzchnictwo, a sam Krzemieniec – w posiadanie Aleksandra Koriatowicza. Umierając w 1370 roku, Kazimierz zapisał znaczną sumę na remont zamku – świadectwo tego, jak zły był jego stan nawet wtedy.
+
+Kolejne półwiecze to kalejdoskop właścicieli: węgierscy starostowie z załogą (1377), sprzedaż miasta Lubartowi Giedyminowiczowi (1382), władanie Fiodora Lubartowicza (1386), przekazanie włości krzemienieckiej Skirgielle jako rekompensaty za Połock (1392), po jego śmierci – Korybutowi (1394), i wreszcie przejście pod władzę wielkiego księcia litewskiego Witolda (1396), który osadził na zamku polską załogę i starostę Polaka.
+
+Najbardziej dramatyczny epizod tego okresu wiąże się z przyszłym wielkim księciem Świdrygiełłą: w 1399 roku uwięziono go w murach zamku krzemienieckiego, gdzie spędził dziewięć lat – dopóki jego stronnicy pod wodzą Fedka Daniłowicza i Daszka, księcia Ostrogskiego, w Wielki Czwartek 1408 roku nie przedostali się do twierdzy, nie wybili załogi i starosty Konrada Falkenberga i nie uwolnili więźnia. Po śmierci Witolda w 1430 roku to właśnie Świdrygiełło stanął na czele walki bojarstwa ruskiego o jego pozycję w Wielkim Księstwie Litewskim, szybko opanowując Zbaraż, Krzemieniec i Olesko; dwutysięczny polski oddział karny próbował w 1431 roku odbić zamek, ale zdołał jedynie spustoszyć okolice.
+
+Walka Świdrygiełły zakończyła się ostatecznie porażką, a wraz z nią upadły ostatnie próby odegrania przez element ruski znaczącej roli w życiu państwa litewskiego; Wołyń pozostał w składzie Litwy. Ale to właśnie on w 1438 roku nadał Krzemieńcowi prawo magdeburskie wraz z wójtem Niemcem Jurkiem z Buska, czyniąc miasto jednym z trzech ośrodków powiatowych regionu – obok Łucka i Włodzimierza.

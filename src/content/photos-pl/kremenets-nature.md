@@ -1,0 +1,45 @@
+---
+title: "Przyroda Gór Krzemienieckich: skały, jaskinie i lasy"
+area: "Góry Krzemienieckie"
+decade: "zdjęcia współczesne"
+description: "Przyroda wokół Krzemieńca: wapienne skały i jaskinie, lasy sosnowe i ścieżki Gór Krzemienieckich, lot na paralotni i ogród botaniczny."
+tags: ["Krzemieniec", "Góry Krzemienieckie", "przyroda", "skały", "jaskinie", "las", "ogród botaniczny", "zdjęcia współczesne"]
+captions:
+  "/photos/kremenets-nature/cover.webp": "Skały na szczycie Gór Krzemienieckich"
+  "/photos/kremenets-nature/1.webp": "Jaskinia w skale"
+  "/photos/kremenets-nature/2.webp": "Jaskinia w zboczu góry"
+  "/photos/kremenets-nature/3.webp": "Skały pośród lasu sosnowego"
+  "/photos/kremenets-nature/4.webp": "Lot na paralotni nad skałami"
+  "/photos/kremenets-nature/5.webp": "Las na zboczach Gór Krzemienieckich"
+  "/photos/kremenets-nature/6.webp": "Leśna ścieżka"
+  "/photos/kremenets-nature/7.webp": "Ścieżka w lesie sosnowym"
+  "/photos/kremenets-nature/8.webp": "Kamienne słupy przy ścieżce"
+  "/photos/kremenets-nature/9.webp": "Kwietniki ogrodu botanicznego"
+  "/photos/kremenets-nature/10.webp": "Ogród botaniczny w Krzemieńcu"
+  "/photos/kremenets-nature/11.webp": "Skała nad doliną"
+  "/photos/kremenets-nature/12.webp": "Wapienna skała i las sosnowy"
+  "/photos/kremenets-nature/13.webp": "Skały na zboczu"
+  "/photos/kremenets-nature/14.webp": "Zbocze góry ze skałami"
+  "/photos/kremenets-nature/15.webp": "Skała wśród traw"
+  "/photos/kremenets-nature/16.webp": "Jaskinia na zboczu"
+  "/photos/kremenets-nature/17.webp": "Góra pośród pól"
+  "/photos/kremenets-nature/18.webp": "Krajobraz Gór Krzemienieckich"
+  "/photos/kremenets-nature/19.webp": "Tablica informacyjna Parku Narodowego „Góry Krzemienieckie”"
+  "/photos/kremenets-nature/20.webp": "Mapa szlaków Parku Narodowego „Góry Krzemienieckie”"
+  "/photos/kremenets-nature/21.webp": "Tablica ścieżki przyrodniczej"
+  "/photos/kremenets-nature/22.webp": "Skały na starej fotografii"
+  "/photos/kremenets-nature/23.webp": "Skała nad urwiskiem na starej fotografii"
+  "/photos/kremenets-nature/24.webp": "Skała we mgle"
+  "/photos/kremenets-nature/25.webp": "Wspinacz na wapiennej skale"
+  "/photos/kremenets-nature/26.webp": "Jaskinia ze wstążkami u wejścia"
+  "/photos/kremenets-nature/27.webp": "Wzgórza nad miastem"
+  "/photos/kremenets-nature/28.webp": "Kamieniste zbocze"
+  "/photos/kremenets-nature/29.webp": "Leśna droga"
+  "/photos/kremenets-nature/30.webp": "Dolina rzeki"
+  "/photos/kremenets-nature/31.webp": "Owad na kwiecie świerzbnicy"
+  "/photos/kremenets-nature/32.webp": "Wóz z koniem w stawie"
+---
+
+Krzemieniec otaczają Góry Krzemienieckie – wzgórza z wapiennymi skałami, jaskiniami i lasami sosnowymi.
+
+W wyborze znalazły się skały na szczytach, jaskinie w zboczach, leśne ścieżki, kamienne słupy przy drodze, lot na paralotni nad urwiskiem, a także kwietniki ogrodu botanicznego.

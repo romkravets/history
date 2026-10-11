@@ -1,11 +1,14 @@
 ---
 import type { Related } from "../lib/related";
+import { langFromPath, lp, plural, t } from "../i18n/ui";
 
 interface Props {
   items: Related[];
   title?: string;
 }
-const { items, title = "Схожі галереї" } = Astro.props;
+const lang = langFromPath(Astro.url.pathname);
+const T = t(lang);
+const { items, title = T.related.title } = Astro.props;
 ---
 
 {
@@ -14,16 +17,16 @@ const { items, title = "Схожі галереї" } = Astro.props;
       <div class="rail-head">
         <h2 class="section-title">{title}</h2>
         <div class="rail-nav">
-          <button type="button" class="rail-btn" data-dir="-1" aria-label="Прокрутити назад">←</button>
-          <button type="button" class="rail-btn" data-dir="1" aria-label="Прокрутити вперед">→</button>
+          <button type="button" class="rail-btn" data-dir="-1" aria-label={T.related.back}>←</button>
+          <button type="button" class="rail-btn" data-dir="1" aria-label={T.related.forward}>→</button>
         </div>
       </div>
       <div class="rail-track" tabindex="0">
         {items.map(({ photo, slug, reason }) => (
-          <a class="rail-card" href={`/photos/${slug}/`}>
+          <a class="rail-card" href={lp(lang, `/photos/${slug}/`)}>
             <span class="rail-media">
               <img src={photo.data.cover} alt={photo.data.title} loading="lazy" decoding="async" />
-              <span class="rail-count">{1 + photo.data.images.length} фото</span>
+              <span class="rail-count">{1 + photo.data.images.length} {plural(lang, 1 + photo.data.images.length, T.home.photoForms)}</span>
             </span>
             <span class="rail-body">
               <span class="rail-reason">{reason}</span>

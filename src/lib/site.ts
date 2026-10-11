@@ -1,6 +1,7 @@
 import path from "node:path";
 import sharp from "sharp";
 import { SITE } from "../site.config";
+import { cityKey, humanDate as humanDateI18n, landName, type Lang } from "../i18n/ui";
 
 // Налаштування архіву живуть у src/site.config.ts; тут — похідні значення й утиліти.
 export { SITE };
@@ -17,7 +18,7 @@ export const HOME_PLACE = {
 const REGION_OVERRIDES = SITE.regionOverrides;
 
 export function regionOf(city: string): string {
-  return REGION_OVERRIDES[city] ?? HOME_PLACE.region;
+  return REGION_OVERRIDES[cityKey(city)] ?? HOME_PLACE.region;
 }
 
 /** Міста, впорядковані за кількістю галерей (головне місто завжди перше). */
@@ -127,22 +128,16 @@ export function initials(name: string): string {
     .join("");
 }
 
-const MONTHS = ["січня", "лютого", "березня", "квітня", "травня", "червня", "липня", "серпня", "вересня", "жовтня", "листопада", "грудня"];
-const MONTHS_NOM = ["січень", "лютий", "березень", "квітень", "травень", "червень", "липень", "серпень", "вересень", "жовтень", "листопад", "грудень"];
 /** «1809-09-04» → «4 вересня 1809», «1992-05» → «травень 1992», інше — як є. */
-export function humanDate(d?: string): string {
-  if (!d) return "";
-  let m = d.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (m) return `${Number(m[3])} ${MONTHS[Number(m[2]) - 1]} ${m[1]}`;
-  m = d.match(/^(\d{4})-(\d{2})$/);
-  if (m) return `${MONTHS_NOM[Number(m[2]) - 1]} ${m[1]}`;
-  return d;
+export function humanDate(d?: string, lang: Lang = "uk"): string {
+  return humanDateI18n(d, lang);
 }
 
 export type LandKey = string;
 /** Край міста: Волинь, Поділля, Галичина… (налаштування — SITE.lands). null — не прив'язано. */
-export function landOf(city: string): { key: string; label: string } | null {
-  if (city === "Західна Україна") return null;
-  const land = SITE.lands.find((l) => l.cities.includes(city)) ?? SITE.lands.find((l) => l.key === SITE.defaultLand);
-  return land ? { key: land.key, label: land.label } : null;
+export function landOf(city: string, lang: Lang = "uk"): { key: string; label: string } | null {
+  const key = cityKey(city);
+  if (key === "Західна Україна") return null;
+  const land = SITE.lands.find((l) => l.cities.includes(key)) ?? SITE.lands.find((l) => l.key === SITE.defaultLand);
+  return land ? { key: land.key, label: landName(land.key, land.label, lang) } : null;
 }

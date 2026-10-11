@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { SITE, SITE_NAME } from "../lib/site";
+// 404 одна на обидві мови: український текст і посилання на польську головну
 ---
 
 <Layout
@@ -18,7 +19,8 @@ import { SITE, SITE_NAME } from "../lib/site";
       </p>
       <div class="hero-actions">
         <a href="/" class="btn btn-accent">ДО ГАЛЕРЕЇ →</a>
-        <a href="/istoriya/" class="btn">Історія {SITE.home.genitive}</a>
+        <a href="/karta/" class="btn">Карта фото</a>
+        <a href="/pl/" class="btn" lang="pl">Wersja polska →</a>
       </div>
     </div>
   </section>

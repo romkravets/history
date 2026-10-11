@@ -1,0 +1,43 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { getRoutes } from "../../../i18n/content";
+import { langPaths, lp, plural, t, type Lang } from "../../../i18n/ui";
+
+export const getStaticPaths = langPaths;
+const lang = Astro.props.lang as Lang;
+const T = t(lang);
+const R = T.routes;
+const routes = await getRoutes(lang);
+const slug = (id: string) => id.replace(/\.md$/, "");
+---
+
+<Layout
+  title={`${R.title} · ${T.siteName}`}
+  description={R.description}
+>
+  <section class="shell">
+    <div class="hero-page">
+      <p class="eyebrow">{R.eyebrow}</p>
+      <h1>{R.h1[0]}<br /><span>{R.h1[1]}</span></h1>
+      <p class="lead">{R.lead}</p>
+    </div>
+  </section>
+  <section class="shell route-cards">
+    {
+      routes.map((r) => (
+        <a class="card" href={lp(lang, `/marshruty/${slug(r.id)}/`)}>
+          <div class="card-media">
+            <img src={r.data.cover} alt={r.data.title} loading="lazy" />
+            <span class="card-count">{r.data.stops.length} {plural(lang, r.data.stops.length, R.stopForms)}</span>
+          </div>
+          <div class="card-body">
+            <p class="meta">{r.data.duration}</p>
+            <h2>{r.data.title}</h2>
+            <p>{r.data.description}</p>
+            <p class="card-more">{R.openRoute}</p>
+          </div>
+        </a>
+      ))
+    }
+  </section>
+</Layout>

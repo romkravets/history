@@ -1,0 +1,127 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { LIBRARY_TYPES } from "../../../content.config";
+import { absoluteUrl } from "../../../lib/site";
+import { getLibrary, getPeople } from "../../../i18n/content";
+import { langPaths, libraryType, lp, t, type Lang } from "../../../i18n/ui";
+
+export const getStaticPaths = langPaths;
+const lang = Astro.props.lang as Lang;
+const T = t(lang);
+const L = T.library;
+const items = (await getLibrary(lang)).sort(
+  (a, b) =>
+    LIBRARY_TYPES.indexOf(a.data.type) - LIBRARY_TYPES.indexOf(b.data.type) ||
+    a.data.title.localeCompare(b.data.title, "uk"),
+);
+const people = await getPeople(lang);
+const personName = new Map(people.map((p) => [p.id.replace(/\.md$/, ""), p.data.name]));
+const counts = new Map<string, number>();
+for (const i of items) counts.set(i.data.type, (counts.get(i.data.type) ?? 0) + 1);
+const types = LIBRARY_TYPES.filter((t) => counts.has(t));
+
+const schemaType: Record<string, string> = {
+  книга: "Book",
+  стаття: "ScholarlyArticle",
+  "художній твір": "CreativeWork",
+  "архів/збірка": "ArchiveComponent",
+  сайт: "WebSite",
+  відео: "VideoObject",
+};
+const pageUrl = absoluteUrl(lp(lang, "/biblioteka/"), Astro.site);
+const jsonLd = [
+  {
+    "@type": "CollectionPage",
+    url: pageUrl,
+    name: `${L.listName}: ${T.siteName}`,
+    inLanguage: lang,
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: items.map((i, n) => ({
+        "@type": "ListItem",
+        position: n + 1,
+        item: {
+          "@type": schemaType[i.data.type] ?? "CreativeWork",
+          name: i.data.title,
+          ...(i.data.author ? { author: i.data.author } : {}),
+          ...(i.data.year ? { datePublished: i.data.year } : {}),
+          ...(i.data.url ? { url: i.data.url } : {}),
+          description: i.data.description,
+        },
+      })),
+    },
+  },
+];
+---
+
+<Layout
+  title={`${L.title} · ${T.siteName}`}
+  description={L.description}
+  jsonLd={jsonLd}
+>
+  <section class="shell">
+    <div class="hero-page">
+      <p class="eyebrow">{L.eyebrow}</p>
+      <h1>{L.h1[0]}<br /><span>{L.h1[1]}</span></h1>
+      <p class="lead">{L.lead}</p>
+    </div>
+  </section>
+
+  <div class="shell decade-filter-wrap">
+    <div class="decade-filter" role="group" aria-label={L.typeFilter}>
+      <button type="button" class="active" data-type="all" aria-pressed="true">{L.all} <span>{items.length}</span></button>
+      {types.map((type) => (
+        <button type="button" data-type={type} aria-pressed="false">{libraryType(type, lang)} <span>{counts.get(type)}</span></button>
+      ))}
+    </div>
+  </div>
+
+  <section class="shell library-list" aria-label={L.items}>
+    {
+      items.map((i) => (
+        <article class="library-item" data-type={i.data.type}>
+          <span class="book-type">{libraryType(i.data.type, lang)}</span>
+          <h2>
+            {i.data.url ? (
+              <a href={i.data.url} target="_blank" rel="noopener noreferrer">{i.data.title}</a>
+            ) : (
+              i.data.title
+            )}
+          </h2>
+          {i.data.titleTranslation && <p class="book-meta">„{i.data.titleTranslation}”</p>}
+          {(i.data.author || i.data.year) && (
+            <p class="book-meta">{[i.data.author, i.data.year].filter(Boolean).join(" · ")}</p>
+          )}
+          <p class="library-desc">{i.data.description}</p>
+          <p class="library-links">
+            {i.data.url && (
+              <a class="library-open" href={i.data.url} target="_blank" rel="noopener noreferrer">
+                {i.data.type === "сайт" ? L.openSite : L.read} ↗
+              </a>
+            )}
+            {i.data.people.map((p) =>
+              personName.has(p) ? <a class="library-person" href={lp(lang, `/lyudy/${p}/`)}>{personName.get(p)}</a> : null,
+            )}
+          </p>
+        </article>
+      ))
+    }
+  </section>
+
+  <script is:inline>
+    (() => {
+      const chips = document.querySelectorAll(".decade-filter button");
+      const items = document.querySelectorAll(".library-item");
+      chips.forEach((chip) =>
+        chip.addEventListener("click", () => {
+          chips.forEach((c) => {
+            c.classList.toggle("active", c === chip);
+            c.setAttribute("aria-pressed", String(c === chip));
+          });
+          const t = chip.dataset.type;
+          items.forEach((i) => i.classList.toggle("is-hidden", t !== "all" && i.dataset.type !== t));
+        }),
+      );
+    })();
+  </script>
+</Layout>

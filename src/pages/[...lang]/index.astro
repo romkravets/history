@@ -1,0 +1,304 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import PhotoOfDay from "../../components/PhotoOfDay.astro";
+import BeforeAfter from "../../components/BeforeAfter.astro";
+import { SITE, absoluteUrl, ERAS, citiesByWeight, erasOf, landOf, imageSize } from "../../lib/site";
+import { getPhotos } from "../../i18n/content";
+import { LANG_META, cityName, eraName, langPaths, lp, plural, t, type Lang } from "../../i18n/ui";
+
+export const getStaticPaths = langPaths;
+const lang = Astro.props.lang as Lang;
+const T = t(lang);
+const H = T.home;
+
+const photos = (await getPhotos(lang)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+
+const formatDate = new Intl.DateTimeFormat(LANG_META[lang].locale, {
+  dateStyle: "long",
+});
+
+const toSlug = (id: string) => id.replace(/\.md$/, "");
+const photoCount = photos.reduce((n, p) => n + 1 + p.data.images.length, 0);
+// «Західна Україна» в реконструкціях — не місто, тож рахуємо лише галереї з місцем
+const cityCount = new Set(photos.filter((p) => p.data.location !== false).map((p) => p.data.city)).size;
+const eraCount = ERAS.filter((e) => photos.some((p) => erasOf(p.orig.decade).includes(e.key))).length;
+const withCompare = photos.find((p) => p.data.comparisons.length > 0);
+const featuredCompare = withCompare && {
+  ...withCompare.data.comparisons[0]!,
+  slug: toSlug(withCompare.id),
+};
+const eraCounts = new Map<string, number>();
+for (const p of photos)
+  for (const e of erasOf(p.orig.decade))
+    eraCounts.set(e, (eraCounts.get(e) ?? 0) + 1);
+const eraFilters = ERAS.filter((e) => eraCounts.has(e.key)).map((e) => ({ ...e, label: eraName(e.key, e.label, lang) }));
+const landCounts = new Map<string, number>();
+for (const p of photos) {
+  const l = landOf(p.data.city);
+  if (l) landCounts.set(l.key, (landCounts.get(l.key) ?? 0) + 1);
+}
+const landFilters = SITE.lands
+  .filter((l) => landCounts.has(l.key))
+  .map((l) => ({ ...l, label: landOf(l.cities[0]!, lang)?.label ?? l.label }));
+
+// порядок міст рахуємо за українськими назвами (головне місто — перше), показуємо — мовою сторінки
+const cities = citiesByWeight(photos.map((p) => p.orig.city)).map((c) => cityName(c, lang));
+const cityList =
+  cities.length > 6 ? `${cities.slice(0, 6).join(", ")} ${H.andOthers}` : cities.join(", ");
+const pageDescription = H.description(T.coverage, cityList, photos.length, plural(lang, photos.length, H.galleryForms));
+
+const coverSizes = await Promise.all(photos.map((p) => imageSize(p.data.cover)));
+
+const siteUrl = absoluteUrl("/", Astro.site);
+const pageUrl = absoluteUrl(lp(lang, "/"), Astro.site);
+const banners = SITE.banners.map((b) =>
+  lang === "pl" ? { ...b, place: b.placePl ?? b.place, credit: b.creditPl ?? b.credit } : b,
+);
+const jsonLd = [
+  {
+    "@type": "CollectionPage",
+    "@id": `${pageUrl}#collection`,
+    url: pageUrl,
+    name: T.tagline,
+    description: pageDescription,
+    inLanguage: lang,
+    isPartOf: { "@id": `${siteUrl}#website` },
+    about: cities.map((name) => ({ "@type": "Place", name })),
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: photos.length,
+      itemListElement: photos.map((photo, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: absoluteUrl(lp(lang, `/photos/${toSlug(photo.id)}/`), Astro.site),
+        name: photo.data.title,
+      })),
+    },
+  },
+];
+---
+
+<Layout
+  title={`${T.tagline} · ${T.siteName}`}
+  description={pageDescription}
+  jsonLd={jsonLd}
+>
+  <section class="hero-full" aria-label={H.aboutArchive}>
+    <video
+      class="hero-full-video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster={SITE.banners[0].poster}
+      aria-hidden="true"
+    ></video>
+    <p class="hero-video-credit" hidden>
+      <span></span><a target="_blank" rel="noopener"></a>
+    </p>
+    <script is:inline define:vars={{ banners, videoBy: H.videoBy }}>
+      // випадкове відео для банера; джерела додаємо тут, щоб браузер не вантажив зайве
+      (() => {
+        const video = document.querySelector(".hero-full-video");
+        const b = banners[Math.floor(Math.random() * banners.length)];
+        video.poster = b.poster;
+        for (const [ext, type] of [["webm", "video/webm"], ["mp4", "video/mp4"]]) {
+          const s = document.createElement("source");
+          s.src = `${b.src}.${ext}`;
+          s.type = type;
+          video.append(s);
+        }
+        video.load();
+        const cap = document.querySelector(".hero-video-credit");
+        if (!cap) return;
+        cap.querySelector("span").textContent = b.place;
+        const a = cap.querySelector("a");
+        if (b.credit && b.source) {
+          a.textContent = ` · ${videoBy}: ${b.credit}`;
+          a.href = b.source;
+        } else a.remove();
+        cap.hidden = false;
+      })();
+    </script>
+    <div class="hero-full-shade" aria-hidden="true"></div>
+
+    <div class="shell hero-full-inner">
+      <p class="eyebrow">▸ {T.heroEyebrow}</p>
+      <h1>
+        {T.heroTitle[0]}<br />
+        <span>{T.heroTitle[1]}</span> {T.heroTitle[2]}
+      </h1>
+      <p class="hero-full-lead">{H.lead(T.coverage, cityList)}</p>
+      <div class="hero-actions">
+        <a href="#gallery" class="btn btn-accent">{H.openGallery}</a>
+        <a href={lp(lang, "/karta/")} class="btn btn-glass">{H.mapLink}</a>
+        <a href={lp(lang, "/about/")} class="btn btn-glass">{H.aboutLink}</a>
+      </div>
+
+      <dl class="hero-stats">
+        <div><dt>{H.statGalleries}</dt><dd>{photos.length}</dd></div>
+        <div><dt>{H.statPhotos}</dt><dd>{photoCount.toLocaleString(LANG_META[lang].locale)}</dd></div>
+        <div><dt>{H.statPlaces}</dt><dd>{cityCount}</dd></div>
+        <div><dt>{H.statEras}</dt><dd>{eraCount}</dd></div>
+      </dl>
+    </div>
+
+    <button
+      type="button"
+      class="hero-video-toggle"
+      aria-label={H.videoPause}
+      data-label-pause={H.videoPause}
+      data-label-play={H.videoPlay}
+      data-playing="true">❚❚</button>
+  </section>
+
+  <PhotoOfDay />
+
+  {
+    featuredCompare && (
+      <section class="shell home-ba" aria-label={H.thenNow}>
+        <div class="home-ba-head">
+          <h2 class="section-title">{H.thenNow} <small>{H.dragSlider}</small></h2>
+          <div class="home-ba-links">
+            <a href={lp(lang, `/photos/${featuredCompare.slug}/`)}>{H.allComparisons}</a>
+            <a href={lp(lang, "/marshruty/")}>{H.routeLink}</a>
+          </div>
+        </div>
+        <BeforeAfter before={featuredCompare.before} after={featuredCompare.after} caption={featuredCompare.caption} />
+      </section>
+    )
+  }
+
+  <section class="ticker" aria-hidden="true">
+    <div>
+      <span>{H.ticker[0]}</span>
+      <span>///</span>
+      <span>{H.ticker[1]}</span>
+      <span>///</span>
+      <span>{H.ticker[0]}</span>
+      <span>///</span>
+      <span>{H.ticker[1]}</span>
+    </div>
+  </section>
+
+  {
+    landFilters.length > 1 && (
+      <div class="shell decade-filter-wrap">
+        <div class="decade-filter land-filter" role="group" aria-label={H.landFilter}>
+          <button type="button" class="active" data-land="all" aria-pressed="true">
+            {H.allLands}
+          </button>
+          {landFilters.map((l) => (
+            <button type="button" data-land={l.key} aria-pressed="false">
+              {l.label} <span>{landCounts.get(l.key)}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  <div class="shell decade-filter-wrap">
+    <div class="decade-filter era-filter" role="group" aria-label={H.eraFilter}>
+      <button type="button" class="active" data-era="all" aria-pressed="true">
+        {H.all} <span>{photos.length}</span>
+      </button>
+      {
+        eraFilters.map((e) => (
+          <button type="button" data-era={e.key} aria-pressed="false">
+            {e.label} <span>{eraCounts.get(e.key)}</span>
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  <section id="gallery" class="shell grid" aria-label={H.galleryLabel}>
+    {
+      photos.map((photo, i) => (
+        <a
+          class="card"
+          data-eras={erasOf(photo.orig.decade).join(" ")}
+          data-land={landOf(photo.orig.city)?.key ?? ""}
+          href={lp(lang, `/photos/${toSlug(photo.id)}/`)}
+        >
+          <div class="card-media">
+            <img
+              src={photo.data.cover}
+              alt={`${photo.data.title} — ${photo.data.city}, ${photo.data.decade}`}
+              width={coverSizes[i]?.width}
+              height={coverSizes[i]?.height}
+              loading="lazy"
+              decoding="async"
+            />
+            <span class="card-count" aria-label={H.photosInGallery(1 + photo.data.images.length)}>
+              <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path fill="currentColor" d="M2 4h9v8H2zM5 2h9v8h-1V3H5z"/></svg>
+              {1 + photo.data.images.length} {plural(lang, 1 + photo.data.images.length, H.photoForms)}
+            </span>
+          </div>
+          <div class="card-body">
+            <p class="meta">
+              [{photo.data.decade}] · {photo.data.city}
+            </p>
+            <h2>{photo.data.title}</h2>
+            <p class="date">{formatDate.format(photo.data.date)}</p>
+            <p>{photo.data.description}</p>
+            <p class="card-more">{H.open}</p>
+          </div>
+        </a>
+      ))
+    }
+  </section>
+
+  <script is:inline>
+    (() => {
+      const video = document.querySelector(".hero-full-video");
+      const toggle = document.querySelector(".hero-video-toggle");
+      if (!video || !toggle) return;
+      const set = (playing) => {
+        toggle.dataset.playing = String(playing);
+        toggle.textContent = playing ? "❚❚" : "▶";
+        toggle.setAttribute("aria-label", playing ? toggle.dataset.labelPause : toggle.dataset.labelPlay);
+      };
+      // з налаштуванням «зменшити рух» відео не грає — лишається постер
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        video.removeAttribute("autoplay");
+        video.pause();
+        set(false);
+      }
+      toggle.addEventListener("click", () => {
+        if (video.paused) { video.play(); set(true); } else { video.pause(); set(false); }
+      });
+    })();
+  </script>
+
+  <script is:inline>
+    (() => {
+      const cards = document.querySelectorAll("#gallery .card");
+      const state = { era: "all", land: "all" };
+      const apply = () =>
+        cards.forEach((card) => {
+          const okEra = state.era === "all" || card.dataset.eras.split(" ").includes(state.era);
+          const okLand = state.land === "all" || card.dataset.land === state.land;
+          card.classList.toggle("is-hidden", !(okEra && okLand));
+        });
+      for (const [sel, key] of [[".era-filter", "era"], [".land-filter", "land"]]) {
+        const chips = document.querySelectorAll(`${sel} button`);
+        chips.forEach((chip) =>
+          chip.addEventListener("click", () => {
+            chips.forEach((c) => {
+              c.classList.toggle("active", c === chip);
+              c.setAttribute("aria-pressed", String(c === chip));
+            });
+            chip.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+            state[key] = chip.dataset[key];
+            apply();
+          }),
+        );
+      }
+    })();
+  </script>
+</Layout>

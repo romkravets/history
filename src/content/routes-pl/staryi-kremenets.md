@@ -1,0 +1,32 @@
+---
+title: "Starym Krzemieńcem: od Słowackiego do Bony"
+description: "Trasa piesza przez centrum Krzemieńca: muzeum Słowackiego, Liceum, domy-„bliźniaki”, kościół, sobór św. Mikołaja i Góra Zamkowa – ze starymi zdjęciami i porównaniami „wtedy i teraz” na każdym przystanku."
+duration: "≈ 2 km · 1,5–2 godz. z wejściem na Górę Bony"
+stops:
+  - title: "Muzeum Juliusza Słowackiego"
+    text: "Dom rodziny Słowackich, w którym w 1809 roku urodził się poeta Juliusz Słowacki. Wspomnienia o „pięknym rodzinnym mieście”, które wieżami wznosi się z doliny, zawarł w poemacie „Godzina myśli”. Od 2002 roku działa tu muzeum literacko-memorialne."
+    photoCaption: "Muzeum Literacko-Memorialne J. Słowackiego"
+  - title: "Liceum – dawne kolegium jezuickie"
+    text: "Najsłynniejszy zespół architektoniczny miasta: kościół z dwiema wieżami i budynki kolegium. W 1805 roku Tadeusz Czacki i Hugo Kołłątaj założyli tu Gimnazjum Wołyńskie, od 1819 roku – liceum, dzięki któremu Krzemieniec nazwano „Wołyńskimi Atenami”. Przed bramą z barokowymi wazonami – widok na Górę Bony."
+    compareCaption: "Brama z wazonami przy kolegium"
+  - title: "Kolegium z bliska"
+    text: "Obejdź zespół i porównaj kościół oraz budynki z tym, jak wyglądały na starych fotografiach. Część zdjęć Liceum z lat 30. wykonał fotograf Henryk Hermanowicz, który pracował tu od 1937 roku."
+    compareCaption: "Kościół i budynki kolegium"
+  - title: "Domy-„bliźniaki”"
+    text: "Zespół architektoniczny dwóch jednakowych kamienic przy dawnej głównej ulicy – Szerokiej. Piętrowy budynek w stylu barokowym zachował swój wygląd przez stulecia; pod nim znajdują się dawne sklepione piwnice."
+    photoCaption: "Dom „Bliźniaki”"
+  - title: "Kościół św. Stanisława"
+    text: "Kościół rzymskokatolicki w centrum miasta; jego wieżę dobrze widać z Góry Zamkowej."
+    photoCaption: "Kościół św. Stanisława"
+  - title: "Ulica pod Boną"
+    text: "Stare kamienice ze szczytami na tle Góry Zamkowej – jeden z najbardziej rozpoznawalnych widoków Krzemieńca na polskich pocztówkach. Znajdź ten sam punkt i porównaj."
+    compareCaption: "Domy pod Górą Bony"
+  - title: "Sobór św. Mikołaja"
+    text: "Dawny kościół, który 6 grudnia 1832 roku, w dniu św. Mikołaja, przekazano Cerkwi prawosławnej. Zabytek architektury o znaczeniu narodowym; cele przy soborze datuje się na XVI–XVII wiek. W 2023 roku sobór zwrócono Krzemieniecko-Poczajowskiemu Rezerwatowi."
+    photoCaption: "Sobór św. Mikołaja"
+  - title: "Góra Zamkowa – Góra Bony"
+    text: "Finał trasy – wejście ścieżką na Górę Bony. Znajdują się tu ruiny zamku krzemienieckiego z wieżą bramną; archeolodzy odkryli na szczycie mur z IX wieku. Góra nosi imię królowej Bony Sforzy, która władała Krzemieńcem w latach 1536–1556. Ze szczytu roztacza się najpiękniejsza panorama miasta."
+    compareCaption: "Góra Zamkowa: z samolotu i z drona"
+---
+
+Trasa prowadzi z zachodu na wschód przez centrum miasta i kończy się wejściem na Górę Zamkową. Załóż wygodne buty: ścieżka na Górę Bony jest stroma. Na każdym przystanku – zdjęcia z archiwum, a tam, gdzie to możliwe, porównania „wtedy i teraz”: stań w tym samym miejscu, w którym sto lat temu stał fotograf.

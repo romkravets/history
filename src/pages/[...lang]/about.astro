@@ -1,0 +1,347 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { langPaths, t, type Lang } from "../../i18n/ui";
+
+export const getStaticPaths = langPaths;
+const lang = Astro.props.lang as Lang;
+const T = t(lang);
+
+const meta = {
+  title: `${T.about.title} · ${T.siteName}`,
+  description: T.about.description(T.coverage),
+};
+---
+
+<Layout title={meta.title} description={meta.description}>
+  {lang === "uk" ? (
+    <>
+  <section class="shell">
+    <div class="hero-page">
+      <p class="eyebrow">▸ ABOUT / UA</p>
+      <h1>ПРО<br /><span>АРХІВ</span></h1>
+      <p class="lead">
+        {T.siteName} — цифрова колекція старих і сучасних фотографій, листівок,
+        гравюр і карт {T.coverage}.
+      </p>
+    </div>
+  </section>
+
+  <nav class="era-nav shell" aria-label="Розділи">
+    <a href="#project">ПРО ПРОЄКТ</a>
+    <a href="#content">КОНТЕНТ</a>
+    <a href="#author">АВТОР</a>
+    <a href="#tech">ЯК ЦЕ ЗРОБЛЕНО</a>
+  </nav>
+
+  <section class="shell" id="project">
+    <article class="timeline-era">
+      <div class="timeline-node" aria-hidden="true"></div>
+      <div class="timeline-body">
+        <h2>ПРО ПРОЄКТ</h2>
+        <p class="lead">
+          Архів поєднує фотографії з назвами місць, датами, описами та
+          історичним контекстом, щоб локальна пам'ять залишалася доступною
+          онлайн.
+        </p>
+        <div class="story">
+          <p>
+            Мета проєкту — зібрати матеріали в доступній цифровій формі, щоб їх
+            можна було переглядати, доповнювати та зберігати незалежно від
+            паперового архіву.
+          </p>
+          <p>
+            Кожна фотоісторія має окрему сторінку, обкладинку, галерею знімків і
+            текстовий опис.
+          </p>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="shell" id="content">
+    <article class="timeline-era">
+      <div class="timeline-node" aria-hidden="true"></div>
+      <div class="timeline-body">
+        <h2>КОНТЕНТ</h2>
+        <p class="lead">
+          Архів містить фотоісторії міст, сіл, архітектурних пам'яток і місць,
+          пов'язаних із локальною історією.
+        </p>
+        <div class="story">
+          <ul>
+            <li>
+              <strong>Фотографії:</strong> зображення зберігаються у папках відповідних
+              історій.
+            </li>
+            <li>
+              <strong>Контекст:</strong> Markdown-файли містять назву, дату, місце,
+              період і опис.
+            </li>
+            <li>
+              <strong>Галереї:</strong> кожна історія має обкладинку та додаткові
+              зображення.
+            </li>
+            <li>
+              <strong>Географія:</strong> {T.aboutGeography}.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="shell" id="author">
+    <article class="timeline-era">
+      <div class="timeline-node" aria-hidden="true"></div>
+      <div class="timeline-body">
+        <h2>АВТОР</h2>
+        <p class="lead">
+          Проєкт створює та підтримує Роман Кравець — розробник і автор цього
+          цифрового архіву.
+        </p>
+        <div class="story">
+          <p>
+            Роман відповідає за структуру сайту, підготовку матеріалів,
+            технічний розвиток і публікацію нових фотоісторій.
+          </p>
+          <p>
+            <a href="https://github.com/romkravets" rel="me"
+              >GitHub автора: github.com/romkravets</a
+            >
+          </p>
+          <p>
+            Усі зміни проходять через Git, тому історію розвитку архіву можна
+            переглядати та перевіряти.
+          </p>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="shell" id="tech">
+    <article class="timeline-era">
+      <div class="timeline-node" aria-hidden="true"></div>
+      <div class="timeline-body">
+        <h2>ЯК ЦЕ ЗРОБЛЕНО</h2>
+        <p class="lead">
+          Архів веде одна людина, тому рутину — сортування сотень фото, пошук
+          дублікатів, підписи — допомагає виконувати ШІ. Рішення, що публікувати,
+          і перевірка фактів лишаються за людиною.
+        </p>
+        <div class="story">
+          <h3>Шлях фотографії до сайту</h3>
+          <ol>
+            <li>
+              <strong>Збір.</strong> Фото, листівки, карти й документи збираються в
+              папках на Google Диску — з родинних архівів, від місцевих фотографів
+              і з відкритих джерел.
+            </li>
+            <li>
+              <strong>Перевірка на дублікати.</strong> Кожне зображення порівнюється
+              з усім архівом за «відбитком» картинки (перцептивний хеш), тож
+              знаходяться навіть копії іншого розміру чи з іншою обрізкою.
+              Сумнівні випадки перевіряються вручну на око.
+            </li>
+            <li>
+              <strong>Сортування й описи.</strong> ШІ-асистент (Claude Code)
+              розглядає фото, групує їх за темами, пропонує нові галереї або
+              додає знімки до наявних, пише підписи й чернетки описів. Для
+              історичних фактів шукаються джерела, і вони наводяться під
+              текстом; те, що не вдалося підтвердити, позначається як
+              орієнтовне або не пишеться зовсім.
+            </li>
+            <li>
+              <strong>Перевірка й публікація.</strong> Сайт автоматично
+              перевіряється й збирається (<code>astro check</code>,
+              <code>astro build</code>). Людина переглядає зміни і сама
+              публікує їх — після цього сайт оновлюється на Vercel.
+            </li>
+          </ol>
+
+          <h3>Що варто знати</h3>
+          <ul>
+            <li>
+              Дати багатьох старих фото <strong>орієнтовні</strong> — за написами
+              на листівках, стилем знімку чи назвою папки, з якої вони прийшли.
+            </li>
+            <li>
+              Підписи до фото інколи загальні («Храм на старому фото»), бо
+              місце не вдалося впізнати. Якщо ви знаєте, що на знімку, — напишіть,
+              і ми виправимо.
+            </li>
+            <li>
+              Авторські фото публікуються з дозволу авторів і з зазначенням імені.
+            </li>
+          </ul>
+
+          <h3>Технології</h3>
+          <ul>
+            <li><strong>Сайт:</strong> Astro — статичні сторінки, швидкі й без сервера.</li>
+            <li><strong>Контент:</strong> кожна галерея — Markdown-файл з назвою, місцем, періодом, описом і підписами фото.</li>
+            <li><strong>Сховище:</strong> Git і GitHub, великі файли — через Git LFS; уся історія змін зберігається.</li>
+            <li><strong>Публікація:</strong> Vercel, автоматично після кожного оновлення.</li>
+            <li><strong>Пошук:</strong> карта сайту, структуровані дані (schema.org) і <code>llms.txt</code>, щоб архів знаходили і пошуковики, і ШІ-асистенти.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+  </section>
+    </>
+  ) : (
+    <>
+  <section class="shell">
+    <div class="hero-page">
+      <p class="eyebrow">▸ ABOUT / PL</p>
+      <h1>O<br /><span>ARCHIWUM</span></h1>
+      <p class="lead">
+        {T.siteName} to cyfrowa kolekcja dawnych i współczesnych fotografii, pocztówek,
+        rycin i map {T.coverage}.
+      </p>
+    </div>
+  </section>
+
+  <nav class="era-nav shell" aria-label="Działy">
+    <a href="#project">O PROJEKCIE</a>
+    <a href="#content">ZAWARTOŚĆ</a>
+    <a href="#author">AUTOR</a>
+    <a href="#tech">JAK TO ZROBIONO</a>
+  </nav>
+
+  <section class="shell" id="project">
+    <article class="timeline-era">
+      <div class="timeline-node" aria-hidden="true"></div>
+      <div class="timeline-body">
+        <h2>O PROJEKCIE</h2>
+        <p class="lead">
+          Archiwum łączy fotografie z nazwami miejsc, datami, opisami i kontekstem
+          historycznym, aby lokalna pamięć pozostawała dostępna w sieci.
+        </p>
+        <div class="story">
+          <p>
+            Celem projektu jest zebranie materiałów w przystępnej formie cyfrowej, tak by
+            można je było oglądać, uzupełniać i przechowywać niezależnie od papierowego archiwum.
+          </p>
+          <p>
+            Każda fotohistoria ma osobną stronę, okładkę, galerię zdjęć i opis.
+          </p>
+          <p>
+            Strona powstaje w języku ukraińskim; wersja polska jest tłumaczeniem. Nazwy
+            miejscowości podajemy w formach przyjętych w języku polskim (Krzemieniec, Łuck,
+            Tarnopol), a współczesne miasta leżą na terytorium Ukrainy.
+          </p>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="shell" id="content">
+    <article class="timeline-era">
+      <div class="timeline-node" aria-hidden="true"></div>
+      <div class="timeline-body">
+        <h2>ZAWARTOŚĆ</h2>
+        <p class="lead">
+          Archiwum zawiera fotohistorie miast, wsi, zabytków architektury i miejsc
+          związanych z historią lokalną.
+        </p>
+        <div class="story">
+          <ul>
+            <li><strong>Fotografie:</strong> zdjęcia są przechowywane w folderach poszczególnych historii.</li>
+            <li><strong>Kontekst:</strong> pliki Markdown zawierają tytuł, datę, miejsce, okres i opis.</li>
+            <li><strong>Galerie:</strong> każda historia ma okładkę i dodatkowe zdjęcia.</li>
+            <li><strong>Geografia:</strong> {T.aboutGeography}.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="shell" id="author">
+    <article class="timeline-era">
+      <div class="timeline-node" aria-hidden="true"></div>
+      <div class="timeline-body">
+        <h2>AUTOR</h2>
+        <p class="lead">
+          Projekt tworzy i prowadzi Roman Kravets (Роман Кравець) — programista i autor tego
+          cyfrowego archiwum.
+        </p>
+        <div class="story">
+          <p>
+            Roman odpowiada za strukturę strony, przygotowanie materiałów, rozwój techniczny
+            i publikację nowych fotohistorii.
+          </p>
+          <p>
+            <a href="https://github.com/romkravets" rel="me">GitHub autora: github.com/romkravets</a>
+          </p>
+          <p>
+            Wszystkie zmiany przechodzą przez Git, dzięki czemu historię rozwoju archiwum
+            można przeglądać i sprawdzać.
+          </p>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="shell" id="tech">
+    <article class="timeline-era">
+      <div class="timeline-node" aria-hidden="true"></div>
+      <div class="timeline-body">
+        <h2>JAK TO ZROBIONO</h2>
+        <p class="lead">
+          Archiwum prowadzi jedna osoba, dlatego w rutynowej pracy — sortowaniu setek zdjęć,
+          wyszukiwaniu duplikatów, podpisach i tłumaczeniu — pomaga sztuczna inteligencja.
+          Decyzja, co opublikować, i weryfikacja faktów należą do człowieka.
+        </p>
+        <div class="story">
+          <h3>Droga zdjęcia na stronę</h3>
+          <ol>
+            <li>
+              <strong>Zbieranie.</strong> Zdjęcia, pocztówki, mapy i dokumenty trafiają do folderów
+              na Dysku Google — z archiwów rodzinnych, od lokalnych fotografów i z otwartych źródeł.
+            </li>
+            <li>
+              <strong>Sprawdzanie duplikatów.</strong> Każdy obraz jest porównywany z całym archiwum
+              według „odcisku” obrazu (hash percepcyjny), dzięki czemu wykrywane są nawet kopie
+              w innym rozmiarze czy z innym kadrowaniem. Wątpliwe przypadki sprawdzane są ręcznie.
+            </li>
+            <li>
+              <strong>Sortowanie i opisy.</strong> Asystent AI (Claude Code) przegląda zdjęcia,
+              grupuje je tematycznie, proponuje nowe galerie lub dodaje ujęcia do istniejących,
+              pisze podpisy i szkice opisów. Do faktów historycznych wyszukiwane są źródła,
+              podawane pod tekstem; to, czego nie udało się potwierdzić, oznaczane jest jako
+              przybliżone albo w ogóle pomijane.
+            </li>
+            <li>
+              <strong>Sprawdzenie i publikacja.</strong> Strona jest automatycznie sprawdzana
+              i budowana (<code>astro check</code>, <code>astro build</code>). Człowiek przegląda
+              zmiany i sam je publikuje — po czym strona aktualizuje się na Vercel.
+            </li>
+          </ol>
+
+          <h3>Warto wiedzieć</h3>
+          <ul>
+            <li>
+              Daty wielu starych zdjęć są <strong>przybliżone</strong> — ustalone na podstawie napisów
+              na pocztówkach, stylu zdjęcia lub nazwy folderu, z którego pochodzą.
+            </li>
+            <li>
+              Podpisy bywają ogólne („Świątynia na starym zdjęciu”), gdy miejsca nie udało się
+              rozpoznać. Jeśli wiesz, co jest na zdjęciu — napisz, a poprawimy.
+            </li>
+            <li>Zdjęcia autorskie publikujemy za zgodą autorów i z podaniem nazwiska.</li>
+          </ul>
+
+          <h3>Technologie</h3>
+          <ul>
+            <li><strong>Strona:</strong> Astro — statyczne strony, szybkie i bez serwera.</li>
+            <li><strong>Treść:</strong> każda galeria to plik Markdown z tytułem, miejscem, okresem, opisem i podpisami zdjęć; tłumaczenia polskie leżą obok, w osobnych plikach.</li>
+            <li><strong>Przechowywanie:</strong> Git i GitHub, duże pliki przez Git LFS; cała historia zmian jest zachowana.</li>
+            <li><strong>Publikacja:</strong> Vercel, automatycznie po każdej aktualizacji.</li>
+            <li><strong>Wyszukiwanie:</strong> mapa strony, dane strukturalne (schema.org) i <code>llms.txt</code>, aby archiwum znajdowały zarówno wyszukiwarki, jak i asystenci AI.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+  </section>
+    </>
+  )}
+</Layout>

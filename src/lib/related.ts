@@ -1,8 +1,10 @@
 import type { CollectionEntry } from "astro:content";
 import { erasOf } from "./site";
+import type { LPhoto } from "../i18n/content";
+import { t, type Lang } from "../i18n/ui";
 
-type Photo = CollectionEntry<"photos">;
-type Person = CollectionEntry<"people">;
+type Photo = LPhoto;
+type Person = { id: string; data: CollectionEntry<"people">["data"] };
 
 export interface Related {
   photo: Photo;
@@ -25,19 +27,23 @@ function distanceKm(a: { lat: number; lng: number }, b: { lat: number; lng: numb
   return 2 * R * Math.asin(Math.sqrt(h));
 }
 
-const fmtDistance = (km: number) =>
+const fmtDistance = (km: number, lang: Lang) =>
   km < 1
-    ? `${Math.max(50, Math.round((km * 1000) / 50) * 50)} м`
-    : `${km.toFixed(km < 10 ? 1 : 0).replace(".", ",")} км`;
+    ? `${Math.max(50, Math.round((km * 1000) / 50) * 50)} ${t(lang).related.m}`
+    : `${km.toFixed(km < 10 ? 1 : 0).replace(".", ",")} ${t(lang).related.km}`;
 
 // теги, що описують тип, а не тему — рахуються в балах, але не показуються як причина
-const GENERIC = new Set(["старі фото", "сучасні фото", "листівки", "історія", "архітектура"]);
+const GENERIC = new Set([
+  "старі фото", "сучасні фото", "листівки", "історія", "архітектура",
+  "dawne zdjęcia", "stare zdjęcia", "zdjęcia współczesne", "współczesne zdjęcia", "pocztówki", "historia", "architektura",
+]);
 
 /**
  * Схожі галереї: бали за спільні теги (рідкісні важать більше — IDF), близькість
  * на карті, спільні епохи й пов'язаних людей. Повертає найкращі, від найсхожішої.
  */
-export function relatedGalleries(current: Photo, all: Photo[], people: Person[], limit = 10): Related[] {
+export function relatedGalleries(current: Photo, all: Photo[], people: Person[], limit = 10, lang: Lang = "uk"): Related[] {
+  const R = t(lang).related;
   const N = all.length;
   // скільки галерей має кожен тег → вага log(N/df)
   const df = new Map<string, number>();
@@ -47,7 +53,7 @@ export function relatedGalleries(current: Photo, all: Photo[], people: Person[],
   const peopleOf = (slug: string) => new Set(people.filter((pp) => pp.data.galleries.includes(slug)).map(slugOf));
   const curSlug = slugOf(current);
   const curTags = new Set(current.data.tags.map(norm));
-  const curEras = new Set(erasOf(current.data.decade));
+  const curEras = new Set(erasOf(current.orig.decade));
   const curPeople = peopleOf(curSlug);
   const curLoc = current.data.location || null;
 
@@ -63,7 +69,7 @@ export function relatedGalleries(current: Photo, all: Photo[], people: Person[],
     const tagScore = shared.reduce((s, t) => s + idf(norm(t)), 0);
     score += tagScore;
     const best = shared.filter((t) => !GENERIC.has(norm(t))).sort((a, b) => idf(norm(b)) - idf(norm(a)))[0];
-    if (best && idf(norm(best)) > 1.2) reasons.push([idf(norm(best)), `Спільна тема: ${best}`]);
+    if (best && idf(norm(best)) > 1.2) reasons.push([idf(norm(best)), `${R.sharedTopic}: ${best}`]);
 
     // місце
     const loc = p.data.location || null;
@@ -72,25 +78,25 @@ export function relatedGalleries(current: Photo, all: Photo[], people: Person[],
       const exact = !curLoc.approximate && !loc.approximate;
       const geo = km < 0.05 ? 3 : km < 0.6 ? 2.2 : km < 3 ? 1.2 : km < 30 ? 0.5 : 0;
       score += geo;
-      if (exact && km < 0.05) reasons.push([3.2, "Те саме місце"]);
-      else if (exact && km < 3) reasons.push([2.4, `Поруч · ${fmtDistance(km)}`]);
-      else if (p.data.city !== current.data.city && km < 60) reasons.push([1, `${p.data.city} · ${fmtDistance(km)}`]);
+      if (exact && km < 0.05) reasons.push([3.2, R.samePlace]);
+      else if (exact && km < 3) reasons.push([2.4, `${R.near} · ${fmtDistance(km, lang)}`]);
+      else if (p.data.city !== current.data.city && km < 60) reasons.push([1, `${p.data.city} · ${fmtDistance(km, lang)}`]);
     } else if (p.data.city === current.data.city) score += 0.5;
 
     // епохи
-    const eras = erasOf(p.data.decade).filter((e) => curEras.has(e));
+    const eras = erasOf(p.orig.decade).filter((e) => curEras.has(e));
     score += eras.length * 0.9;
     // «сучасні фото» — не причина схожості; для старих фото показуємо період
-    if (eras.some((e) => e !== "modern")) reasons.push([0.8, `Той самий період: ${p.data.decade}`]);
+    if (eras.some((e) => e !== "modern")) reasons.push([0.8, `${R.samePeriod}: ${p.data.decade}`]);
 
     // люди
     const sharedPeople = [...peopleOf(slug)].filter((x) => curPeople.has(x));
     score += sharedPeople.length * 2;
-    if (sharedPeople.length) reasons.push([2.5, "Ті самі люди"]);
+    if (sharedPeople.length) reasons.push([2.5, R.samePeople]);
 
     if (score <= 0) continue;
     reasons.sort((a, b) => b[0] - a[0]);
-    out.push({ photo: p, slug, score, reason: reasons[0]?.[1] ?? `Теж ${p.data.city}` });
+    out.push({ photo: p, slug, score, reason: reasons[0]?.[1] ?? `${R.also} ${p.data.city}` });
   }
   return out.sort((a, b) => b.score - a.score || b.photo.data.date.getTime() - a.photo.data.date.getTime()).slice(0, limit);
 }

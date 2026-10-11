@@ -86,16 +86,19 @@ export const SITE = {
    * Файли — у public/video. Для чужих відео вкажіть автора й ліцензію (credit) і сторінку джерела (source).
    */
   banners: [
-    { place: "Кременець", src: "/video/banner", poster: "/video/banner-poster.jpg" },
+    { place: "Кременець", placePl: "Krzemieniec", src: "/video/banner", poster: "/video/banner-poster.jpg" },
     {
       place: "Почаївська лавра",
+      placePl: "Ławra Poczajowska",
       src: "/video/banner-pochaiv",
       poster: "/video/banner-pochaiv-poster.jpg",
       credit: "Олексій Бухало, CC BY-SA 4.0",
+      creditPl: "Ołeksij Buchało, CC BY-SA 4.0",
       source: "https://commons.wikimedia.org/wiki/File:Почаївська_Лавра_взимку.webm",
     },
     {
       place: "Олеський замок",
+      placePl: "Zamek w Olesku",
       src: "/video/banner-olesko",
       poster: "/video/banner-olesko-poster.jpg",
       credit: "Drone Grand Tour, CC BY 3.0",
@@ -103,10 +106,11 @@ export const SITE = {
     },
     {
       place: "Підгорецький замок",
+      placePl: "Zamek w Podhorcach",
       src: "/video/banner-pidhirtsi",
       poster: "/video/banner-pidhirtsi-poster.jpg",
       credit: "Drone Grand Tour, CC BY 3.0",
       source: "https://commons.wikimedia.org/wiki/File:Drone_Grand_Tour_-_Pidhirtsi_Castle_Western_Ukraine.webm",
     },
-  ] as { place: string; src: string; poster: string; credit?: string; source?: string }[],
+  ] as { place: string; placePl?: string; src: string; poster: string; credit?: string; creditPl?: string; source?: string }[],
 };

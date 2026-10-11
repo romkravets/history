@@ -1,0 +1,67 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { absoluteUrl, initials, lifeYears } from "../../../lib/site";
+import { getPeople } from "../../../i18n/content";
+import { langPaths, lp, t, type Lang } from "../../../i18n/ui";
+
+export const getStaticPaths = langPaths;
+const lang = Astro.props.lang as Lang;
+const T = t(lang);
+const P = T.people;
+const people = (await getPeople(lang)).sort(
+  (a, b) =>
+    (a.data.order ?? 999) - (b.data.order ?? 999) || a.data.name.localeCompare(b.data.name, lang),
+);
+const slug = (id: string) => id.replace(/\.md$/, "");
+const pageUrl = absoluteUrl(lp(lang, "/lyudy/"), Astro.site);
+const jsonLd = [
+  {
+    "@type": "CollectionPage",
+    url: pageUrl,
+    name: `${P.listName}: ${T.siteName}`,
+    inLanguage: lang,
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: people.map((p, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: absoluteUrl(lp(lang, `/lyudy/${slug(p.id)}/`), Astro.site),
+        name: p.data.name,
+      })),
+    },
+  },
+];
+---
+
+<Layout
+  title={`${P.title} · ${T.siteName}`}
+  description={P.description(people.slice(0, 6).map((p) => p.data.name).join(", "))}
+  jsonLd={jsonLd}
+>
+  <section class="shell">
+    <div class="hero-page">
+      <p class="eyebrow">{P.eyebrow}</p>
+      <h1>{P.h1[0]}<br /><span>{P.h1[1]}</span></h1>
+      <p class="lead">{P.lead}</p>
+    </div>
+  </section>
+
+  <section class="shell people-grid" aria-label={P.list}>
+    {
+      people.map((p) => (
+        <a class="person-card" href={lp(lang, `/lyudy/${slug(p.id)}/`)}>
+          {p.data.portrait ? (
+            <img class="person-portrait" src={p.data.portrait} alt={p.data.name} loading="lazy" />
+          ) : (
+            <span class="person-portrait person-monogram" aria-hidden="true">{initials(p.data.name)}</span>
+          )}
+          <span class="person-card-body">
+            <span class="meta">{[lifeYears(p.data.born, p.data.died), p.data.role].filter(Boolean).join(" · ")}</span>
+            <b>{p.data.name}</b>
+            <span class="person-connection">{p.data.connection}</span>
+          </span>
+        </a>
+      ))
+    }
+  </section>
+</Layout>

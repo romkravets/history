@@ -129,10 +129,82 @@ const routes = defineCollection({
   }),
 });
 
+// Польські переклади: той самий slug у src/content/<колекція>-pl/, лише перекладні поля й текст.
+// Чого немає в перекладі — береться з української версії (див. src/i18n/content.ts).
+const plGlob = (dir: string) => glob({ pattern: "**/*.md", base: `./src/content/${dir}-pl` });
+
+const photosPl = defineCollection({
+  loader: plGlob("photos"),
+  schema: z.object({
+    title: z.string(),
+    area: z.string().optional(),
+    decade: z.string().optional(),
+    description: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+    captions: z.record(z.string(), z.string()).optional(),
+    comparisons: z.array(z.object({ caption: z.string() })).optional(),
+  }),
+});
+
+const historyPl = defineCollection({
+  loader: plGlob("history"),
+  schema: z.object({
+    era: z.string().optional(),
+    title: z.string(),
+    period: z.string().optional(),
+    summary: z.string().optional(),
+  }),
+});
+
+const peoplePl = defineCollection({
+  loader: plGlob("people"),
+  schema: z.object({
+    name: z.string(),
+    role: z.string().optional(),
+    connection: z.string().optional(),
+    born: z.string().optional(),
+    died: z.string().optional(),
+    bornPlace: z.string().optional(),
+    diedPlace: z.string().optional(),
+  }),
+});
+
+const libraryPl = defineCollection({
+  loader: plGlob("library"),
+  schema: z.object({
+    description: z.string().optional(),
+    titleTranslation: z.string().optional(),
+  }),
+});
+
+const routesPl = defineCollection({
+  loader: plGlob("routes"),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    duration: z.string().optional(),
+    stops: z
+      .array(
+        z.object({
+          title: z.string().optional(),
+          text: z.string().optional(),
+          photoCaption: z.string().optional(),
+          compareCaption: z.string().optional(),
+        }),
+      )
+      .optional(),
+  }),
+});
+
 export const collections = {
   photos,
   history,
   people,
   library,
   routes,
+  photosPl,
+  historyPl,
+  peoplePl,
+  libraryPl,
+  routesPl,
 };

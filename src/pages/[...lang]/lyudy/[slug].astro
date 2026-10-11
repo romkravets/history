@@ -1,0 +1,144 @@
+---
+import { render } from "astro:content";
+import Layout from "../../../layouts/Layout.astro";
+import { absoluteUrl, humanDate, initials, lifeYears } from "../../../lib/site";
+import { getLibrary, getPeople, getPhotos } from "../../../i18n/content";
+import { LANGS, langParam, libraryType, lp, t, type Lang } from "../../../i18n/ui";
+
+export async function getStaticPaths() {
+  const perLang = await Promise.all(
+    LANGS.map(async (lang) => (await getPeople(lang)).map((person) => ({ params: { lang: langParam(lang), slug: person.id.replace(/\.md$/, "") }, props: { lang, person } }))),
+  );
+  return perLang.flat();
+}
+
+const { person } = Astro.props;
+const lang = Astro.props.lang as Lang;
+const T = t(lang);
+const P = T.people;
+const { Content } = await render(person.body);
+const d = person.data;
+const slug = person.id.replace(/\.md$/, "");
+
+const photos = await getPhotos(lang);
+const galleries = d.galleries
+  .map((g) => photos.find((p) => p.id.replace(/\.md$/, "") === g))
+  .filter((p) => p !== undefined);
+const books = (await getLibrary(lang)).filter((b) => b.data.people.includes(slug));
+
+const years = lifeYears(d.born, d.died);
+const pageUrl = absoluteUrl(lp(lang, `/lyudy/${slug}/`), Astro.site);
+const jsonLd = [
+  {
+    "@type": "Person",
+    "@id": `${pageUrl}#person`,
+    url: pageUrl,
+    name: d.name,
+    ...(d.nameOriginal ? { alternateName: d.nameOriginal } : {}),
+    ...(d.born ? { birthDate: d.born } : {}),
+    ...(d.died ? { deathDate: d.died } : {}),
+    ...(d.bornPlace ? { birthPlace: { "@type": "Place", name: d.bornPlace } } : {}),
+    ...(d.diedPlace ? { deathPlace: { "@type": "Place", name: d.diedPlace } } : {}),
+    description: d.connection,
+    jobTitle: d.role,
+    sameAs: d.sources.map((s) => s.url),
+  },
+  {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: P.breadcrumb, item: absoluteUrl(lp(lang, "/lyudy/"), Astro.site) },
+      { "@type": "ListItem", position: 2, name: d.name, item: pageUrl },
+    ],
+  },
+];
+---
+
+<Layout
+  title={`${d.name}${years ? ` (${years})` : ""} — ${d.role} · ${T.siteName}`}
+  description={d.connection}
+  image={d.portrait}
+  imageAlt={d.name}
+  type="article"
+  jsonLd={jsonLd}
+>
+  <article class="shell person-article">
+    <div class="photo-topbar">
+      <a class="back-link" href={lp(lang, "/lyudy/")}>{P.all}</a>
+    </div>
+
+    <header class="person-header">
+      {d.portrait ? (
+        <img class="person-portrait person-portrait--big" src={d.portrait} alt={d.name} />
+      ) : (
+        <span class="person-portrait person-portrait--big person-monogram" aria-hidden="true">{initials(d.name)}</span>
+      )}
+      <div>
+        <p class="eyebrow">{d.role}</p>
+        <h1>{d.name}</h1>
+        {d.nameOriginal && <p class="person-original">{d.nameOriginal}</p>}
+        <p class="lead">{d.connection}</p>
+        <div class="meta-row">
+          {(d.born || d.bornPlace) && <span>{P.born}: {[humanDate(d.born, lang), d.bornPlace].filter(Boolean).join(", ")}</span>}
+          {(d.died || d.diedPlace) && <span>{P.died}: {[humanDate(d.died, lang), d.diedPlace].filter(Boolean).join(", ")}</span>}
+          {d.places.length > 0 && <span>{P.places}: {d.places.join(", ")}</span>}
+        </div>
+      </div>
+    </header>
+
+    <section class="story">
+      <Content />
+    </section>
+
+    {
+      galleries.length > 0 && (
+        <section class="related">
+          <h2>{P.photos}</h2>
+          <div class="related-galleries">
+            {galleries.map((g) => (
+              <a class="related-gallery" href={lp(lang, `/photos/${g.id.replace(/\.md$/, "")}/`)}>
+                <img src={g.data.cover} alt={g.data.title} loading="lazy" />
+                <span>{g.data.title}</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      books.length > 0 && (
+        <section class="related">
+          <h2>{P.books}</h2>
+          <ul class="book-list">
+            {books.map((b) => (
+              <li>
+                <span class="book-type">{libraryType(b.data.type, lang)}</span>
+                {b.data.url ? (
+                  <a href={b.data.url} target="_blank" rel="noopener noreferrer">{b.data.title}</a>
+                ) : (
+                  <b>{b.data.title}</b>
+                )}
+                {(b.data.author || b.data.year) && (
+                  <span class="book-meta"> — {[b.data.author, b.data.year].filter(Boolean).join(", ")}</span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      d.sources.length > 0 && (
+        <section class="related">
+          <h2>{P.sources}</h2>
+          <ul class="source-list">
+            {d.sources.map((s) => (
+              <li><a href={s.url} target="_blank" rel="noopener noreferrer">{s.title}</a></li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+  </article>
+</Layout>

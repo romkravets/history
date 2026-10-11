@@ -1,0 +1,112 @@
+---
+import { render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { HOME_PLACE, absoluteUrl } from "../../lib/site";
+import { getHistory } from "../../i18n/content";
+import { cityName, langPaths, lp, t, type Lang } from "../../i18n/ui";
+
+export const getStaticPaths = langPaths;
+const lang = Astro.props.lang as Lang;
+const T = t(lang);
+const H = T.history;
+// «Кременця» / «Krzemieńca» — родовий відмінок головного міста
+const genitive = H.homeGenitive[0] + H.homeGenitive.slice(1).toLowerCase();
+
+const eras = (await getHistory(lang)).sort(
+	(a, b) => a.data.order - b.data.order,
+);
+
+const rendered = await Promise.all(
+	eras.map(async (entry) => ({
+		entry,
+		Content: (await render(entry.body)).Content,
+	})),
+);
+
+const pageUrl = absoluteUrl(lp(lang, "/istoriya/"), Astro.site);
+const siteUrl = absoluteUrl("/", Astro.site);
+const jsonLd = [
+	{
+		"@type": "Article",
+		"@id": `${pageUrl}#article`,
+		url: pageUrl,
+		headline: H.title(genitive),
+		inLanguage: lang,
+		isPartOf: { "@id": `${siteUrl}#website` },
+		author: { "@id": `${siteUrl}#author` },
+		about: {
+			"@type": "Place",
+			name: cityName(HOME_PLACE.name, lang),
+			address: {
+				"@type": "PostalAddress",
+				addressLocality: cityName(HOME_PLACE.name, lang),
+				addressRegion: HOME_PLACE.region,
+				addressCountry: "UA",
+			},
+		},
+		hasPart: eras.map((e) => ({
+			"@type": "WebPageElement",
+			name: `${e.data.period} — ${e.data.title}`,
+			url: `${pageUrl}#${e.data.era}`,
+			description: e.data.summary,
+		})),
+		citation: eras.flatMap((e) =>
+			e.data.sources.map((src) => ({
+				"@type": "CreativeWork",
+				name: src.title,
+				url: src.url,
+			})),
+		),
+	},
+];
+---
+
+<Layout
+	title={`${H.title(genitive)} · ${T.siteName}`}
+	description={H.description(genitive, eras.map((e) => e.data.title).join(", "))}
+	jsonLd={jsonLd}
+>
+	<section class="shell">
+		<div class="hero-page">
+			<p class="eyebrow">{H.eyebrow}</p>
+			<h1>{H.h1}<br /><span>{H.homeGenitive}</span></h1>
+			<p class="lead">{H.lead(genitive)}</p>
+		</div>
+	</section>
+
+	<nav class="era-nav shell" aria-label={H.nav}>
+		{rendered.map(({ entry }) => (
+			<a href={`#${entry.data.era}`}>{entry.data.period}</a>
+		))}
+	</nav>
+
+	<section class="shell timeline">
+		{rendered.map(({ entry, Content }) => (
+			<article class="timeline-era" id={entry.data.era}>
+				<div class="timeline-node" aria-hidden="true"></div>
+				<div class="timeline-body">
+					<p class="era-period">{entry.data.period}</p>
+					<h2>{entry.data.title}</h2>
+					<p class="lead">{entry.data.summary}</p>
+					<div class="story">
+						<Content />
+					</div>
+					{entry.data.sources.length > 0 && (
+						<div class="era-sources">
+							<p class="meta">{H.sources}</p>
+							<ul>
+								{entry.data.sources.map((s) => (
+									<li>
+										<a href={s.url} target="_blank" rel="noopener noreferrer">
+											{s.title}
+										</a>
+									</li>
+								))}
+							</ul>
+						</div>
+					)}
+				</div>
+			</article>
+		))}
+	</section>
+</Layout>
