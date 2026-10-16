@@ -135,7 +135,7 @@ const points = stops.map((s, i) => ({ n: i + 1, title: s.title, lat: s.lat, lng:
       }).addTo(map);
       const line = L.polyline(
         pts.map((p) => [p.lat, p.lng] as [number, number]),
-        { color: "#e0805f", weight: 4, dashArray: "8 8", opacity: 0.9 },
+        { color: "#e0805f", weight: 4, dashArray: "8 8", opacity: 0.9, className: "route-line" },
       ).addTo(map);
       for (const p of pts) {
         L.marker([p.lat, p.lng], {

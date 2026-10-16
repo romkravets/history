@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import "../styles/motion.css";
 import Analytics from "@vercel/analytics/astro";
 import {
   SITE,
@@ -103,6 +104,7 @@ const graph = [
 <html lang={lang}>
   <head>
     <meta charset="utf-8" />
+    <script is:inline>document.documentElement.classList.add("js");</script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -281,6 +283,87 @@ const graph = [
         };
         onScroll();
         window.addEventListener("scroll", onScroll, { passive: true });
+      })();
+    </script>
+    <script is:inline>
+      (() => {
+        // анімації: проявлення фото, поява блоків під час прокрутки, лічильники, «переліт» обкладинки
+        const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        // фото, що ще вантажаться, «проявляються»; уже завантажені показуються як є
+        document.querySelectorAll("main img").forEach((img) => {
+          if (img.closest(".lightbox, .hero-full") || (img.complete && img.naturalWidth)) return;
+          img.classList.add("develop");
+          const done = () => img.classList.add("is-loaded");
+          img.addEventListener("load", done, { once: true });
+          img.addEventListener("error", done, { once: true });
+        });
+
+        // обкладинка картки «перелітає» у велике фото галереї (View Transitions)
+        document.addEventListener("click", (e) => {
+          const img = e.target.closest?.(".card, .rail-card")?.querySelector("img");
+          if (!img || e.metaKey || e.ctrlKey || e.shiftKey) return;
+          document.querySelector(".main-photo img")?.style.setProperty("view-transition-name", "none");
+          img.style.viewTransitionName = "gallery-cover";
+        });
+        // і назад: повернувшись із галереї, фото «летить» у свою картку
+        addEventListener("pagereveal", (e) => {
+          const from = e.viewTransition && window.navigation?.activation?.from?.url;
+          if (!from) return;
+          const path = new URL(from).pathname;
+          const img = document.querySelector(`.card[href="${CSS.escape(path)}"] img`);
+          if (!img) return;
+          img.style.viewTransitionName = "gallery-cover";
+          e.viewTransition.finished.finally(() => (img.style.viewTransitionName = ""));
+        });
+        addEventListener("pageshow", () => {
+          document.querySelectorAll(".card img, .rail-card img").forEach((i) => (i.style.viewTransitionName = ""));
+        });
+
+        if (reduce || !("IntersectionObserver" in window)) return;
+
+        // поява під час прокрутки — лише для того, що нижче першого екрана
+        const sel = ".card, .person-card, .library-item, .route-stop, .timeline-era, .potd, .home-ba-head, .rail-head, .section-title, .related, .story > *, .era-nav, .map-section";
+        const io = new IntersectionObserver((entries) => {
+          let k = 0;
+          for (const en of entries) {
+            if (!en.isIntersecting) continue;
+            en.target.style.setProperty("--rv-i", String(Math.min(k++, 6)));
+            const el = en.target;
+            el.classList.add("in");
+            io.unobserve(el);
+            // після появи прибираємо класи, щоб далі працювали звичайні ефекти наведення
+            setTimeout(() => el.classList.remove("rv", "in"), 1600);
+          }
+        }, { rootMargin: "0px 0px -8% 0px" });
+        document.querySelectorAll(sel).forEach((el) => {
+          if (el.getBoundingClientRect().top < innerHeight * 0.92) return;
+          el.classList.add("rv");
+          io.observe(el);
+        });
+
+        // повзунок «тоді й тепер» хитається раз, коли вперше з'являється
+        const baIo = new IntersectionObserver((entries) => {
+          for (const en of entries) if (en.isIntersecting) { en.target.classList.add("hint"); baIo.unobserve(en.target); }
+        }, { threshold: 0.6 });
+        document.querySelectorAll(".ba").forEach((el) => {
+          baIo.observe(el);
+          el.addEventListener("pointerdown", () => el.classList.remove("hint"), { once: true });
+        });
+
+        // числа в статистиці банера «набігають» від нуля
+        const locale = document.documentElement.lang === "pl" ? "pl-PL" : "uk-UA";
+        document.querySelectorAll(".hero-stats dd").forEach((dd) => {
+          const target = Number(dd.textContent.replace(/\D/g, ""));
+          if (!target) return;
+          const t0 = performance.now();
+          const tick = (t) => {
+            const p = Math.min(1, (t - t0) / 1400);
+            dd.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))).toLocaleString(locale);
+            if (p < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        });
       })();
     </script>
     <Analytics />
